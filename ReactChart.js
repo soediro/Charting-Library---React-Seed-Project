@@ -50,40 +50,7 @@
 
 	var _ui2 = _interopRequireDefault(_ui);
 
-	var _themeModal = __webpack_require__(2);
-
-	var _themeModal2 = _interopRequireDefault(_themeModal);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ChartWrapper = React.createClass({
-	    displayName: "ChartWrapper",
-	    getInitialState: function getInitialState() {
-	        return {
-	            ciq: null
-	        };
-	    },
-	    componentDidMount: function componentDidMount() {
-	        var ciq = new CIQ.ChartEngine({
-	            container: $$$("#chartContainer")
-	        });
-	        this.setState({
-	            ciq: ciq
-	        }, function () {
-	            this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed["Demo"]());
-	            ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
-	        });
-	    },
-	    render: function render() {
-	        return React.createElement(
-	            "div",
-	            null,
-	            React.createElement(_ui2.default, null),
-	            React.createElement(_themeModal2.default, null),
-	            React.createElement(Chart, { ciq: this.state.ciq })
-	        );
-	    }
-	});
 
 	var ChartWrapper = React.createClass({
 	    displayName: "ChartWrapper",
@@ -108,16 +75,6 @@
 	    componentWillMount: function componentWillMount() {},
 	    componentWillUpdate: function componentWillUpdate(nextProp, nextState) {
 	        /// Catch new props here
-	    },
-	    render: function render() {
-	        console.log("Chart Render Here");
-	        return React.createElement(
-	            "div",
-	            null,
-	            React.createElement(_ui2.default, null),
-	            React.createElement(_themeModal2.default, null),
-	            React.createElement("div", { id: "chartContainer", style: { width: "800px", height: "500px", position: "relative" } })
-	        );
 	    },
 	    setPeriodicity: function setPeriodicity(period, interval) {
 	        this.state.ciq.setPeriodicityV2(period, interval);
@@ -158,6 +115,19 @@
 	    attachFeed: function attachFeed(feed) {
 
 	        this.state.ciq.attachQuoteFeed(feed);
+	    },
+	    render: function render() {
+	        console.log("Chart Render Here", this.state);
+	        return React.createElement(
+	            "div",
+	            null,
+	            React.createElement(_ui2.default, { ciq: this.state.ciq ? this.state.ciq : null }),
+	            React.createElement("div", { id: "chartContainer", style: {
+	                    width: "800px",
+	                    height: "500px",
+	                    position: "relative"
+	                } })
+	        );
 	    }
 	});
 
@@ -165,64 +135,140 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var UI = React.createClass({
-	  displayName: "UI",
+	var _themeModal = __webpack_require__(2);
 
-	  getInitialState: function getInitialState() {
-	    return {};
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "" },
-	      React.createElement(
-	        "div",
-	        { id: "studySelect" },
-	        React.createElement(
-	          "span",
-	          null,
-	          "Add Study"
-	        ),
-	        React.createElement(
-	          "div",
-	          { className: "menu-hover" },
-	          React.createElement(
+	var _themeModal2 = _interopRequireDefault(_themeModal);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var UI = React.createClass({
+	    displayName: "UI",
+
+	    getInitialState: function getInitialState() {
+	        return {};
+	    },
+	    render: function render() {
+	        return React.createElement(
 	            "div",
-	            { className: "option" },
-	            React.createElement("span", null)
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "themeSelect" },
-	        React.createElement(
-	          "span",
-	          null,
-	          "Select Theme"
-	        ),
-	        React.createElement(
-	          "div",
-	          { className: "menu-hover" },
-	          React.createElement(
-	            "div",
-	            { className: "option" },
-	            React.createElement("span", null)
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        "button",
-	        null,
-	        "Select Timezone"
-	      )
-	    );
-	  }
+	            { className: "" },
+	            React.createElement(
+	                "div",
+	                { id: "studySelect" },
+	                React.createElement(
+	                    "span",
+	                    null,
+	                    "Add Study"
+	                ),
+	                React.createElement(
+	                    "div",
+	                    { className: "menu-hover" },
+	                    React.createElement(
+	                        "div",
+	                        { className: "option" },
+	                        React.createElement("span", null)
+	                    )
+	                )
+	            ),
+	            React.createElement(ThemeUI, { ciq: this.props.ciq ? this.props.ciq : null }),
+	            React.createElement(
+	                "button",
+	                null,
+	                "Select Timezone"
+	            )
+	        );
+	    }
 	});
+
+	var ThemeUI = React.createClass({
+	    displayName: "ThemeUI",
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            themeList: [{
+	                "name": "+ New Theme"
+	            }],
+	            themeHelper: null
+	        };
+	    },
+	    setThemeHelper: function setThemeHelper(ciq) {
+
+	        if (!ciq) return;
+	        var themeHelper = new CIQ.ThemeHelper({
+	            'stx': ciq
+	        });
+	        var self = this;
+	        this.setState({
+	            ciq: ciq,
+	            themeHelper: themeHelper
+	        });
+	    },
+	    themeSelect: function themeSelect(theme) {
+	        if (theme.name === "+ New Theme") {
+	            return this.openThemeModal();
+	        }
+	        this.updateTheme(theme.settings);
+	    },
+	    openThemeModal: function openThemeModal() {
+	        this.refs.themeModal.openDialog(this.addTheme);
+	    },
+	    addTheme: function addTheme(theme, themeName) {
+	        this.state.themeList.push({
+	            name: themeName,
+	            settings: theme
+	        });
+	        this.setState({
+	            themeList: this.state.themeList
+	        });
+	        this.updateTheme(theme);
+	    },
+	    updateTheme: function updateTheme(theme) {
+	        var c = CIQ.clone(theme);
+	        this.state.themeHelper.settings = c;
+	        this.state.themeHelper.update();
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (nextProps.ciq) {
+	            this.setThemeHelper(nextProps.ciq);
+	        }
+	    },
+
+	    render: function render() {
+	        var self = this;
+	        var options = this.state.themeList.map(function (theme, index) {
+	            return React.createElement(
+	                "div",
+	                { key: "theme" + index, className: "option", onClick: function onClick() {
+	                        self.themeSelect(theme);
+	                    } },
+	                React.createElement(
+	                    "span",
+	                    null,
+	                    theme.name
+	                )
+	            );
+	        });
+	        return React.createElement(
+	            "div",
+	            { id: "themeSelect" },
+	            React.createElement(_themeModal2.default, { ref: "themeModal", themeHelper: this.state.themeHelper ? this.state.themeHelper : null }),
+	            React.createElement(
+	                "span",
+	                null,
+	                "Select Theme"
+	            ),
+	            React.createElement(
+	                "div",
+	                { className: "menu-hover" },
+	                options
+	            )
+	        );
+	    }
+	});
+
 	//ng-repeat="theme in cqNgUi.themes" ng-click="cqNgUi.handleThemeSelect(theme)"
 	//ng-repeat="study in cqNgUi.studies.list | orderBy:study" ng-click="cqNgUi.launchStudyDialog(study)"
 	//ng-click="cqNgUi.launchTimezoneDialog()"
@@ -232,7 +278,7 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var _colorPicker = __webpack_require__(3);
 
@@ -240,16 +286,206 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var ThemeModal = React.createClass({
+	    displayName: 'ThemeModal',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            open: false,
+	            themeHelper: null,
+	            themeName: null
+	        };
+	    },
+	    setThemeHelper: function setThemeHelper(ciq) {
+
+	        if (!ciq) return;
+	        var themeHelper = new CIQ.ThemeHelper({
+	            'stx': ciq
+	        });
+	        var self = this;
+	        this.setState({
+	            ciq: ciq,
+	            themeHelper: themeHelper
+	        }, function () {
+	            self.loadDefaultColors();
+	            self.forceUpdate();
+	        });
+	    },
+	    loadDefaultColors: function loadDefaultColors() {
+	        var self = this;
+	        options.map(function (section, index) {
+	            var swatches = section.swatches.map(function (swatch, index) {
+	                self.updateTheme(null, swatch.item, swatch);
+	            });
+	        });
+	    },
+
+	    openDialog: function openDialog(callback) {
+	        this.setState({
+	            open: true,
+	            callback: callback
+	        });
+	    },
+	    closeDialog: function closeDialog() {
+	        this.setState({
+	            open: false
+	        });
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        var self = this;
+	        if (nextProps.themeHelper) {
+	            this.setState({
+	                themeHelper: nextProps.themeHelper
+	            }, function () {
+	                self.loadDefaultColors();
+	                self.forceUpdate();
+	            });
+	        }
+	    },
+
+	    openColorPicker: function openColorPicker(swatch, target) {
+	        var self = this;
+	        var targetBounds = target.getBoundingClientRect();
+	        this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function (color) {
+	            self.updateTheme(color, swatch.item, swatch);
+	            self.forceUpdate();
+	        });
+	    },
+	    saveSettings: function saveSettings() {
+	        if (!this.state.themeName) return;
+	        this.closeDialog();
+	        if (this.state.callback) this.state.callback(this.state.themeHelper.settings, this.state.themeName);
+	    },
+	    updateTheme: function updateTheme(color, item, swatch) {
+	        switch (item) {
+	            case 'candleUp':
+
+	                if (color) {
+	                    this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.color = CIQ.hexToRgba('#' + color);
+	                }
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.color;
+	                break;
+	            case 'candleDown':
+	                if (color) this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.color;
+	                break;
+	            case 'wickUp':
+	                if (color) this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.wick = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.wick;
+	                break;
+	            case 'wickDown':
+	                if (color) this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.wick = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.wick;
+	                break;
+	            case 'borderUp':
+	                if (color) this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.border = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.border;
+	                break;
+	            case 'borderDown':
+	                if (color) this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.border = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.border;
+	                break;
+	            case 'lineBar':
+	                if (color) this.state.themeHelper.settings.chartTypes["Line"].color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Line"].color;
+	                break;
+	            case 'mountain':
+	                if (color) this.state.themeHelper.settings.chartTypes["Mountain"].color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chartTypes["Mountain"].color;
+	                break;
+	            case 'chartBackground':
+	                if (color) this.state.themeHelper.settings.chart["Background"].color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chart["Background"].color;
+	                break;
+	            case 'dividers':
+	                if (color) this.state.themeHelper.settings.chart["Grid Dividers"].color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chart["Grid Dividers"].color;
+	                break;
+	            case 'lines':
+	                if (color) this.state.themeHelper.settings.chart["Grid Lines"].color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chart["Grid Lines"].color;
+	                break;
+	            case 'axis':
+	                if (color) this.state.themeHelper.settings.chart["Axis Text"].color = CIQ.hexToRgba('#' + color);
+	                swatch.color = this.state.themeHelper.settings.chart["Axis Text"].color;
+	                break;
+	        }
+	    },
+	    updateThemeName: function updateThemeName(event) {
+	        this.setState({
+	            themeName: event.target.value
+	        });
+	    },
+
+	    render: function render() {
+	        var self = this;
+	        if (!this.state.open) return React.createElement('div', null);
+	        var sections = options.map(function (section, sectionindex) {
+
+	            var swatches = section.swatches.map(function (swatch, index) {
+	                return React.createElement('div', { key: "swatch" + index, style: {
+	                        backgroundColor: swatch.color
+	                    }, className: "color-picker-swatch " + swatch.class, onClick: function onClick(event) {
+	                        self.openColorPicker(swatch, event.target);
+	                    } });
+	            });
+
+	            return React.createElement(
+	                'div',
+	                { key: "section" + sectionindex, className: section.class },
+	                React.createElement(
+	                    'div',
+	                    { className: 'theme-field-name' },
+	                    section.section
+	                ),
+	                swatches
+	            );
+	        });
+	        return React.createElement(
+	            'div',
+	            { id: 'themeDialog' },
+	            React.createElement(_colorPicker2.default, { ref: 'colorPicker' }),
+	            React.createElement(
+	                'div',
+	                { className: 'content' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'heading' },
+	                    'Custom Theme'
+	                ),
+	                sections,
+	                React.createElement(
+	                    'div',
+	                    { className: 'theme-save' },
+	                    React.createElement('input', { ref: 'themeName', type: 'text', onChange: this.updateThemeName }),
+	                    React.createElement(
+	                        'button',
+	                        { className: 'largeBtn', onClick: this.saveSettings },
+	                        'Save'
+	                    ),
+	                    React.createElement(
+	                        'button',
+	                        { className: 'largeBtn', onClick: this.closeDialog },
+	                        'Close'
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
 	var options = [{
 	    section: "Candle Color",
 	    class: "color",
 	    swatches: [{
 	        class: "colorDown",
 	        color: "",
+	        chartType: "Candle/Bar",
 	        item: "candleDown"
 	    }, {
 	        class: "colorUp",
 	        color: "",
+	        chartType: "Candle/Bar",
 	        item: "candleUp"
 	    }]
 	}, {
@@ -258,10 +494,12 @@
 	    swatches: [{
 	        class: "wickDown",
 	        color: "",
+	        chartType: "Candle/Bar",
 	        item: "wickDown"
 	    }, {
 	        class: "wickUp",
 	        color: "",
+	        chartType: "Candle/Bar",
 	        item: "wickUp"
 	    }]
 	}, {
@@ -270,10 +508,12 @@
 	    swatches: [{
 	        class: "borderDown",
 	        color: "",
+	        chartType: "Candle/Bar",
 	        item: "borderDown"
 	    }, {
 	        class: "borderDown",
 	        color: "",
+	        chartType: "Candle/Bar",
 	        item: "borderDown"
 	    }]
 	}, {
@@ -282,6 +522,7 @@
 	    swatches: [{
 	        class: "lineBar",
 	        color: "",
+	        chartType: "Line",
 	        item: "lineBar"
 	    }]
 	}, {
@@ -290,6 +531,7 @@
 	    swatches: [{
 	        class: "mountain",
 	        color: "",
+	        chartType: "Mountain",
 	        item: "mountain"
 	    }]
 	}, {
@@ -298,6 +540,7 @@
 	    swatches: [{
 	        class: "chartBackground",
 	        color: "",
+	        chart: "Background",
 	        item: "chartBackground"
 	    }]
 	}, {
@@ -306,6 +549,7 @@
 	    swatches: [{
 	        class: "lines",
 	        color: "",
+	        chart: "Grid Lines",
 	        item: "lines"
 	    }]
 	}, {
@@ -314,6 +558,8 @@
 	    swatches: [{
 	        class: "dividers",
 	        color: "",
+	        chart: "Grid Dividers",
+
 	        item: "dividers"
 	    }]
 	}, {
@@ -322,89 +568,10 @@
 	    swatches: [{
 	        class: "axis",
 	        color: "",
+	        chart: "Axis Text",
 	        item: "axis"
 	    }]
 	}];
-
-	var ThemeModal = React.createClass({
-	    displayName: "ThemeModal",
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            caller: false,
-	            open: true
-	        };
-	    },
-	    setColor: function setColor(color) {
-	        console.log("color", color);
-	    },
-	    openDialog: function openDialog() {
-	        this.setState({
-	            open: true
-	        });
-	    },
-	    closeDialog: function closeDialog() {
-	        this.setState({
-	            open: false
-	        });
-	    },
-	    openColorPicker: function openColorPicker(item) {},
-
-	    render: function render() {
-	        var self = this;
-	        if (!this.state.open) return React.createElement("div", null);
-	        console.log("here");
-	        var sections = options.map(function (section, index) {
-
-	            var swatches = section.swatches.map(function (swatch, index) {
-	                return React.createElement("div", { style: { backgroundColor: swatch.color }, className: "color-picker-swatch " + swatch.class, onClick: function onClick() {
-	                        self.openColorPicker(swatch.item);
-	                    } });
-	            });
-
-	            return React.createElement(
-	                "div",
-	                { className: section.class },
-	                React.createElement(
-	                    "div",
-	                    { className: "theme-field-name" },
-	                    section.section
-	                ),
-	                swatches
-	            );
-	        });
-	        console.log("here123");
-	        return React.createElement(
-	            "div",
-	            { id: "themeDialog" },
-	            React.createElement(
-	                "div",
-	                { className: "content" },
-	                React.createElement(
-	                    "div",
-	                    { className: "heading" },
-	                    "Custom Theme"
-	                ),
-	                sections,
-	                React.createElement(
-	                    "div",
-	                    { className: "theme-save" },
-	                    React.createElement("input", { type: "text" }),
-	                    React.createElement(
-	                        "button",
-	                        { className: "largeBtn" },
-	                        "Save"
-	                    ),
-	                    React.createElement(
-	                        "button",
-	                        { className: "largeBtn" },
-	                        "Close"
-	                    )
-	                )
-	            )
-	        );
-	    }
-	});
 
 	module.exports = ThemeModal;
 
@@ -421,31 +588,45 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            caller: false,
-	            open: true
+	            open: false,
+	            onColorPick: null,
+	            top: 0,
+	            left: 0
 	        };
 	    },
 	    setColor: function setColor(color) {
 	        console.log("color", color);
+	        if (this.state.onColorPick) {
+	            this.state.onColorPick(color);
+	        }
+	        this.closeDialog();
 	    },
-	    openDialog: function openDialog() {
-	        this.setState({ open: true });
+	    openDialog: function openDialog(top, left, callback) {
+	        this.setState({
+	            open: true,
+	            top: top,
+	            left: left,
+	            onColorPick: callback
+	        });
 	    },
 	    closeDialog: function closeDialog() {
-	        this.setState({ open: false });
+	        this.setState({
+	            open: false
+	        });
 	    },
 	    render: function render() {
 	        var self = this;
 	        var colorEls = colorPickerColors.map(function (color, index) {
-	            console.log(color);
 	            return React.createElement(
 	                "li",
-	                null,
+	                { key: "color" + index },
 	                React.createElement(
 	                    "a",
 	                    { href: "#", title: color, onClick: function onClick() {
 	                            self.setColor(color);
-	                        }, style: { background: "#" + color } },
+	                        }, style: {
+	                            background: "#" + color
+	                        } },
 	                    color
 	                )
 	            );
@@ -453,11 +634,19 @@
 
 	        return React.createElement(
 	            "div",
-	            { id: "colorPicker", style: { 'top': 0, 'left': 0, 'display': this.state.open ? 'block' : 'none' } },
+	            { id: "colorPicker", style: {
+	                    'top': this.state.top,
+	                    'left': this.state.left,
+	                    'display': this.state.open ? 'block' : 'none'
+	                } },
 	            React.createElement(
 	                "div",
 	                { className: "color-picker-options" },
-	                colorEls
+	                React.createElement(
+	                    "ul",
+	                    null,
+	                    colorEls
+	                )
 	            )
 	        );
 	    }
