@@ -1,5 +1,4 @@
 import UI from "./components/ui"
-import ThemeModal from "./components/themeModal"
 
 var ChartWrapper = React.createClass({
     getInitialState: function() {
@@ -70,9 +69,12 @@ var ChartWrapper = React.createClass({
     },
     render: function() {
         return <div>
-                 <UI ciq={this.state.ciq}/>
-                 <ThemeModal ciq={this.state.ciq}/>
-                 <div id="chartContainer" style={ { width: "800px", height: "500px", position: "relative" } }>
+                 <UI ciq={this.state.ciq ? this.state.ciq : null}/>
+                 <div id="chartContainer" style={ {
+                width: "800px",
+                height: "500px",
+                position: "relative"
+            }}>
                  </div>
                </div>
 

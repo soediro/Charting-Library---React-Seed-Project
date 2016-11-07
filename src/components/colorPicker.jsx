@@ -12,32 +12,51 @@ var colorPickerColors = [
 var ColorPicker = React.createClass({
     getInitialState: function() {
         return {
-            caller: false,
-            open: true
+            open: false,
+            onColorPick: null,
+            top: 0,
+            left: 0
         }
     },
     setColor: function(color) {
+        if (this.state.onColorPick) {
+            this.state.onColorPick(color)
+        }
+        this.closeDialog();
 
     },
-    openDialog:function(){
-      this.setState({open:true});
+    openDialog: function(top, left, callback) {
+        this.setState({
+            open: true,
+            top: top,
+            left: left,
+            onColorPick: callback
+        });
     },
     closeDialog: function() {
-      this.setState({open:false});
+        this.setState({
+            open: false
+        });
     },
     render: function() {
-      var self = this;
+        var self = this;
         var colorEls = colorPickerColors.map(function(color, index) {
-          return <li><a href="#" title={color} onClick={function(){
-            self.setColor(color);
-          }}style={{background:"#" + color}}>{color}</a></li>
+            return <li key={"color" + index}><a href="#" title={color} onClick={function() {
+                    self.setColor(color);
+                }}style={{
+                    background: "#" + color
+                }}>{color}</a></li>
 
         })
 
         return (
 
-            <div id="colorPicker" style={ { 'top': 0, 'left': 0, 'display': this.state.open ? 'block' : 'none' } }>
-              <div className="color-picker-options">{colorEls}</div>
+            <div id="colorPicker" style={ {
+                'top': this.state.top,
+                'left': this.state.left,
+                'display': this.state.open ? 'block' : 'none'
+            }}>
+              <div className="color-picker-options"><ul>{colorEls}</ul></div>
             </div>
 
         )
@@ -50,7 +69,7 @@ var ColorPicker = React.createClass({
 var ThemeDialog = React.createClass({
     getInitialState: function() {
         return {
-           
+
         }
     },
     render: function() {
