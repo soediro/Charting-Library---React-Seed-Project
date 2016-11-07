@@ -69,10 +69,9 @@ var ChartWrapper = React.createClass({
         this.state.ciq.attachQuoteFeed(feed);
     },
     render: function() {
-        console.log("Chart Render Here");
         return <div>
-                 <UI/>
-                 <ThemeModal/>
+                 <UI ciq={this.state.ciq}/>
+                 <ThemeModal ciq={this.state.ciq}/>
                  <div id="chartContainer" style={ { width: "800px", height: "500px", position: "relative" } }>
                  </div>
                </div>

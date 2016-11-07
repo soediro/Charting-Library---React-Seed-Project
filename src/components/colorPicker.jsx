@@ -17,7 +17,6 @@ var ColorPicker = React.createClass({
         }
     },
     setColor: function(color) {
-      console.log("color",color);
 
     },
     openDialog:function(){
@@ -29,7 +28,6 @@ var ColorPicker = React.createClass({
     render: function() {
       var self = this;
         var colorEls = colorPickerColors.map(function(color, index) {
-          console.log(color)
           return <li><a href="#" title={color} onClick={function(){
             self.setColor(color);
           }}style={{background:"#" + color}}>{color}</a></li>

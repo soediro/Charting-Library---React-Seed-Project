@@ -102,11 +102,10 @@ var ThemeModal = React.createClass({
     getInitialState: function() {
         return {
             caller: false,
-            open: true
+            open: false
         }
     },
     setColor: function(color) {
-        console.log("color", color);
 
     },
     openDialog: function() {

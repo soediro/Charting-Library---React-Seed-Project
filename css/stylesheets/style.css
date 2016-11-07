@@ -217,7 +217,17 @@ html, body, div, span {
 .color-picker-options ul li a:hover {/* Swatch hover state */
 	border-color:#000;
 }
+.center {
+	text-align: center
+}
+.timeZoneOption {
+	padding:2px;
+	margin:10px;
+	background:#E9E9E9;
+	border-radius: 25px;
+	 cursor: pointer;
 
+}
 button {
 	border-radius:8px;
 	font-family:Arial sans-serif;
