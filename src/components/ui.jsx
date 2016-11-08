@@ -1,4 +1,5 @@
 import ThemeModal from "./themeModal"
+import StudyModal from "./studyModal"
 
 var UI = React.createClass({
     getInitialState: function() {
@@ -9,15 +10,70 @@ var UI = React.createClass({
         return (
 
             <div className="">
-              <div id="studySelect">
-                <span>Add Study</span>
-                <div className="menu-hover">
-                  <div className="option"><span></span></div>
-                </div>
-              </div>
+              <StudyUI/>
              <ThemeUI ciq={this.props.ciq ? this.props.ciq : null} />
               <button>Select Timezone</button>
             </div>
+
+        )
+
+
+    }
+});
+
+var StudyUI = React.createClass({
+    getInitialState: function() {
+        return {
+            ciq: null,
+            studyHelper: null
+        }
+    },
+    addStudy(study) {
+        var studyHelper = CIQ.Studies.DialogHelper({
+            name: study,
+            stx: this.state.ciq
+        });
+
+        ciq.callbacks.studyOverlayEdit = this.ctrl.openModal;
+        ciq.callbacks.studyPanelEdit = this.openModal;
+        CIQ.Studies.addStudy(this.state.ciq,
+            ctrl.studyHelper.name,
+            ctrl.studyHelper.libraryEntry.inputs,
+            ctrl.studyHelper.libraryEntry.outputs,
+            ctrl.studyHelper.libraryEntry.parameters);
+        this.setState({
+            studyHelper: studyHelper
+        })
+
+    },
+    openModal() {
+        this.refs.studyModal.open();
+    },
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.ciq) {
+            this.setState({
+                ciq: nextProps.ciq
+            })
+        }
+
+    },
+    render: function() {
+        var self = this;
+        var studies = Object.keys(CIQ.Studies.studyLibrary).map(function(study, index) {
+            return <div key={"study" + index} className="option" onClick={function() {
+                    self.addStudy(study);
+                }}><span>{study}</span></div>
+
+        })
+        return (
+
+            <div id="studySelect">
+             <StudyModal ref="studyModal"/>
+                <span>Add Study</span>
+                <div className="menu-hover">
+               {studies}
+                </div>
+              </div>
 
         )
 

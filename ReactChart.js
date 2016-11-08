@@ -117,7 +117,6 @@
 	        this.state.ciq.attachQuoteFeed(feed);
 	    },
 	    render: function render() {
-	        console.log("Chart Render Here", this.state);
 	        return React.createElement(
 	            "div",
 	            null,
@@ -143,6 +142,10 @@
 
 	var _themeModal2 = _interopRequireDefault(_themeModal);
 
+	var _studyModal = __webpack_require__(4);
+
+	var _studyModal2 = _interopRequireDefault(_studyModal);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var UI = React.createClass({
@@ -155,29 +158,78 @@
 	        return React.createElement(
 	            "div",
 	            { className: "" },
-	            React.createElement(
-	                "div",
-	                { id: "studySelect" },
-	                React.createElement(
-	                    "span",
-	                    null,
-	                    "Add Study"
-	                ),
-	                React.createElement(
-	                    "div",
-	                    { className: "menu-hover" },
-	                    React.createElement(
-	                        "div",
-	                        { className: "option" },
-	                        React.createElement("span", null)
-	                    )
-	                )
-	            ),
+	            React.createElement(StudyUI, null),
 	            React.createElement(ThemeUI, { ciq: this.props.ciq ? this.props.ciq : null }),
 	            React.createElement(
 	                "button",
 	                null,
 	                "Select Timezone"
+	            )
+	        );
+	    }
+	});
+
+	var StudyUI = React.createClass({
+	    displayName: "StudyUI",
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            ciq: null,
+	            studyHelper: null
+	        };
+	    },
+	    addStudy: function addStudy(study) {
+	        var studyHelper = CIQ.Studies.DialogHelper({
+	            name: study,
+	            stx: this.state.ciq
+	        });
+
+	        ciq.callbacks.studyOverlayEdit = this.ctrl.openModal;
+	        ciq.callbacks.studyPanelEdit = this.openModal;
+	        CIQ.Studies.addStudy(this.state.ciq, ctrl.studyHelper.name, ctrl.studyHelper.libraryEntry.inputs, ctrl.studyHelper.libraryEntry.outputs, ctrl.studyHelper.libraryEntry.parameters);
+	        this.setState({
+	            studyHelper: studyHelper
+	        });
+	    },
+	    openModal: function openModal() {
+	        this.refs.studyModal.open();
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        if (nextProps.ciq) {
+	            this.setState({
+	                ciq: nextProps.ciq
+	            });
+	        }
+	    },
+
+	    render: function render() {
+	        var self = this;
+	        var studies = Object.keys(CIQ.Studies.studyLibrary).map(function (study, index) {
+	            return React.createElement(
+	                "div",
+	                { key: "study" + index, className: "option", onClick: function onClick() {
+	                        self.addStudy(study);
+	                    } },
+	                React.createElement(
+	                    "span",
+	                    null,
+	                    study
+	                )
+	            );
+	        });
+	        return React.createElement(
+	            "div",
+	            { id: "studySelect" },
+	            React.createElement(_studyModal2.default, { ref: "studyModal" }),
+	            React.createElement(
+	                "span",
+	                null,
+	                "Add Study"
+	            ),
+	            React.createElement(
+	                "div",
+	                { className: "menu-hover" },
+	                studies
 	            )
 	        );
 	    }
@@ -595,7 +647,6 @@
 	        };
 	    },
 	    setColor: function setColor(color) {
-	        console.log("color", color);
 	        if (this.state.onColorPick) {
 	            this.state.onColorPick(color);
 	        }
@@ -665,6 +716,56 @@
 	});
 
 	module.exports = ColorPicker;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var StudyModal = React.createClass({
+	    displayName: "StudyModal",
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            open: false,
+	            studyHelper: {}
+	        };
+	    },
+	    open: function open(studyHelper) {
+	        this.setState({
+	            open: true,
+	            studyHelper: studyHelper
+	        });
+	    },
+
+	    render: function render() {
+	        if (!this.state.open) return React.createElement("div", null);
+	        return React.createElement(
+	            "div",
+	            { id: "studyDialog" },
+	            React.createElement(
+	                "div",
+	                { className: "content" },
+	                React.createElement(
+	                    "div",
+	                    { className: "heading" },
+	                    this.studyHelper ? this.studyHelper.Name : ""
+	                ),
+	                React.createElement("div", { id: "inputs" }),
+	                React.createElement("div", { id: "outputs" }),
+	                React.createElement("div", { id: "parameters" }),
+	                React.createElement(
+	                    "button",
+	                    { className: "largeBtn" },
+	                    "Save"
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = StudyModal;
 
 /***/ }
 /******/ ]);
