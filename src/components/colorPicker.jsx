@@ -49,6 +49,7 @@ var ColorPicker = React.createClass({
 
         })
 
+
         return (
 
             <div id="colorPicker" style={ {

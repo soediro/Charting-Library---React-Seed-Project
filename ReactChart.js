@@ -201,29 +201,27 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            ciq: null,
-	            studyHelper: null
+	            ciq: null
 	        };
 	    },
+	    componentWillMount: function componentWillMount() {},
 	    addStudy: function addStudy(study) {
-	        console.log("study", study);
-	        var studyHelper = new CIQ.Studies.DialogHelper({
-	            name: study,
-	            stx: this.state.ciq
-	        });
-	        console.log("studyHelper", studyHelper);
-	        this.state.ciq.callbacks.studyOverlayEdit = this.openModal;
-	        this.state.ciq.callbacks.studyPanelEdit = this.openModal;
-	        CIQ.Studies.addStudy(this.state.ciq, studyHelper.name, studyHelper.libraryEntry.inputs, studyHelper.libraryEntry.outputs, studyHelper.libraryEntry.parameters);
-	        this.setState({
-	            studyHelper: studyHelper
-	        });
+	        CIQ.Studies.addStudy(this.state.ciq, study);
 	    },
-	    openModal: function openModal() {
-	        this.refs.studyModal.open();
+	    openModal: function openModal(params) {
+	        this.refs.studyModal.open(params);
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	        var self = this;
 	        if (nextProps.ciq) {
+	            var closure = function closure(fc) {
+	                return function () {
+	                    fc.apply(self, arguments);
+	                };
+	            };
+
+	            nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openModal);
+	            nextProps.ciq.callbacks.studyPanelEdit = closure(self.openModal);
 	            this.setState({
 	                ciq: nextProps.ciq
 	            });
@@ -246,18 +244,22 @@
 	            );
 	        });
 	        return React.createElement(
-	            "div",
-	            { id: "studySelect" },
+	            "span",
+	            null,
 	            React.createElement(_studyModal2.default, { ref: "studyModal" }),
 	            React.createElement(
 	                "span",
-	                null,
-	                "Add Study"
-	            ),
-	            React.createElement(
-	                "div",
-	                { className: "menu-hover" },
-	                studies
+	                { id: "studySelect" },
+	                React.createElement(
+	                    "span",
+	                    null,
+	                    "Add Study"
+	                ),
+	                React.createElement(
+	                    "div",
+	                    { className: "menu-hover" },
+	                    studies
+	                )
 	            )
 	        );
 	    }
@@ -1291,50 +1293,165 @@
 
 /***/ },
 /* 6 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+
+	var _colorPicker = __webpack_require__(5);
+
+	var _colorPicker2 = _interopRequireDefault(_colorPicker);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var StudyModal = React.createClass({
-	    displayName: "StudyModal",
+	  displayName: 'StudyModal',
 
-	    getInitialState: function getInitialState() {
-	        return {
-	            open: false,
-	            studyHelper: {}
-	        };
-	    },
-	    open: function open(studyHelper) {
-	        this.setState({
-	            open: true,
-	            studyHelper: studyHelper
-	        });
-	    },
+	  getInitialState: function getInitialState() {
+	    return {
+	      open: false,
+	      studyHelper: {},
+	      outputs: {},
+	      inputs: {},
+	      parameters: {}
 
-	    render: function render() {
-	        if (!this.state.open) return React.createElement("div", null);
-	        return React.createElement(
-	            "div",
-	            { id: "studyDialog" },
-	            React.createElement(
-	                "div",
-	                { className: "content" },
-	                React.createElement(
-	                    "div",
-	                    { className: "heading" },
-	                    this.studyHelper ? this.studyHelper.Name : ""
-	                ),
-	                React.createElement("div", { id: "inputs" }),
-	                React.createElement("div", { id: "outputs" }),
-	                React.createElement("div", { id: "parameters" }),
-	                React.createElement(
-	                    "button",
-	                    { className: "largeBtn" },
-	                    "Save"
-	                )
-	            )
-	        );
+	    };
+	  },
+	  open: function open(params) {
+	    var studyHelper = new CIQ.Studies.DialogHelper(params);
+	    this.setState({
+	      open: true,
+	      studyHelper: studyHelper,
+	      outputs: studyHelper.outputs,
+	      inputs: studyHelper.inputs,
+	      params: studyHelper.parameters
+	    });
+	  },
+	  close: function close(studyHelper) {
+	    this.setState({
+	      open: false
+	    });
+	  },
+	  updateStudy: function updateStudy(color, params) {
+
+	    var currentInputs = {};
+	    var currentOutputs = {};
+	    var currentParams = {};
+	    for (var i = 0; i < this.state.inputs.length; i++) {
+	      currentInputs[this.state.inputs[i].name] = this.state.inputs[i].value;
 	    }
+	    for (var x = 0; x < this.state.outputs.length; x++) {
+	      currentOutputs[this.state.outputs[x].name] = this.state.outputs[x].color;
+	    }
+	    for (var y = 0; y < this.state.params.length; y++) {
+	      currentParams[this.state.params[y].name + 'Value'] = this.state.params[y].value;
+	      currentParams[this.state.params[y].name + 'Color'] = this.state.params[y].color;
+	    }
+	    console.log("currentOutputs", currentOutputs);
+	    this.state.studyHelper.updateStudy({ inputs: currentInputs, outputs: currentOutputs, parameters: currentParams });
+	    this.close();
+	  },
+	  createSelectInput: function createSelectInput(input) {
+	    var inputOptions = [];
+	    for (var option in input.options) {
+	      inputOptions.push(React.createElement(
+	        'option',
+	        { key: "option" + option },
+	        option
+	      ));
+	    }
+	    return React.createElement(
+	      'div',
+	      { key: "select" + input.heading, className: 'inputs' },
+	      React.createElement(
+	        'select',
+	        null,
+	        inputOptions
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        input.heading
+	      )
+	    );
+	  },
+	  createOtherInput: function createOtherInput(input, type) {
+	    return React.createElement(
+	      'div',
+	      { key: type + input.value, className: 'inputs' },
+	      React.createElement('input', { type: type, defaultValue: input.value }),
+	      React.createElement(
+	        'div',
+	        null,
+	        input.heading
+	      )
+	    );
+	  },
+
+	  openColorPicker: function openColorPicker(output, target) {
+	    var self = this;
+
+	    var targetBounds = target.getBoundingClientRect();
+
+	    this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function (color) {
+	      output.color = CIQ.hexToRgba('#' + color);
+	      console.log(color);
+	      //self.updateTheme(color, swatch.item, swatch)
+	      self.forceUpdate();
+	    });
+	  },
+	  render: function render() {
+	    if (!this.state.open || !this.state.studyHelper) return React.createElement('div', null);
+	    var self = this;
+	    var inputs = this.state.inputs.map(function (input, index) {
+	      if (input.type === "select") return self.createSelectInput(input);
+	      return self.createOtherInput(input, input.type);
+	    });
+	    var outputs = this.state.outputs.map(function (output, index) {
+	      return React.createElement(
+	        'div',
+	        { key: "output" + index, className: 'outputs' },
+	        output.color ? React.createElement('div', { style: { "backgroundColor": output.color }, className: 'color-picker-swatch output',
+	          onClick: function onClick(event) {
+	            self.openColorPicker(output, event.target);
+	          } }) : React.createElement('div', null),
+	        React.createElement(
+	          'div',
+	          null,
+	          output.heading
+	        )
+	      );
+	    });
+	    return React.createElement(
+	      'div',
+	      { id: 'studyDialog' },
+	      React.createElement(_colorPicker2.default, { ref: 'colorPicker' }),
+	      React.createElement(
+	        'div',
+	        { className: 'content' },
+	        React.createElement(
+	          'div',
+	          { className: 'heading' },
+	          this.state.studyHelper ? this.state.studyHelper.Name : ""
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: 'inputs' },
+	          inputs
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: 'outputs' },
+	          outputs
+	        ),
+	        React.createElement('div', { id: 'parameters' }),
+	        React.createElement(
+	          'button',
+	          { className: 'largeBtn', onClick: this.updateStudy },
+	          'Save'
+	        )
+	      )
+	    );
+	  }
 	});
 
 	module.exports = StudyModal;

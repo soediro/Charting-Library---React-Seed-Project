@@ -42,34 +42,30 @@ var UI = React.createClass({
 var StudyUI = React.createClass({
     getInitialState: function() {
         return {
-            ciq: null,
-            studyHelper: null
+            ciq: null
         }
     },
-    addStudy(study) {
-        console.log("study", study)
-        var studyHelper = new CIQ.Studies.DialogHelper({
-            name: study,
-            stx: this.state.ciq
-        });
-        console.log("studyHelper", studyHelper)
-        this.state.ciq.callbacks.studyOverlayEdit = this.openModal;
-        this.state.ciq.callbacks.studyPanelEdit = this.openModal;
-        CIQ.Studies.addStudy(this.state.ciq,
-            studyHelper.name,
-            studyHelper.libraryEntry.inputs,
-            studyHelper.libraryEntry.outputs,
-            studyHelper.libraryEntry.parameters);
-        this.setState({
-            studyHelper: studyHelper
-        })
+    componentWillMount(){
 
     },
-    openModal() {
-        this.refs.studyModal.open();
+    addStudy(study) {
+       CIQ.Studies.addStudy(this.state.ciq,
+           study);
+
+    },
+    openModal(params) {
+        this.refs.studyModal.open(params);
     },
     componentWillReceiveProps(nextProps) {
+        var self = this;
         if (nextProps.ciq) {
+              function closure(fc){
+            return function(){
+                fc.apply(self, arguments);
+            };
+        }
+         nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openModal);
+        nextProps.ciq.callbacks.studyPanelEdit = closure(self.openModal);
             this.setState({
                 ciq: nextProps.ciq
             })
@@ -86,13 +82,15 @@ var StudyUI = React.createClass({
         })
         return (
 
-            <div id="studySelect">
+            <span >
              <StudyModal ref="studyModal"/>
+             <span id="studySelect"> 
                 <span>Add Study</span>
-                <div className="menu-hover">
+                <div  className="menu-hover">
                {studies}
                 </div>
-              </div>
+                </span>
+              </span>
         )
     }
 });
