@@ -80,8 +80,6 @@ var StudyModal = React.createClass({
 
     this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function(color) {
       output.color = CIQ.hexToRgba('#' + color);
-
-      //self.updateTheme(color, swatch.item, swatch)
       self.forceUpdate();
     })
 
@@ -104,6 +102,17 @@ var StudyModal = React.createClass({
                </div>
              </div>
     })
+    var params = this.state.params.map(function(param,index){
+        <div>
+            { param.color ? <div style={ { "backgroundColor": param.color } } className="color-picker-swatch param" 
+             onClick={ function(event){ self.openColorPicker(param,event.target);
+                        } }></div>:<div></div>}
+            <input type={param.name==="studyOverZones"?"checkbox":"number"}></input>
+            <div>{param.heading}</div>
+
+        </div>
+    })
+
     return (
 
       <div id="studyDialog">
@@ -119,6 +128,9 @@ var StudyModal = React.createClass({
             { outputs }
           </div>
           <div id="parameters">
+          <div className="parameters">
+          {params}
+          </div>
           </div>
           <button className="largeBtn" onClick={this.updateStudy}>Save</button>
         </div>

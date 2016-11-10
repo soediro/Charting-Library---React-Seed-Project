@@ -317,15 +317,11 @@ var Comparison = React.createClass({
     },
     render: function() {
         var self = this;
-
-
         return (
 
             <span> <input onChange={ function(event) {
                 self.compareChange(event.nativeEvent);
-            }} id="symbolCompareInput" type="text" ></input><button >Add Comparison</button></span>
-
-
+            }} id="symbolCompareInput" type="text" ></input><button onClick={this.onOptionClick} >Add Comparison</button></span>
         )
     }
 });

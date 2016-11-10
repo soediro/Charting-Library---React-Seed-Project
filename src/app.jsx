@@ -3,7 +3,8 @@ import UI from "./components/ui"
 var ChartWrapper = React.createClass({
     getInitialState: function() {
         return {
-            ciq: null
+            ciq: null,
+            feed:"Demo"
         }
     },
     componentDidMount() {
@@ -13,7 +14,7 @@ var ChartWrapper = React.createClass({
         this.setState({
             ciq: ciq
         }, function() {
-            this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed["Demo"]());
+            this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed[this.state.feed]());
             ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
 
         })
@@ -24,8 +25,6 @@ var ChartWrapper = React.createClass({
     },
     setPeriodicity: function(period, interval) {
         this.state.ciq.setPeriodicityV2(period, interval);
-
-
     },
     setChartType: function(type) {
         if ((type.aggregationEdit && this.state.ciq.layout.aggregationType != type.type) || type.type == 'heikinashi') {

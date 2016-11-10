@@ -57,7 +57,8 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            ciq: null
+	            ciq: null,
+	            feed: "Demo"
 	        };
 	    },
 	    componentDidMount: function componentDidMount() {
@@ -67,7 +68,7 @@
 	        this.setState({
 	            ciq: ciq
 	        }, function () {
-	            this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed["Demo"]());
+	            this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed[this.state.feed]());
 	            ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
 	        });
 	    },
@@ -529,7 +530,6 @@
 
 	    render: function render() {
 	        var self = this;
-
 	        return React.createElement(
 	            "span",
 	            null,
@@ -539,7 +539,7 @@
 	                }, id: "symbolCompareInput", type: "text" }),
 	            React.createElement(
 	                "button",
-	                null,
+	                { onClick: this.onOptionClick },
 	                "Add Comparison"
 	            )
 	        );
@@ -839,12 +839,20 @@
 
 	  getInitialState: function getInitialState() {
 	    var zones = [];
-	    for (var zone in CIQ.timeZoneMap) {
+	    var self = this;
+	    function addZone(zone) {
 	      zones.push(React.createElement(
 	        "span",
-	        { key: "zone" + zone, className: "timeZoneOption", style: { "display": "inline-block" } },
-	        CIQ.timeZoneMap[zone]
+	        { key: "zone" + zone,
+	          onClick: function onClick() {
+	            self.setTimeZone(zone);
+	          },
+	          className: "timeZoneOption", style: { "display": "inline-block" } },
+	        zone
 	      ));
+	    }
+	    for (var zone in CIQ.timeZoneMap) {
+	      addZone(CIQ.timeZoneMap[zone]);
 	    }
 	    return {
 	      ciq: null,
@@ -856,6 +864,11 @@
 	    this.setState({
 	      open: !this.state.open
 	    });
+	  },
+	  setTimeZone: function setTimeZone(zone) {
+	    this.state.ciq.setTimeZone(this.state.ciq.dataZone, "America/Costa_Rica");
+	    if (this.state.ciq.chart.symbol) this.state.ciq.draw();
+	    this.toggle();
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if (nextProps.ciq) {
@@ -873,7 +886,7 @@
 	      { id: "timezoneDialog" },
 	      React.createElement(
 	        "div",
-	        { className: "content", style: { "max-height": "500px", "overflow": "scroll" } },
+	        { className: "content", style: { "maxHeight": "300px", "overflow": "scroll" } },
 	        React.createElement(
 	          "h2",
 	          { className: "center" },
@@ -1346,7 +1359,7 @@
 	      currentParams[this.state.params[y].name + 'Value'] = this.state.params[y].value;
 	      currentParams[this.state.params[y].name + 'Color'] = this.state.params[y].color;
 	    }
-	    console.log("currentOutputs", currentOutputs);
+
 	    this.state.studyHelper.updateStudy({ inputs: currentInputs, outputs: currentOutputs, parameters: currentParams });
 	    this.close();
 	  },
@@ -1394,8 +1407,6 @@
 
 	    this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function (color) {
 	      output.color = CIQ.hexToRgba('#' + color);
-	      console.log(color);
-	      //self.updateTheme(color, swatch.item, swatch)
 	      self.forceUpdate();
 	    });
 	  },
@@ -1421,6 +1432,23 @@
 	        )
 	      );
 	    });
+	    var params = this.state.params.map(function (param, index) {
+	      React.createElement(
+	        'div',
+	        null,
+	        param.color ? React.createElement('div', { style: { "backgroundColor": param.color }, className: 'color-picker-swatch param',
+	          onClick: function onClick(event) {
+	            self.openColorPicker(param, event.target);
+	          } }) : React.createElement('div', null),
+	        React.createElement('input', { type: param.name === "studyOverZones" ? "checkbox" : "number" }),
+	        React.createElement(
+	          'div',
+	          null,
+	          param.heading
+	        )
+	      );
+	    });
+
 	    return React.createElement(
 	      'div',
 	      { id: 'studyDialog' },
@@ -1443,7 +1471,15 @@
 	          { id: 'outputs' },
 	          outputs
 	        ),
-	        React.createElement('div', { id: 'parameters' }),
+	        React.createElement(
+	          'div',
+	          { id: 'parameters' },
+	          React.createElement(
+	            'div',
+	            { className: 'parameters' },
+	            params
+	          )
+	        ),
 	        React.createElement(
 	          'button',
 	          { className: 'largeBtn', onClick: this.updateStudy },
