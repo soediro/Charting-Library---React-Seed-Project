@@ -2,7 +2,7 @@ module.exports = {
 	entry: "./src/app.jsx",
 	output: {
 		path: __dirname,
-		filename: "ReactChart.js"
+		filename: "ReactChartIQ.js"
 	},
 	module: {
 		loaders: [{

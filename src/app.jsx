@@ -16,7 +16,6 @@ var ChartWrapper = React.createClass({
         }, function() {
             this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed[this.state.feed]());
             ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
-
         })
     },
     componentWillMount: function() {},

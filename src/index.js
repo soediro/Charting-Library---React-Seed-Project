@@ -13,5 +13,5 @@ define('chartIQ', ['chartiq'], function(chartiq) {
 
 
 require(['chartIQ'], function(obj) {
-	require(["ReactChart.js"], function() {})
+	require(["ReactChartIQ.js"], function() {})
 });
