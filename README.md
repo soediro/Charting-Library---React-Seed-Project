@@ -32,6 +32,7 @@ componentDidMount() {
 ```
 
 
+## Buiding for use in the browser
 
-This project is using Webpack to tranform JSX and ES6 to ES5. The configs for this are in the ```webpack.config.js```. Running the ```webpack``` command isnide of your command line tool will create a file ```ReactChartIQ.js```. This is a transformed and bundled version of everything in the src directory. 
-* Run the Webpack command.
+This project is using Webpack to tranform JSX and ES6 to ES5. The configs for this are in the ```webpack.config.js```. Running the ```webpack``` command isnide of your command line tool will create a file ```ReactChartIQ.js```. This is a transformed and bundled version of everything in the src directory. ```src/index.js``` will automatically load this file.
+
