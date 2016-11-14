@@ -10,7 +10,7 @@ NodeJS (https://nodejs.org/). We use NodeJS and Node Package Manager (NPM) to lo
 
 ## Getting started
 
-To view the example, add a system link to your ChartIQ JS and CSS directories inside of the chartiq directory. Once you have that, you can then open up index.html abnd get a fully working example.
+To view the example, add a system link to your ChartIQ JS and CSS directories inside of the chartiq directory. Once you have that, you can then open up index.html and get a fully working example.
 
 ## Customizing 
 All of the project source is in the ```src``` folder. The main ChartIQ React component is ```app.jsx```. There is also an ```index.js``` in this folder which loads RequireJs and all of our modules into it. This is basically a wrapper component that houses the charting engine in it's state. This wrapper function passes a reference of the engine to all of the UI components which allow each to manipulate the chart based on their functionality. 
