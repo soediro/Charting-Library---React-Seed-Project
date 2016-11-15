@@ -6,7 +6,7 @@ A basic build of the ChartIQ library within the Reacf framework. This provides a
 
 A copy of the ChartIQ library. To get your copy, visit https://www.chartiq.com/products/html5-charting-library/ to see a demo and get in touch with us.
 
-NodeJS (https://nodejs.org/). We use NodeJS and Node Package Manager (NPM) to load the React as well as the different libraries to tranform JSX and ES6 to ES5.
+NodeJS (https://nodejs.org/). We use NodeJS and Node Package Manager (NPM) to load the React componeents as well as the different libraries to transform JSX and ES6 to ES5.
 
 ## Getting started
 
