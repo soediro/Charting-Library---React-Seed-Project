@@ -1,7 +1,7 @@
 import configs from "../../configs/ui.js"
-import TimeZone from "./timezoneModal"
-import ThemeModal from "./themeModal"
-import StudyModal from "./studyModal"
+import TimeZone from "./TimezoneModal"
+import ThemeModal from "./ThemeModal"
+import StudyModal from "./StudyModal"
 
 var UI = React.createClass({
     getInitialState: function() {

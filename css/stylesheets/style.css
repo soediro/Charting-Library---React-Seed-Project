@@ -12,7 +12,9 @@ html, body, div, span {
 	border:solid 1px black;
 	font: 14px Arial;
 }
-
+#chartHere{
+	padding: 10px;
+}
 #studySelect,
 #themeSelect,
 #chartTypeSelect,

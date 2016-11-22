@@ -46,106 +46,13 @@
 
 	"use strict";
 
-	var _ui = __webpack_require__(1);
+	var _ChartWrapper = __webpack_require__(1);
 
-	var _ui2 = _interopRequireDefault(_ui);
+	var _ChartWrapper2 = _interopRequireDefault(_ChartWrapper);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ChartWrapper = React.createClass({
-	  displayName: "ChartWrapper",
-
-	  getInitialState: function getInitialState() {
-	    return {
-	      ciq: null,
-	      feed: "Demo"
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var self = this;
-	    var ciq = new CIQ.ChartEngine({
-	      container: $$$("#chartContainer")
-	    });
-	    //You can add an event listener to the window,however, older browsers don't support this.
-	    window.addEventListener("resize", this.updateChartContainerSize);
-
-	    this.setState({
-	      ciq: ciq
-	    }, function () {
-	      this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed[this.state.feed]());
-	      ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
-	    });
-	  },
-	  getWindowSize: function getWindowSize() {
-	    return {
-	      width: window.innerWidth,
-	      height: window.innerHeight
-	    };
-	  },
-	  updateChartContainerSize: function updateChartContainerSize() {
-	    var windowSize = this.getWindowSize();
-	    document.getElementById("chartContainer").style.width = windowSize.width + "px";
-	    document.getElementById("chartContainer").style.height = windowSize.height * .90 + "px";
-	    this.state.ciq.resizeChart();
-	  },
-
-	  componentWillMount: function componentWillMount() {},
-	  componentWillUpdate: function componentWillUpdate(nextProp, nextState) {
-	    /// Catch new props here
-	  },
-	  setPeriodicity: function setPeriodicity(period, interval) {
-	    this.state.ciq.setPeriodicityV2(period, interval);
-	  },
-	  setChartType: function setChartType(type) {
-	    if (type.aggregationEdit && this.state.ciq.layout.aggregationType != type.type || type.type == 'heikinashi') {
-	      this.state.ciq.setChartType('candle');
-	      this.state.ciq.setAggregationType(type.type);
-	    } else {
-	      this.state.ciq.setChartType(type.type);
-	      this.state.ciq.setAggregationType('ohlc');
-	    }
-	  },
-	  toggleCrosshairs: function toggleCrosshairs() {
-	    var state = this.state.ciq.layout.crosshair;
-	    this.state.ciq.layout.crosshair = !state;
-	  },
-	  changeSymbol: function changeSymbol(symbol) {
-	    this.state.ciq.newChart(symbol);
-	  },
-	  addComparison: function addComparison(symbolComparison) {
-	    function getRandomColor() {
-	      var letters = '0123456789ABCDEF';
-	      var color = '#';
-	      for (var i = 0; i < 6; i++) {
-	        color += letters[Math.floor(Math.random() * 16)];
-	      }
-	      return color;
-	    }
-	    this.state.ciq.addSeries(symbolComparison, {
-	      isComparison: true,
-	      color: getRandomColor(),
-	      data: {
-	        useDefaultQuoteFeed: true
-	      }
-	    });
-	  },
-	  attachFeed: function attachFeed(feed) {
-
-	    this.state.ciq.attachQuoteFeed(feed);
-	  },
-	  render: function render() {
-	    var windowSize = this.getWindowSize();
-
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(_ui2.default, { ciq: this.state.ciq ? this.state.ciq : null }),
-	      React.createElement("div", { id: "chartContainer", className: "chartContainer", style: { width: windowSize.width + "px", height: windowSize.height * .90 + "px", position: "relative" } })
-	    );
-	  }
-	});
-
-	ReactDOM.render(React.createElement(ChartWrapper, null), document.getElementById('chartHere'));
+	ReactDOM.render(React.createElement(_ChartWrapper2.default, null), document.getElementById('chartHere'));
 
 /***/ },
 /* 1 */
@@ -153,23 +60,186 @@
 
 	"use strict";
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _UI = __webpack_require__(2);
+
+	var _UI2 = _interopRequireDefault(_UI);
+
+	var _demoFeed = __webpack_require__(8);
+
+	var _demoFeed2 = _interopRequireDefault(_demoFeed);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//This just loads the feed into the CIQ engine
+
+
+	var ChartWrapper = function (_React$Component) {
+	  _inherits(ChartWrapper, _React$Component);
+
+	  function ChartWrapper(props) {
+	    _classCallCheck(this, ChartWrapper);
+
+	    var _this = _possibleConstructorReturn(this, (ChartWrapper.__proto__ || Object.getPrototypeOf(ChartWrapper)).call(this, props));
+
+	    _this.state = {
+	      ciq: null,
+	      feed: "Demo"
+	    };
+	    return _this;
+	  }
+
+	  _createClass(ChartWrapper, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var self = this;
+	      var ciq = new CIQ.ChartEngine({
+	        container: $$$("#chartContainer")
+	      });
+	      //You can add an event listener to the window,however, older browsers don't support this.
+	      window.addEventListener("resize", function () {
+	        self.updateChartContainerSize();
+	      });
+
+	      this.setState({
+	        ciq: ciq
+	      }, function () {
+	        this.state.ciq.setPeriodicityV2(1, 5);
+	        this.attachFeed(this.props.feed ? this.props.feed : new CIQ.QuoteFeed[this.state.feed]());
+	        ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
+	      });
+	    }
+	  }, {
+	    key: "getWindowSize",
+	    value: function getWindowSize() {
+	      return {
+	        width: window.innerWidth,
+	        height: window.innerHeight
+	      };
+	    }
+	  }, {
+	    key: "updateChartContainerSize",
+	    value: function updateChartContainerSize() {
+
+	      var windowSize = this.getWindowSize();
+	      document.getElementById("chartContainer").style.width = windowSize.width + "px";
+	      document.getElementById("chartContainer").style.height = windowSize.height * .90 + "px";
+	      this.state.ciq.resizeChart();
+	    }
+	  }, {
+	    key: "componentWillMount",
+	    value: function componentWillMount() {}
+	  }, {
+	    key: "componentWillUpdate",
+	    value: function componentWillUpdate(nextProp, nextState) {
+	      /// Catch new props here
+	    }
+	  }, {
+	    key: "setPeriodicity",
+	    value: function setPeriodicity(period, interval) {
+	      this.state.ciq.setPeriodicityV2(period, interval);
+	    }
+	  }, {
+	    key: "setChartType",
+	    value: function setChartType(type) {
+	      if (type.aggregationEdit && this.state.ciq.layout.aggregationType != type.type || type.type == 'heikinashi') {
+	        this.state.ciq.setChartType('candle');
+	        this.state.ciq.setAggregationType(type.type);
+	      } else {
+	        this.state.ciq.setChartType(type.type);
+	        this.state.ciq.setAggregationType('ohlc');
+	      }
+	    }
+	  }, {
+	    key: "toggleCrosshairs",
+	    value: function toggleCrosshairs() {
+	      var state = this.state.ciq.layout.crosshair;
+	      this.state.ciq.layout.crosshair = !state;
+	    }
+	  }, {
+	    key: "changeSymbol",
+	    value: function changeSymbol(symbol) {
+	      this.state.ciq.newChart(symbol);
+	    }
+	  }, {
+	    key: "addComparison",
+	    value: function addComparison(symbolComparison) {
+	      function getRandomColor() {
+	        var letters = '0123456789ABCDEF';
+	        var color = '#';
+	        for (var i = 0; i < 6; i++) {
+	          color += letters[Math.floor(Math.random() * 16)];
+	        }
+	        return color;
+	      }
+	      this.state.ciq.addSeries(symbolComparison, {
+	        isComparison: false,
+	        color: getRandomColor(),
+	        data: {
+	          useDefaultQuoteFeed: true
+	        }
+	      });
+	    }
+	  }, {
+	    key: "attachFeed",
+	    value: function attachFeed(feed) {
+
+	      this.state.ciq.attachQuoteFeed(feed, {
+	        refreshInterval: 1
+	      });
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var windowSize = this.getWindowSize();
+
+	      return React.createElement(
+	        "div",
+	        null,
+	        React.createElement(_UI2.default, { ciq: this.state.ciq ? this.state.ciq : null }),
+	        React.createElement("div", { id: "chartContainer", className: "chartContainer", style: { width: windowSize.width + "px", height: windowSize.height * .90 + "px", position: "relative" } })
+	      );
+	    }
+	  }]);
+
+	  return ChartWrapper;
+	}(React.Component);
+
+	exports.default = ChartWrapper;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
 	var _React$createClass;
 
-	var _ui = __webpack_require__(2);
+	var _ui = __webpack_require__(3);
 
 	var _ui2 = _interopRequireDefault(_ui);
 
-	var _timezoneModal = __webpack_require__(3);
+	var _TimezoneModal = __webpack_require__(4);
 
-	var _timezoneModal2 = _interopRequireDefault(_timezoneModal);
+	var _TimezoneModal2 = _interopRequireDefault(_TimezoneModal);
 
-	var _themeModal = __webpack_require__(4);
+	var _ThemeModal = __webpack_require__(5);
 
-	var _themeModal2 = _interopRequireDefault(_themeModal);
+	var _ThemeModal2 = _interopRequireDefault(_ThemeModal);
 
-	var _studyModal = __webpack_require__(6);
+	var _StudyModal = __webpack_require__(7);
 
-	var _studyModal2 = _interopRequireDefault(_studyModal);
+	var _StudyModal2 = _interopRequireDefault(_StudyModal);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -261,7 +331,7 @@
 	        return React.createElement(
 	            "span",
 	            null,
-	            React.createElement(_studyModal2.default, { ref: "studyModal" }),
+	            React.createElement(_StudyModal2.default, { ref: "studyModal" }),
 	            React.createElement(
 	                "span",
 	                { id: "studySelect" },
@@ -306,7 +376,7 @@
 	            { style: {
 	                    display: "inline-block"
 	                } },
-	            React.createElement(_timezoneModal2.default, { ref: "modal", ciq: this.state.ciq }),
+	            React.createElement(_TimezoneModal2.default, { ref: "modal", ciq: this.state.ciq }),
 	            " ",
 	            React.createElement(
 	                "button",
@@ -666,7 +736,7 @@
 	        return React.createElement(
 	            "div",
 	            { id: "themeSelect" },
-	            React.createElement(_themeModal2.default, { ref: "themeModal", themeHelper: this.state.themeHelper ? this.state.themeHelper : null }),
+	            React.createElement(_ThemeModal2.default, { ref: "themeModal", themeHelper: this.state.themeHelper ? this.state.themeHelper : null }),
 	            React.createElement(
 	                "span",
 	                null,
@@ -684,7 +754,7 @@
 	module.exports = UI;
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -843,7 +913,7 @@
 	};
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -928,14 +998,14 @@
 	module.exports = TimeZone;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _colorPicker = __webpack_require__(5);
+	var _ColorPicker = __webpack_require__(6);
 
-	var _colorPicker2 = _interopRequireDefault(_colorPicker);
+	var _ColorPicker2 = _interopRequireDefault(_ColorPicker);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1097,7 +1167,7 @@
 	        return React.createElement(
 	            'div',
 	            { id: 'themeDialog' },
-	            React.createElement(_colorPicker2.default, { ref: 'colorPicker' }),
+	            React.createElement(_ColorPicker2.default, { ref: 'colorPicker' }),
 	            React.createElement(
 	                'div',
 	                { className: 'content' },
@@ -1229,7 +1299,7 @@
 	module.exports = ThemeModal;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1319,14 +1389,14 @@
 	module.exports = ColorPicker;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _colorPicker = __webpack_require__(5);
+	var _ColorPicker = __webpack_require__(6);
 
-	var _colorPicker2 = _interopRequireDefault(_colorPicker);
+	var _ColorPicker2 = _interopRequireDefault(_ColorPicker);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1466,7 +1536,7 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'studyDialog' },
-	      React.createElement(_colorPicker2.default, { ref: 'colorPicker' }),
+	      React.createElement(_ColorPicker2.default, { ref: 'colorPicker' }),
 	      React.createElement(
 	        'div',
 	        { className: 'content' },
@@ -1505,6 +1575,437 @@
 	});
 
 	module.exports = StudyModal;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/* Copy and paste CIQ.QuoteFeed.CopyAndPasteMe. Change "CopyAndPasteMe" to the name
+	of your quote service. Then implement the fetch() method based on the included comments */
+
+	CIQ.QuoteFeed.Demo = function () {
+
+		console.log("start demo feed");
+	};
+
+	CIQ.QuoteFeed.Demo.ciqInheritsFrom(CIQ.QuoteFeed.Subscriptions);
+
+	/**
+	 * This is a demo version of fetch. You will need to create one for your own quote feed that behaves similarly.
+	 * @memberOf CIQ.QuoteFeed.Demo
+	 */
+	CIQ.QuoteFeed.Demo.prototype.fetchFromSource = function (params, cb) {
+
+		if (params.startDate && params.endDate) {
+			//date range
+			if (params.interval == "minute" || params.interval == "second" || params.interval == "millisecond") {
+				this.generateIntradayRange(params, cb);
+			} else {
+				this.generateDaily(params, cb);
+			}
+			return;
+		} else if (params.startDate) {
+			// new update
+			if (params.interval == "minute" || params.interval == "second" || params.interval == "millisecond") {
+				this.update(params, cb);
+			} else {
+				cb({
+					error: "CIQ.QuoteFeed.Demo does not support updates for daily charts"
+				});
+			}
+			return;
+		} else if (params.endDate) {
+			// pagination
+			console.log("pagination");
+
+			if (params.interval == "minute" || params.interval == "second" || params.interval == "millisecond") {
+				this.loadMore(params, cb);
+			} else {
+				cb({
+					error: "CIQ.QuoteFeed.Demo does not support loadMore for daily charts"
+				});
+			}
+			return;
+		} else {
+			// initial load
+			if (params.interval == "minute" || params.interval == "second" || params.interval == "millisecond") {
+				this.generateIntraday(params, cb);
+			} else {
+				this.generateDaily(params, cb);
+			}
+			return;
+		}
+	};
+
+	/**
+	 * Creates a random update. Note that updates are returned as an array. You should check params.startDate to decide
+	 * the starting point for an update.
+	 * @memberOf CIQ.QuoteFeed.Demo
+	 */
+	CIQ.QuoteFeed.Demo.prototype.update = function (params, cb) {
+		console.log("params", params);
+		// market closed return empty update.
+		if (!this.market.isOpen()) {
+			cb({
+				quotes: [],
+				attribution: {
+					source: "demo",
+					exchange: "RANDOM"
+				}
+			});
+			return;
+		}
+
+		var masterData = params.stx.chart.masterData;
+		var current = masterData[masterData.length - 1];
+		var previous = masterData[masterData.length - 2];
+
+		var ms = this.market.marketZoneNow().getTime();
+		var divisor = 60 * 1000;
+		if (params.interval == "second") divisor = 1000;
+		if (params.interval == "millisecond") divisor = 1;
+		ms = ms - ms % (params.period * divisor); // move to evenly divided bar
+		var now = new Date(ms);
+
+		var newQuote = {};
+		newQuote.DT = now; // Or set newQuote.Date if you have a string form date
+		var field = params.symbol;
+		if (!current[field]) {
+			if (previous[field]) current = previous; // get series which might be lagging behind a bar
+			else field = "Close";
+		}
+		newQuote.Close = Math.round((current[field] - (Math.random() - 0.5) * 0.8) * 100) / 100;
+
+		if (ms == masterData[masterData.length - 1].DT.getTime()) {
+			if (field == "Close") {
+				newQuote.Open = current.Open;
+				newQuote.High = Math.max(current.High, newQuote.Close);
+				newQuote.Low = Math.min(current.Low, newQuote.Close);
+			} else {
+				newQuote.Open = Math.round((current[field] - (Math.random() - 0.5) * 0.8) * 100) / 100;
+				newQuote.High = Math.max(newQuote.Open, newQuote.Close);
+				newQuote.Low = Math.min(newQuote.Open, newQuote.Close);
+			}
+			newQuote.Volume = current.Volume + Math.round(Math.random() * 1000);
+		} else {
+			newQuote.Open = newQuote.High = newQuote.Low = newQuote.Close;
+			newQuote.Volume = 1000;
+		}
+		cb({
+			quotes: [newQuote],
+			attribution: {
+				source: "demo",
+				exchange: "RANDOM"
+			}
+		});
+	};
+
+	CIQ.QuoteFeed.Demo.prototype.randomQuote = function (seed) {
+		var Open = seed - (Math.random() - 0.5) * 2;
+		var Close = seed - (Math.random() - 0.5) * 2;
+		var High = Math.max(seed - (Math.random() - 0.5) * 2, Open, Close);
+		var Low = Math.min(seed - (Math.random() - 0.5) * 2, Open, Close);
+		var newQuote = {
+			Open: Math.round(Open * 100) / 100,
+			Close: Math.round(Close * 100) / 100,
+			High: Math.round(High * 100) / 100,
+			Low: Math.round(Low * 100) / 100
+		};
+		// Reasonable random volume generator. Higher volumes for red candles.
+		if (newQuote.Close < newQuote.Open) {
+			newQuote.Volume = 1000000 + Math.round(Math.random() * 1500000);
+		} else {
+			newQuote.Volume = 1000000 + Math.round(Math.random() * 300000);
+		}
+		return newQuote;
+	};
+
+	/**
+	 * Creates daily data for the chart
+	 * @memberOf CIQ.QuoteFeed.Demo
+	 */
+	CIQ.QuoteFeed.Demo.prototype.generateDaily = function (params, cb) {
+		function setQuotes(response) {
+			var varName = response.substr(0, response.indexOf("="));
+			var valueToParse = response.substring(response.indexOf(varName + "=") + (varName + "=").length, response.length - 1);
+			try {
+				return JSON.parse(valueToParse.replace(/,0+/g, ",0").replace(/,[.]/g, ",0.").replace(/;/g, ""));
+			} catch (e) {
+				return [];
+			}
+		}
+
+		var symbol = params.symbol.toUpperCase();
+		if (symbol.charAt(0) != "^" && CIQ.Market.Symbology.isForexSymbol(symbol)) symbol = "^" + symbol;
+		var url = "https://demoquotes.chartiq.com/" + symbol.replace(/\//g, "-");
+		CIQ.postAjax(url, null, function (status, response) {
+			if (status != 200) {
+				cb({
+					error: status
+				});
+				return;
+			}
+			var quotes = setQuotes(response);
+			var newQuotes = [];
+			for (var i = 0; i < quotes.length; i++) {
+				newQuotes[i] = {};
+				newQuotes[i].Date = quotes[i][0]; // Or set newQuotes[i].DT if you have a JS Date
+				newQuotes[i].Open = quotes[i][1];
+				newQuotes[i].High = quotes[i][2];
+				newQuotes[i].Low = quotes[i][3];
+				newQuotes[i].Close = quotes[i][4];
+				newQuotes[i].Volume = quotes[i][5];
+				newQuotes[i].Adj_Close = quotes[i][6];
+			}
+			params.noUpdate = true; //Daily demo quotes do not support updates
+			cb({
+				quotes: newQuotes,
+				moreAvailable: false,
+				attribution: {
+					source: "demo",
+					exchange: "RANDOM"
+				}
+			}); // set moreAvailable to true so that the chart will request more when scrolling into the past. Set to false if at the end of data.
+		});
+	};
+
+	/**
+	 * Creates a random intraday chart (uses CIQ.Market to be market hours aware)
+	 * @memberOf CIQ.QuoteFeed.Demo
+	 */
+	CIQ.QuoteFeed.Demo.prototype.generateIntraday = function (params, cb) {
+
+		if (params.stx.marketFactory) {
+			params.stx.setMarket(params.stx.marketFactory(params.symbolObject), params.stx.chart);
+		}
+		this.market = params.stx.chart.market;
+
+		var seed = 155.43;
+		var quotes = [];
+		var ticksToLoad = params.ticks * 3; // load extra to fill up space before chart
+		if (ticksToLoad > 2000) ticksToLoad = 2000; // demo data could be slow for very large data sets since it recursively calls iter.previous() wich is not inteded to be uses this way normally
+		if (isNaN(ticksToLoad)) ticksToLoad = params.stx.chart.dataSet.length;
+
+		var ms = this.market.marketZoneNow().getTime();
+		var divisor = 60 * 1000;
+		if (params.interval == "second") divisor = 1000;
+		if (params.interval == "millisecond") divisor = 1;
+		ms = ms - ms % (params.period * divisor); // move to evenly divided bar
+		var now = new Date(ms);
+
+		var iter = this.market.newIterator({
+			'begin': now,
+			'interval': params.stx.layout.interval,
+			'periodicity': 1, //params.stx.layout.periodicity, // allways do 1 since this is the raw data. The agregation will happen upon data returned.
+			'timeUnit': params.stx.layout.timeUnit,
+			'inZone': params.stx.dataZone,
+			'outZone': params.stx.dataZone
+		});
+
+		if (!this.market.isOpen()) now = iter.previous();
+		// if we are only loading market hours, we may reach today's date before the number of max ticks.
+		// So we go backwards based on ticks and not date, then reverse the array.
+		for (var i = 0; i < ticksToLoad; i++) {
+			var newQuote = this.randomQuote(seed);
+			newQuote.DT = new Date(now);
+			newQuote.Volume = Math.round(newQuote.Volume * params.period / 500);
+			quotes.push(newQuote);
+			now = iter.previous();
+			//console.log(now);
+			seed = newQuote.Close;
+		}
+
+		cb({
+			quotes: quotes.reverse(),
+			moreAvailable: true,
+			attribution: {
+				source: "demo",
+				exchange: "RANDOM"
+			}
+		}); // set moreAvailable to true so that the chart will request more when scrolling into the past. Set to false if at the end of data.
+	};
+
+	/**
+	 * Creates a random intraday range of data for a chart
+	 * @memberOf CIQ.QuoteFeed.Demo
+	 */
+	CIQ.QuoteFeed.Demo.prototype.generateIntradayRange = function (params, cb) {
+
+		var seed = 155.43;
+		var quotes = [];
+
+		var now = new Date(params.startDate);
+
+		var iter = this.market.newIterator({
+			'begin': now,
+			'interval': params.stx.layout.interval,
+			'periodicity': 1, //params.stx.layout.periodicity,
+			'timeUnit': params.stx.layout.timeUnit,
+			'inZone': params.stx.dataZone,
+			'outZone': params.stx.dataZone
+		});
+
+		while (now <= params.endDate) {
+			var newQuote = this.randomQuote(seed);
+			newQuote.DT = new Date(now);
+			newQuote.Volume = Math.round(newQuote.Volume * params.period / 500);
+			quotes.push(newQuote);
+			now = iter.next();
+			seed = newQuote.Close;
+		}
+
+		cb({
+			quotes: quotes,
+			moreAvailable: true,
+			attribution: {
+				source: "demo",
+				exchange: "RANDOM"
+			}
+		});
+	};
+
+	/**
+	 * Loads more random data when the user scrolls back.
+	 * @memberOf CIQ.QuoteFeed.Demo
+	 */
+	CIQ.QuoteFeed.Demo.prototype.loadMore = function (params, cb) {
+		var firstQuote = params.chart.masterData[0];
+		var i;
+		for (i = 0; i < params.chart.masterData.length; i++) {
+			if (params.chart.masterData[i].DT.getTime() >= params.endDate.getTime()) {
+				firstQuote = params.chart.masterData[i];
+				if (firstQuote[params.symbol] || firstQuote.Close) break;
+			}
+		}
+		var field = params.symbol;
+		if (!firstQuote[field]) field = "Close";
+		var seed = firstQuote[field];
+		var quotes = [];
+
+		var iter = this.market.newIterator({
+			'begin': params.endDate,
+			'interval': params.stx.layout.interval,
+			'periodicity': 1, //params.stx.layout.periodicity,
+			'timeUnit': params.stx.layout.timeUnit,
+			'inZone': params.stx.dataZone,
+			'outZone': params.stx.dataZone
+		});
+
+		var now = new Date(iter.previous());
+		for (i = 0; i < params.ticks; i++) {
+			var newQuote = this.randomQuote(seed);
+			newQuote.DT = new Date(now);
+			if (params.interval == "minute") newQuote.Volume = Math.round(newQuote.Volume * params.period / 500);
+			quotes.push(newQuote);
+			now = iter.previous();
+			seed = newQuote.Close;
+		}
+		quotes.reverse();
+
+		cb({
+			quotes: quotes,
+			moreAvailable: params.chart.masterData.length < 100000,
+			attribution: {
+				source: "demo",
+				exchange: "RANDOM"
+			}
+		}); // set moreAvailable to true so that the chart will request more when scrolling into the past. Set to false if at the end of data.
+	};
+
+	CIQ.QuoteFeed.ChartIQEOD = function (urlQuick, urlFull) {
+		this.urlQuick = urlQuick;
+		this.urlFull = urlFull;
+	};
+
+	CIQ.QuoteFeed.ChartIQEOD.ciqInheritsFrom(CIQ.QuoteFeed);
+
+	/**
+	 * EOD quotes from ChartIQ. You'll need to get a valid url from ChartIQ to use this.
+	 * @memberOf CIQ.QuoteFeed.ChartIQEOD
+	 */
+	CIQ.QuoteFeed.ChartIQEOD.prototype.fetch = function (params, cb) {
+		function setQuotes(response) {
+			var varName = response.substr(0, response.indexOf("="));
+			var valueToParse = response.substring(response.indexOf(varName + "=") + (varName + "=").length, response.length - 1);
+			try {
+				return JSON.parse(valueToParse.replace(/,0+/g, ",0").replace(/,[.]/g, ",0.").replace(/;/g, ""));
+			} catch (e) {
+				return [];
+			}
+		}
+
+		if (params.startDate && !params.endDate) {
+			cb({
+				error: "CIQ.QuoteFeed.ChartIQEOD does not support updates for daily charts"
+			});
+			return;
+		}
+		if (params.endDate && !params.loadMoreReplace) {
+			cb({
+				error: "CIQ.QuoteFeed.ChartIQEOD does not support loadMore for daily charts"
+			});
+			return;
+		}
+		if (params.interval == "minute") {
+			cb({
+				error: "CIQ.QuoteFeed.ChartIQEOD does not support intraday charts"
+			});
+			return;
+		}
+		var symbol = params.symbol.toUpperCase();
+		if (symbol.charAt(0) != "^" && CIQ.Market.Symbology.isForexSymbol(symbol)) symbol = "^" + symbol;
+		var url = this.urlQuick;
+		var moreAvailable = true;
+		if (params.endDate && params.loadMoreReplace) url = this.urlFull;else if ((new Date().getTime() - 1333238400000) / 86400000 < params.ticks) url = this.urlFull; // start predates quick cache
+		if (url == this.urlFull) {
+			delete params.endDate;
+			moreAvailable = false;
+		}
+		if (!url) url = this.urlQuick + "/pts";
+		var self = this;
+		CIQ.postAjax(url + "/" + symbol.replace(/\//g, "-").toUpperCase(), null, function (status, response) {
+			if (status != 200) {
+				cb({
+					error: status
+				});
+				return;
+			}
+			var quotes = setQuotes(response);
+			var newQuotes = [];
+			for (var i = 0; i < quotes.length; i++) {
+				newQuotes[i] = {};
+				newQuotes[i].Date = quotes[i][0]; // Or set newQuotes[i].DT if you have a JS Date
+				newQuotes[i].Open = quotes[i][1];
+				newQuotes[i].High = quotes[i][2];
+				newQuotes[i].Low = quotes[i][3];
+				newQuotes[i].Close = quotes[i][4];
+				newQuotes[i].Volume = quotes[i][5];
+				newQuotes[i].Adj_Close = quotes[i][6];
+			}
+			var result = {
+				quotes: newQuotes,
+				moreAvailable: moreAvailable,
+				attribution: {
+					source: "chartiq",
+					exchange: "EOD"
+				}
+			};
+			var now = new Date().getTime();
+			if (!result.quotes.length || now - CIQ.strToDate(result.quotes[result.quotes.length - 1].Date).getTime() > 24 * 60 * 60 * 1000) {
+				if (self.realTimeHook) return self.realTimeHook(params, result, cb);
+			}
+			cb(result);
+		});
+	};
+
+	/** You can override this function to fetch a RT update from a different source
+	 * @memberOf CIQ.QuoteFeed.ChartIQEOD
+	 */
+	CIQ.QuoteFeed.ChartIQEOD.prototype.realTimeHook = function (params, result, cb) {
+		cb(result);
+	};
 
 /***/ }
 /******/ ]);

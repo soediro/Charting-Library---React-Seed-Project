@@ -1,12 +1,15 @@
 module.exports = {
-	entry: "./src/app.jsx",
+	entry: {
+		"chartIQ": "./src/app.jsx"
+	},
 	output: {
-		path: __dirname,
-		filename: "ReactChartIQ.js"
+		path: ("./dist"),
+		filename: "[name].js",
+		watch: true
 	},
 	module: {
 		loaders: [{
-			exclude: /node_modules/,
+			exclude: [/node_modules/, "/chartiq/"],
 			loader: 'babel',
 			query: {
 				presets: ['react', 'es2015', 'stage-1']

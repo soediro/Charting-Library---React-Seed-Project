@@ -1,5 +1,5 @@
 
-import ColorPicker from "./colorPicker"
+import ColorPicker from "./ColorPicker"
 
 var ThemeModal = React.createClass({
     getInitialState: function() {
