@@ -23,6 +23,7 @@
         "array-bracket-spacing": "warn",
         "camelcase": "warn",
         "global-require": "warn",
-        "curly": "warn"
+        "curly": "warn",
+        "semi": "error"
     }
 }

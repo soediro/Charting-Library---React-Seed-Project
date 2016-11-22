@@ -1903,7 +1903,6 @@
 			seed = newQuote.Close;
 		}
 		quotes.reverse();
-
 		cb({
 			quotes: quotes,
 			moreAvailable: params.chart.masterData.length < 100000,

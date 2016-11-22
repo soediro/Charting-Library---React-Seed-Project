@@ -7,8 +7,8 @@ export default class ChartWrapper extends React.Component {
     this.state = {
       ciq: null,
       feed: "Demo"
-    }
-  };
+    };
+  }
   componentDidMount() {
     var self = this;
     var ciq = new CIQ.ChartEngine({
@@ -81,7 +81,7 @@ export default class ChartWrapper extends React.Component {
         useDefaultQuoteFeed: true
       }
     });
-  };
+  }
   attachFeed(feed) {
 
     this.state.ciq.attachQuoteFeed(feed, {
@@ -91,11 +91,11 @@ export default class ChartWrapper extends React.Component {
   render() {
     var windowSize = this.getWindowSize();
 
-    return <div>
+    return (<div>
              <UI ciq={ this.state.ciq ? this.state.ciq : null } />
              <div id="chartContainer" className="chartContainer" style={ { width: (windowSize.width) + "px", height: (windowSize.height * .90) + "px", position: "relative" } }>
              </div>
-           </div>
+           </div>);
   };
 }
 

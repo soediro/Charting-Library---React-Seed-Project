@@ -22,7 +22,6 @@
 	},
 	"esformatter": {
 		"plugins": [
-			"esformatter-quotes",
 			"esformatter-jsx"
 		],
 		"jsx": {

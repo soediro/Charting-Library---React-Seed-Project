@@ -336,7 +336,6 @@ CIQ.QuoteFeed.Demo.prototype.loadMore = function(params, cb) {
 		seed = newQuote.Close;
 	}
 	quotes.reverse();
-
 	cb({
 		quotes: quotes,
 		moreAvailable: params.chart.masterData.length < 100000,
