@@ -1,12 +1,12 @@
 # Charting-Library---React-Seed-Project
 
-A basic build of the ChartIQ library within the Reacf framework. This provides an example of how to implement the most common elements in the library. This is not a comprehensive example, more like a good starting point for an React developer.
+This is a basic build of the ChartIQ library within the React framework. This provides an example of how to implement the most common elements in the library. This is not a comprehensive example, more like a good starting point for an React developer.
 
 ## Requirements
 
-A copy of the ChartIQ library. To get your copy, visit https://www.chartiq.com/products/html5-charting-library/ to see a demo and get in touch with us.
+* A copy of the ChartIQ library. To get your copy, visit https://www.chartiq.com/products/html5-charting-library/ to see a demo and get in touch with us.
 
-NodeJS (https://nodejs.org/). We use NodeJS and Node Package Manager (NPM) to load the React componeents as well as the different libraries to transform JSX and ES6 to ES5.
+* NodeJS (https://nodejs.org/). We use NodeJS and Node Package Manager (NPM) to load the React components as well as the different libraries to transform JSX and ES6 to ES5.
 
 ## Getting started
 
@@ -34,5 +34,5 @@ componentDidMount() {
 
 ## Buiding for use in the browser
 
-This project is using Webpack to tranform JSX and ES6 to ES5. The configs for this are in the ```webpack.config.js```. Running the ```webpack``` command isnide of your command line tool will create a file ```ReactChartIQ.js```. This is a transformed and bundled version of everything in the src directory. ```src/index.js``` will automatically load this file.
+This project is using Webpack to tranform JSX and ES6 to ES5. The configs for this are in the ```webpack.config.js```. Running the ```webpack``` command inside of your command line tool will create a file ```dist/chartIQ.js``` . This is a transformed and bundled version of everything in the src directory. ```src/index.js``` will automatically load this file.
 
