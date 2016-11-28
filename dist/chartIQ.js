@@ -133,7 +133,7 @@
 
 	      var windowSize = this.getWindowSize();
 	      document.getElementById("chartContainer").style.width = windowSize.width + "px";
-	      document.getElementById("chartContainer").style.height = windowSize.height * .90 + "px";
+	      document.getElementById("chartContainer").style.height = windowSize.height * .85 + "px";
 	      this.state.ciq.resizeChart();
 	    }
 	  }, {
@@ -205,9 +205,10 @@
 
 	      return React.createElement(
 	        "div",
-	        null,
+	        { style: { width: windowSize.width + "px" } },
 	        React.createElement(_UI2.default, { ciq: this.state.ciq ? this.state.ciq : null }),
-	        React.createElement("div", { id: "chartContainer", className: "chartContainer", style: { width: windowSize.width + "px", height: windowSize.height * .90 + "px", position: "relative" } })
+	        React.createElement("div", { id: "chartContainer", className: "chartContainer", style: { width: "100%", height: windowSize.height * .85 + "px", position: "relative" } }),
+	        React.createElement(BottomUI, { ciq: this.state.ciq ? this.state.ciq : null })
 	      );
 	    }
 	  }]);
@@ -216,6 +217,81 @@
 	}(React.Component);
 
 	exports.default = ChartWrapper;
+
+
+	var rangeConfig = [{
+	  display: "1d",
+	  span: "day",
+	  "multiplier": 1
+	}, {
+	  display: "5d",
+	  span: "day",
+	  "multiplier": 5
+	}, {
+	  display: "1m",
+	  span: "month",
+	  "multiplier": 1
+	}, {
+	  "display": "3m",
+	  span: "month",
+	  "multiplier": 3
+	}, {
+	  display: "YTD",
+	  span: "YTD",
+	  "multiplier": 1
+	}, {
+	  display: "1y",
+	  span: "year",
+	  "multiplier": 1
+	}, {
+	  display: "5y",
+	  span: "year",
+	  "multiplier": 5
+	}, {
+	  display: "All",
+	  span: "all",
+	  "multiplier": 1
+	}];
+
+	var BottomUI = React.createClass({
+	  displayName: "BottomUI",
+	  getInitialState: function getInitialState() {
+	    return {
+	      ciq: null
+	    };
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if (nextProps.ciq) {
+	      return this.setState({
+	        ciq: nextProps.ciq
+	      });
+	    }
+	  },
+	  setSpan: function setSpan(span, multiplier) {
+	    if (this.state.ciq) this.state.ciq.setSpan({ span: span, multiplier: multiplier });
+	  },
+	  render: function render() {
+	    var self = this;
+	    var ranges = rangeConfig.map(function (range, i) {
+	      return React.createElement(
+	        "ciq-button",
+	        { key: i, onClick: function onClick() {
+	            self.setSpan(range.span, range.multiplier);
+	          } },
+	        range.display
+	      );
+	    });
+	    return React.createElement(
+	      "ciq-UI-Wrapper",
+	      null,
+	      React.createElement(
+	        "div",
+	        { className: "right" },
+	        ranges
+	      )
+	    );
+	  }
+	});
 
 /***/ },
 /* 2 */
@@ -263,20 +339,29 @@
 
 	    render: function render() {
 	        return React.createElement(
-	            "div",
+	            "ciq-UI-Wrapper",
 	            null,
 	            React.createElement(
 	                "div",
-	                { className: "" },
-	                React.createElement(StudyUI, { ciq: this.state.ciq }),
-	                React.createElement(ThemeUI, { ciq: this.state.ciq }),
-	                React.createElement(TimeZoneButton, { ciq: this.state.ciq })
-	            ),
-	            React.createElement(ChartSymbol, { ciq: this.state.ciq }),
-	            React.createElement(Periodicity, { ciq: this.state.ciq }),
-	            React.createElement(ChartTypes, { ciq: this.state.ciq }),
-	            React.createElement(Crosshairs, { ciq: this.state.ciq }),
-	            React.createElement(Comparison, { ciq: this.state.ciq })
+	                { className: "right" },
+	                React.createElement(
+	                    "div",
+	                    { className: "" },
+	                    React.createElement(ChartSymbol, { ciq: this.state.ciq }),
+	                    React.createElement(Periodicity, { ciq: this.state.ciq }),
+	                    React.createElement(
+	                        "span",
+	                        null,
+	                        "Views"
+	                    ),
+	                    React.createElement(ChartTypes, { ciq: this.state.ciq }),
+	                    React.createElement(StudyUI, { ciq: this.state.ciq }),
+	                    React.createElement(Crosshairs, { ciq: this.state.ciq }),
+	                    React.createElement(ThemeUI, { ciq: this.state.ciq }),
+	                    React.createElement(TimeZoneButton, { ciq: this.state.ciq })
+	                ),
+	                React.createElement(Comparison, { ciq: this.state.ciq })
+	            )
 	        );
 	    }
 	});
@@ -338,7 +423,7 @@
 	                React.createElement(
 	                    "span",
 	                    null,
-	                    "Add Study"
+	                    "Studies"
 	                ),
 	                React.createElement(
 	                    "div",
@@ -482,17 +567,21 @@
 	        });
 
 	        return React.createElement(
-	            "div",
-	            { id: "periodicitySelect" },
+	            "span",
+	            null,
 	            React.createElement(
 	                "span",
-	                null,
-	                this.state.activeOption ? this.state.activeOption.label : null
-	            ),
-	            React.createElement(
-	                "div",
-	                { className: "menu-hover" },
-	                options
+	                { id: "periodicitySelect" },
+	                React.createElement(
+	                    "span",
+	                    null,
+	                    this.state.activeOption ? this.state.activeOption.label : null
+	                ),
+	                React.createElement(
+	                    "div",
+	                    { className: "menu-hover" },
+	                    options
+	                )
 	            )
 	        );
 	    }
@@ -1495,7 +1584,7 @@
 	    });
 	  },
 	  render: function render() {
-	    if (!this.state.open || !this.state.studyHelper) return React.createElement('div', null);
+	    if (!this.state.open || !this.state.studyHelper) return React.createElement('span', null);
 	    var self = this;
 	    var inputs = this.state.inputs.map(function (input, index) {
 	      if (input.type === "select") return self.createSelectInput(input);
@@ -1585,10 +1674,7 @@
 	/* Copy and paste CIQ.QuoteFeed.CopyAndPasteMe. Change "CopyAndPasteMe" to the name
 	of your quote service. Then implement the fetch() method based on the included comments */
 
-	CIQ.QuoteFeed.Demo = function () {
-
-		console.log("start demo feed");
-	};
+	CIQ.QuoteFeed.Demo = function () {};
 
 	CIQ.QuoteFeed.Demo.ciqInheritsFrom(CIQ.QuoteFeed.Subscriptions);
 
@@ -1618,7 +1704,6 @@
 			return;
 		} else if (params.endDate) {
 			// pagination
-			console.log("pagination");
 
 			if (params.interval == "minute" || params.interval == "second" || params.interval == "millisecond") {
 				this.loadMore(params, cb);
@@ -1645,7 +1730,6 @@
 	 * @memberOf CIQ.QuoteFeed.Demo
 	 */
 	CIQ.QuoteFeed.Demo.prototype.update = function (params, cb) {
-		console.log("params", params);
 		// market closed return empty update.
 		if (!this.market.isOpen()) {
 			cb({
@@ -1813,7 +1897,6 @@
 			newQuote.Volume = Math.round(newQuote.Volume * params.period / 500);
 			quotes.push(newQuote);
 			now = iter.previous();
-			//console.log(now);
 			seed = newQuote.Close;
 		}
 

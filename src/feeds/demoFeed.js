@@ -5,7 +5,6 @@ of your quote service. Then implement the fetch() method based on the included c
 
 CIQ.QuoteFeed.Demo = function() {
 
-	console.log("start demo feed");
 };
 
 CIQ.QuoteFeed.Demo.ciqInheritsFrom(CIQ.QuoteFeed.Subscriptions);
@@ -36,7 +35,6 @@ CIQ.QuoteFeed.Demo.prototype.fetchFromSource = function(params, cb) {
 		return;
 	} else if (params.endDate) {
 		// pagination
-		console.log("pagination");
 
 		if (params.interval == "minute" || params.interval == "second" || params.interval == "millisecond") {
 			this.loadMore(params, cb);
@@ -64,7 +62,6 @@ CIQ.QuoteFeed.Demo.prototype.fetchFromSource = function(params, cb) {
  * @memberOf CIQ.QuoteFeed.Demo
  */
 CIQ.QuoteFeed.Demo.prototype.update = function(params, cb) {
-	console.log("params", params);
 	// market closed return empty update.
 	if (!this.market.isOpen()) {
 		cb({
@@ -244,7 +241,6 @@ CIQ.QuoteFeed.Demo.prototype.generateIntraday = function(params, cb) {
 		newQuote.Volume = Math.round(newQuote.Volume * params.period / 500);
 		quotes.push(newQuote);
 		now = iter.previous();
-		//console.log(now);
 		seed = newQuote.Close;
 	}
 

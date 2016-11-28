@@ -85,7 +85,7 @@ var StudyModal = React.createClass({
 
   },
   render: function() {
-    if (!this.state.open || !this.state.studyHelper) return <div></div>
+    if (!this.state.open || !this.state.studyHelper) return <span></span>
     var self = this;
     var inputs = this.state.inputs.map(function(input, index) {
       if (input.type === "select") return self.createSelectInput(input);

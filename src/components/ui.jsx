@@ -1,7 +1,7 @@
-import configs from "../../configs/ui.js"
-import TimeZone from "./TimezoneModal"
-import ThemeModal from "./ThemeModal"
-import StudyModal from "./StudyModal"
+import configs from "../../configs/ui.js";
+import TimeZone from "./TimezoneModal";
+import ThemeModal from "./ThemeModal";
+import StudyModal from "./StudyModal";
 
 var UI = React.createClass({
     getInitialState: function() {
@@ -18,24 +18,23 @@ var UI = React.createClass({
     },
     render: function() {
         return (
-            <div>
+            <ciq-UI-Wrapper>
+            <div className="right">
                <div className="">
-              <StudyUI ciq={this.state.ciq}/>
-             <ThemeUI ciq={this.state.ciq} />
-               <TimeZoneButton ciq={this.state.ciq}/>
+               <ChartSymbol ciq={this.state.ciq}/>
+                <Periodicity  ciq={this.state.ciq}/>
+                <span>Views</span>
+                <ChartTypes ciq={ this.state.ciq } />
+                <StudyUI ciq={this.state.ciq}/>
+                 <Crosshairs  ciq={this.state.ciq}/>
+                <ThemeUI ciq={this.state.ciq} />
+                <TimeZoneButton ciq={this.state.ciq}/>
               </div>
-              <ChartSymbol ciq={this.state.ciq}/>
-              <Periodicity  ciq={this.state.ciq}/>
-              <ChartTypes ciq={ this.state.ciq } />
-              <Crosshairs  ciq={this.state.ciq}/>
+             
               <Comparison  ciq={this.state.ciq}/>
-            </div>
-
-
-
+              </div>
+            </ciq-UI-Wrapper>
         )
-
-
     }
 });
 
@@ -81,11 +80,10 @@ var StudyUI = React.createClass({
 
         })
         return (
-
-            <span >
+            <span>
              <StudyModal ref="studyModal"/>
              <span id="studySelect"> 
-                <span>Add Study</span>
+                <span>Studies</span>
                 <div  className="menu-hover">
                {studies}
                 </div>
@@ -200,13 +198,14 @@ var Periodicity = React.createClass({
         })
 
         return (
-
-            <div id="periodicitySelect">
-              <span>{ this.state.activeOption ? this.state.activeOption.label : null}</span>
-              <div className="menu-hover">
-                { options }
-              </div>
-            </div>
+            <span>
+                <span id="periodicitySelect">
+                <span>{ this.state.activeOption ? this.state.activeOption.label : null}</span>
+                <div className="menu-hover">
+                    { options }
+                </div>
+                </span>
+            </span>
         )
     }
 });
