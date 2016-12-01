@@ -349,11 +349,6 @@
 	                    { className: "" },
 	                    React.createElement(ChartSymbol, { ciq: this.state.ciq }),
 	                    React.createElement(Periodicity, { ciq: this.state.ciq }),
-	                    React.createElement(
-	                        "span",
-	                        null,
-	                        "Views"
-	                    ),
 	                    React.createElement(ChartTypes, { ciq: this.state.ciq }),
 	                    React.createElement(StudyUI, { ciq: this.state.ciq }),
 	                    React.createElement(Crosshairs, { ciq: this.state.ciq }),

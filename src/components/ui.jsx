@@ -23,14 +23,12 @@ var UI = React.createClass({
                <div className="">
                <ChartSymbol ciq={this.state.ciq}/>
                 <Periodicity  ciq={this.state.ciq}/>
-                <span>Views</span>
                 <ChartTypes ciq={ this.state.ciq } />
                 <StudyUI ciq={this.state.ciq}/>
                  <Crosshairs  ciq={this.state.ciq}/>
                 <ThemeUI ciq={this.state.ciq} />
                 <TimeZoneButton ciq={this.state.ciq}/>
               </div>
-             
               <Comparison  ciq={this.state.ciq}/>
               </div>
             </ciq-UI-Wrapper>
