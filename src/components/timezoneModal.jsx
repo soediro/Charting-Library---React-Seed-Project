@@ -3,11 +3,11 @@ var TimeZone = React.createClass({
     var zones = [];
     var self = this;
     function addZone(zone){
-      zones.push(<span key={"zone"  + zone} 
+      zones.push(<li key={"zone"  + zone} 
         onClick={function(){self.setTimeZone(zone)}} 
-        className="timeZoneOption" style={ { "display": "inline-block" } }>
+        className="dialog-item" >
             { zone }
-        </span>)
+        </li>);
     }
     for (var zone in CIQ.timeZoneMap) {
       addZone(CIQ.timeZoneMap[zone]);
@@ -37,15 +37,15 @@ var TimeZone = React.createClass({
   },
   render: function() {
     var self = this;
-    if (!this.state.open) return <div></div>
+    if (!this.state.open) return <span></span>
     return (
 
-      <div id="timezoneDialog">
-        <div className="content" style={ { "maxHeight": "300px","overflow":"scroll" } }>
-              <h2 className="center">Time Zones</h2>
-          <div>
+      <div className="ciq dialog-overlay">
+        <div className="ciq dialog">
+              <h3 className="center">Select Time Zone</h3>
+          <ul>
             { this.state.timeZones }
-          </div>
+          </ul>
           <div className="center"><button onClick={ this.toggle }>Done</button></div>
         </div>
       </div>

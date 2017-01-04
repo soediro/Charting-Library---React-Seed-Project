@@ -299,8 +299,6 @@
 
 	"use strict";
 
-	var _React$createClass;
-
 	var _ui = __webpack_require__(3);
 
 	var _ui2 = _interopRequireDefault(_ui);
@@ -318,8 +316,6 @@
 	var _StudyModal2 = _interopRequireDefault(_StudyModal);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var UI = React.createClass({
 	    displayName: "UI",
@@ -341,20 +337,16 @@
 	        return React.createElement(
 	            "ciq-UI-Wrapper",
 	            null,
+	            React.createElement(ChartSymbol, { ciq: this.state.ciq }),
 	            React.createElement(
-	                "div",
+	                "span",
 	                { className: "right" },
-	                React.createElement(
-	                    "div",
-	                    { className: "" },
-	                    React.createElement(ChartSymbol, { ciq: this.state.ciq }),
-	                    React.createElement(Periodicity, { ciq: this.state.ciq }),
-	                    React.createElement(ChartTypes, { ciq: this.state.ciq }),
-	                    React.createElement(StudyUI, { ciq: this.state.ciq }),
-	                    React.createElement(Crosshairs, { ciq: this.state.ciq }),
-	                    React.createElement(ThemeUI, { ciq: this.state.ciq }),
-	                    React.createElement(TimeZoneButton, { ciq: this.state.ciq })
-	                ),
+	                React.createElement(Periodicity, { ciq: this.state.ciq }),
+	                React.createElement(ChartTypes, { ciq: this.state.ciq }),
+	                React.createElement(StudyUI, { ciq: this.state.ciq }),
+	                React.createElement(Crosshairs, { ciq: this.state.ciq }),
+	                React.createElement(ThemeUI, { ciq: this.state.ciq }),
+	                React.createElement(TimeZoneButton, { ciq: this.state.ciq }),
 	                React.createElement(Comparison, { ciq: this.state.ciq })
 	            )
 	        );
@@ -372,6 +364,13 @@
 	    componentWillMount: function componentWillMount() {},
 	    addStudy: function addStudy(study) {
 	        CIQ.Studies.addStudy(this.state.ciq, study);
+	    },
+	    getStudyList: function getStudyList() {
+	        var studies = [];
+	        Object.keys(CIQ.Studies.studyLibrary).map(function (study, index) {
+	            studies.push(study);
+	        });
+	        return studies.sort();
 	    },
 	    openModal: function openModal(params) {
 	        this.refs.studyModal.open(params);
@@ -395,10 +394,10 @@
 
 	    render: function render() {
 	        var self = this;
-	        var studies = Object.keys(CIQ.Studies.studyLibrary).map(function (study, index) {
+	        var studies = this.getStudyList().map(function (study, index) {
 	            return React.createElement(
-	                "div",
-	                { key: "study" + index, className: "option", onClick: function onClick() {
+	                "menu-option",
+	                { key: "study" + index, onClick: function onClick() {
 	                        self.addStudy(study);
 	                    } },
 	                React.createElement(
@@ -413,16 +412,16 @@
 	            null,
 	            React.createElement(_StudyModal2.default, { ref: "studyModal" }),
 	            React.createElement(
-	                "span",
-	                { id: "studySelect" },
+	                "menu-select",
+	                { className: "ciq", id: "studySelect" },
 	                React.createElement(
 	                    "span",
 	                    null,
 	                    "Studies"
 	                ),
 	                React.createElement(
-	                    "div",
-	                    { className: "menu-hover" },
+	                    "menu-select-options",
+	                    null,
 	                    studies
 	                )
 	            )
@@ -460,7 +459,7 @@
 	            " ",
 	            React.createElement(
 	                "button",
-	                { onClick: this.onClick },
+	                { className: "ciq timezone-btn", onClick: this.onClick },
 	                "Select Timezone"
 	            )
 	        );
@@ -499,14 +498,10 @@
 	            "span",
 	            null,
 	            " ",
-	            React.createElement("input", { id: "symbolInput", type: "text", defaultValue: this.state.symbol, onChange: function onChange(event) {
+	            React.createElement("input", { className: "ciq", id: "symbolInput", type: "text", defaultValue: this.state.symbol, onChange: function onChange(event) {
 	                    self.onChange(event.nativeEvent);
 	                } }),
-	            React.createElement(
-	                "button",
-	                { onClick: this.onOptionClick },
-	                "Set Symbol"
-	            )
+	            React.createElement("button", { className: "ciq symbol-btn", onClick: this.onOptionClick })
 	        );
 	    }
 	});
@@ -549,15 +544,11 @@
 
 	        var options = _ui2.default.periodicity.options.map(function (item, index) {
 	            return React.createElement(
-	                "div",
+	                "menu-option",
 	                { key: "period" + index, className: "option", onClick: function onClick() {
 	                        self.onOptionClick(item.period, item.interval, index);
 	                    } },
-	                React.createElement(
-	                    "span",
-	                    null,
-	                    item.label
-	                )
+	                item.label
 	            );
 	        });
 
@@ -565,7 +556,7 @@
 	            "span",
 	            null,
 	            React.createElement(
-	                "span",
+	                "menu-select",
 	                { id: "periodicitySelect" },
 	                React.createElement(
 	                    "span",
@@ -573,7 +564,7 @@
 	                    this.state.activeOption ? this.state.activeOption.label : null
 	                ),
 	                React.createElement(
-	                    "div",
+	                    "menu-select-options",
 	                    { className: "menu-hover" },
 	                    options
 	                )
@@ -582,7 +573,7 @@
 	    }
 	});
 
-	var ChartTypes = React.createClass((_React$createClass = {
+	var ChartTypes = React.createClass({
 	    displayName: "ChartTypes",
 
 	    getInitialState: function getInitialState() {
@@ -606,56 +597,49 @@
 	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        if (nextProps.ciq) {
 	            return this.setState({
-	                ciq: nextProps.ciq
+	                ciq: nextProps.ciq,
+	                activeOption: this.getCurrentOption(nextProps.ciq.layout)
 	            });
 	        }
-	    }
-	}, _defineProperty(_React$createClass, "componentWillReceiveProps", function componentWillReceiveProps(nextProps) {
-	    if (nextProps.ciq) {
-	        return this.setState({
-	            ciq: nextProps.ciq,
-	            activeOption: this.getCurrentOption(nextProps.ciq.layout)
-	        });
-	    }
-	}), _defineProperty(_React$createClass, "getCurrentOption", function getCurrentOption(layout) {
-	    for (var i = 0; i < _ui2.default.chartTypes.types.length; i++) {
-	        var option = _ui2.default.chartTypes.types[i];
-	        if (layout.chartType === option.type) {
-	            return option;
+	    },
+	    getCurrentOption: function getCurrentOption(layout) {
+	        for (var i = 0; i < _ui2.default.chartTypes.types.length; i++) {
+	            var option = _ui2.default.chartTypes.types[i];
+	            if (layout.chartType === option.type) {
+	                return option;
+	            }
 	        }
-	    }
-	    return _ui2.default.chartTypes.types[0];
-	}), _defineProperty(_React$createClass, "render", function render() {
-	    var self = this;
-	    var options = _ui2.default.chartTypes.types.map(function (item, index) {
+	        return _ui2.default.chartTypes.types[0];
+	    },
+
+	    render: function render() {
+	        var self = this;
+	        var options = _ui2.default.chartTypes.types.map(function (item, index) {
+	            return React.createElement(
+	                "menu-option",
+	                { key: "type" + index, className: "option", onClick: function onClick() {
+	                        self.onOptionClick(item, index);
+	                    } },
+	                item.label
+	            );
+	        });
+
 	        return React.createElement(
-	            "div",
-	            { key: "type" + index, className: "option", onClick: function onClick() {
-	                    self.onOptionClick(item, index);
-	                } },
+	            "menu-select",
+	            { id: "chartTypeSelect" },
 	            React.createElement(
 	                "span",
 	                null,
-	                item.label
+	                this.state.activeOption ? this.state.activeOption.label : this.state.activeOption
+	            ),
+	            React.createElement(
+	                "menu-select-options",
+	                { className: "menu-hover" },
+	                options
 	            )
 	        );
-	    });
-
-	    return React.createElement(
-	        "div",
-	        { id: "chartTypeSelect" },
-	        React.createElement(
-	            "span",
-	            null,
-	            this.state.activeOption ? this.state.activeOption.label : this.state.activeOption
-	        ),
-	        React.createElement(
-	            "div",
-	            { className: "menu-hover" },
-	            options
-	        )
-	    );
-	}), _React$createClass));
+	    }
+	});
 	var Comparison = React.createClass({
 	    displayName: "Comparison",
 
@@ -702,14 +686,10 @@
 	            "span",
 	            null,
 	            " ",
-	            React.createElement("input", { onChange: function onChange(event) {
+	            React.createElement("input", { className: "ciq", onChange: function onChange(event) {
 	                    self.compareChange(event.nativeEvent);
-	                }, id: "symbolCompareInput", type: "text" }),
-	            React.createElement(
-	                "button",
-	                { onClick: this.onOptionClick },
-	                "Add Comparison"
-	            )
+	                }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
+	            React.createElement("button", { className: "ciq comparison-btn", onClick: this.onOptionClick })
 	        );
 	    }
 	});
@@ -725,6 +705,7 @@
 	    onClick: function onClick() {
 	        if (!this.state.ciq) return;
 	        this.state.ciq.layout.crosshair = !this.state.ciq.layout.crosshair;
+	        this.forceUpdate();
 	    },
 	    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	        if (nextProps.ciq) {
@@ -735,14 +716,15 @@
 	    },
 
 	    render: function render() {
-	        var self = this;
+	        var cName = "ciq crosshair-btn ";
+	        cName += this.state.ciq ? this.state.ciq.layout.crosshair ? "activeBtn" : "" : "";
 	        return React.createElement(
 	            "span",
 	            null,
 	            " ",
 	            React.createElement(
 	                "button",
-	                { onClick: this.onClick },
+	                { className: cName, onClick: this.onClick },
 	                "Crosshairs"
 	            )
 	        );
@@ -761,12 +743,10 @@
 	        };
 	    },
 	    setThemeHelper: function setThemeHelper(ciq) {
-
 	        if (!ciq) return;
 	        var themeHelper = new CIQ.ThemeHelper({
 	            'stx': ciq
 	        });
-	        var self = this;
 	        this.setState({
 	            ciq: ciq,
 	            themeHelper: themeHelper
@@ -806,30 +786,30 @@
 	        var self = this;
 	        var options = this.state.themeList.map(function (theme, index) {
 	            return React.createElement(
-	                "div",
+	                "menu-option",
 	                { key: "theme" + index, className: "option", onClick: function onClick() {
 	                        self.themeSelect(theme);
 	                    } },
-	                React.createElement(
-	                    "span",
-	                    null,
-	                    theme.name
-	                )
+	                theme.name
 	            );
 	        });
 	        return React.createElement(
-	            "div",
-	            { id: "themeSelect" },
+	            "span",
+	            null,
 	            React.createElement(_ThemeModal2.default, { ref: "themeModal", themeHelper: this.state.themeHelper ? this.state.themeHelper : null }),
 	            React.createElement(
-	                "span",
-	                null,
-	                "Select Theme"
-	            ),
-	            React.createElement(
-	                "div",
-	                { className: "menu-hover" },
-	                options
+	                "menu-select",
+	                { id: "themeSelect" },
+	                React.createElement(
+	                    "span",
+	                    null,
+	                    "Select Theme"
+	                ),
+	                React.createElement(
+	                    "menu-select-options",
+	                    null,
+	                    options
+	                )
 	            )
 	        );
 	    }
@@ -1010,12 +990,12 @@
 	    var self = this;
 	    function addZone(zone) {
 	      zones.push(React.createElement(
-	        "span",
+	        "li",
 	        { key: "zone" + zone,
 	          onClick: function onClick() {
 	            self.setTimeZone(zone);
 	          },
-	          className: "timeZoneOption", style: { "display": "inline-block" } },
+	          className: "dialog-item" },
 	        zone
 	      ));
 	    }
@@ -1048,20 +1028,20 @@
 
 	  render: function render() {
 	    var self = this;
-	    if (!this.state.open) return React.createElement("div", null);
+	    if (!this.state.open) return React.createElement("span", null);
 	    return React.createElement(
 	      "div",
-	      { id: "timezoneDialog" },
+	      { className: "ciq dialog-overlay" },
 	      React.createElement(
 	        "div",
-	        { className: "content", style: { "maxHeight": "300px", "overflow": "scroll" } },
+	        { className: "ciq dialog" },
 	        React.createElement(
-	          "h2",
+	          "h3",
 	          { className: "center" },
-	          "Time Zones"
+	          "Select Time Zone"
 	        ),
 	        React.createElement(
-	          "div",
+	          "ul",
 	          null,
 	          this.state.timeZones
 	        ),
@@ -1226,7 +1206,7 @@
 
 	    render: function render() {
 	        var self = this;
-	        if (!this.state.open) return React.createElement('div', null);
+	        if (!this.state.open) return React.createElement('span', null);
 	        var sections = options.map(function (section, sectionindex) {
 
 	            var swatches = section.swatches.map(function (swatch, index) {
@@ -1242,19 +1222,19 @@
 	                { key: "section" + sectionindex, className: section.class },
 	                React.createElement(
 	                    'div',
-	                    { className: 'theme-field-name' },
+	                    { className: 'dialog-item' },
 	                    section.section
 	                ),
 	                swatches
 	            );
 	        });
 	        return React.createElement(
-	            'div',
-	            { id: 'themeDialog' },
+	            'span',
+	            { className: 'ciq dialog-overlay' },
 	            React.createElement(_ColorPicker2.default, { ref: 'colorPicker' }),
 	            React.createElement(
 	                'div',
-	                { className: 'content' },
+	                { className: 'ciq dialog' },
 	                React.createElement(
 	                    'div',
 	                    { className: 'heading' },
@@ -1579,12 +1559,14 @@
 	    });
 	  },
 	  render: function render() {
-	    if (!this.state.open || !this.state.studyHelper) return React.createElement('span', null);
 	    var self = this;
+
+	    if (!this.state.open || !this.state.studyHelper) return React.createElement('span', null);
 	    var inputs = this.state.inputs.map(function (input, index) {
 	      if (input.type === "select") return self.createSelectInput(input);
 	      return self.createOtherInput(input, input.type);
 	    });
+
 	    var outputs = this.state.outputs.map(function (output, index) {
 	      return React.createElement(
 	        'div',

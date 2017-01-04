@@ -141,28 +141,28 @@ var ThemeModal = React.createClass({
     },
     render: function() {
         var self = this;
-        if (!this.state.open) return <div></div>
+        if (!this.state.open) return <span></span>
         var sections = options.map(function(section, sectionindex) {
 
             var swatches = section.swatches.map(function(swatch, index) {
-                return <div key={"swatch" + index}style={ {
+                return (<div key={"swatch" + index}style={ {
                         backgroundColor: swatch.color
                     }} className={"color-picker-swatch " + swatch.class} onClick={ function(event) {
-                        self.openColorPicker(swatch, event.target)
-                    }}></div>
-            })
+                        self.openColorPicker(swatch, event.target);
+                    }}></div>);
+            });
 
-            return <div key={"section" + sectionindex} className={ section.class }>
-                     <div className="theme-field-name">
+            return (<div key={"section" + sectionindex} className={ section.class }>
+                     <div className="dialog-item">
                        { section.section }
                      </div>
                      { swatches }
-                   </div>
-        })
+                   </div>);
+        });
         return (
-            <div id="themeDialog">
+            <span className = "ciq dialog-overlay" >
             <ColorPicker ref="colorPicker"/>
-              <div className="content">
+              <div className="ciq dialog">
                 <div className="heading">Custom Theme</div>
                 { sections }
                 <div className="theme-save">
@@ -171,11 +171,10 @@ var ThemeModal = React.createClass({
                   <button className="largeBtn" onClick={this.closeDialog}>Close</button>
                 </div>
               </div>
-            </div>
-        )
-
+            </span>
+        );
     }
-})
+});
 
 
 var options = [

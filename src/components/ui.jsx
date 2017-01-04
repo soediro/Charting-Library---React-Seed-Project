@@ -19,18 +19,17 @@ var UI = React.createClass({
     render: function() {
         return (
             <ciq-UI-Wrapper>
-            <div className="right">
-               <div className="">
-               <ChartSymbol ciq={this.state.ciq}/>
+                <ChartSymbol ciq={this.state.ciq}/>
+                <span className="right">
+           
                 <Periodicity  ciq={this.state.ciq}/>
                 <ChartTypes ciq={ this.state.ciq } />
                 <StudyUI ciq={this.state.ciq}/>
                  <Crosshairs  ciq={this.state.ciq}/>
                 <ThemeUI ciq={this.state.ciq} />
                 <TimeZoneButton ciq={this.state.ciq}/>
-              </div>
-              <Comparison  ciq={this.state.ciq}/>
-              </div>
+                <Comparison  ciq={this.state.ciq}/>
+              </span>
             </ciq-UI-Wrapper>
         )
     }
@@ -46,9 +45,14 @@ var StudyUI = React.createClass({
 
     },
     addStudy(study) {
-       CIQ.Studies.addStudy(this.state.ciq,
-           study);
-
+       CIQ.Studies.addStudy(this.state.ciq,study);
+    },
+    getStudyList(){
+        var studies =[];
+        Object.keys(CIQ.Studies.studyLibrary).map(function(study, index) {
+            studies.push(study);
+        })
+        return studies.sort();
     },
     openModal(params) {
         this.refs.studyModal.open(params);
@@ -61,33 +65,33 @@ var StudyUI = React.createClass({
                 fc.apply(self, arguments);
             };
         }
-         nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openModal);
+        nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openModal);
         nextProps.ciq.callbacks.studyPanelEdit = closure(self.openModal);
             this.setState({
                 ciq: nextProps.ciq
-            })
+            });
         }
 
     },
     render: function() {
-        var self = this;
-        var studies = Object.keys(CIQ.Studies.studyLibrary).map(function(study, index) {
-            return <div key={"study" + index} className="option" onClick={function() {
+        var self = this; 
+        var studies = this.getStudyList().map(function(study, index) {
+            return <menu-option key={"study" + index}  onClick={function() {
                     self.addStudy(study);
-                }}><span>{study}</span></div>
+                }}><span>{study}</span></menu-option>
 
-        })
+        });
         return (
             <span>
              <StudyModal ref="studyModal"/>
-             <span id="studySelect"> 
+             <menu-select className="ciq" id="studySelect"> 
                 <span>Studies</span>
-                <div  className="menu-hover">
-               {studies}
-                </div>
-                </span>
+                <menu-select-options>
+                    {studies}
+                </menu-select-options>
+                </menu-select>
               </span>
-        )
+        );
     }
 });
 
@@ -113,7 +117,7 @@ var TimeZoneButton = React.createClass({
         return (
             <span style={{
                 display: "inline-block"
-            }}><TimeZone ref ="modal" ciq={this.state.ciq}/> <button onClick={this.onClick}>Select Timezone</button></span>
+            }}><TimeZone ref ="modal" ciq={this.state.ciq}/> <button className="ciq timezone-btn" onClick={this.onClick}>Select Timezone</button></span>
         )
     }
 });
@@ -146,9 +150,9 @@ var ChartSymbol = React.createClass({
         var self = this;
         return (
 
-            <span> <input id="symbolInput" type="text" defaultValue= {this.state.symbol} onChange={ function(event) {
+            <span> <input className = "ciq" id="symbolInput" type="text" defaultValue= {this.state.symbol} onChange={ function(event) {
                 self.onChange(event.nativeEvent);
-            }} ></input><button onClick={this.onOptionClick}>Set Symbol</button></span>
+            }} ></input><button className="ciq symbol-btn" onClick={this.onOptionClick}></button></span>
 
 
         )
@@ -190,19 +194,19 @@ var Periodicity = React.createClass({
         var self = this;
 
         var options = configs.periodicity.options.map(function(item, index) {
-            return <div key={"period" + index} className="option" onClick={ function() {
+            return <menu-option key={"period" + index} className="option" onClick={ function() {
                     self.onOptionClick(item.period, item.interval, index);
-                }}><span>{ item.label }</span></div>
+                }}>{ item.label }</menu-option>
         })
 
         return (
             <span>
-                <span id="periodicitySelect">
+                <menu-select id="periodicitySelect">
                 <span>{ this.state.activeOption ? this.state.activeOption.label : null}</span>
-                <div className="menu-hover">
+                <menu-select-options className="menu-hover">
                     { options }
-                </div>
-                </span>
+                </menu-select-options>
+                </menu-select>
             </span>
         )
     }
@@ -213,7 +217,7 @@ var ChartTypes = React.createClass({
         return {
             ciq: null,
             activeOption: null
-        }
+        };
     },
     onOptionClick(type, index) {
         if (!this.state.ciq) return;
@@ -225,15 +229,7 @@ var ChartTypes = React.createClass({
         }
         this.setState({
             activeOption: configs.chartTypes.types[index]
-        })
-
-    },
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.ciq) {
-            return this.setState({
-                ciq: nextProps.ciq
-            });
-        }
+        });
     },
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
@@ -255,19 +251,19 @@ var ChartTypes = React.createClass({
     render: function() {
         var self = this;
         var options = configs.chartTypes.types.map(function(item, index) {
-            return <div key={"type" + index} className="option" onClick={ function() {
+            return <menu-option key={"type" + index} className="option" onClick={ function() {
                     self.onOptionClick(item, index);
-                }}><span>{ item.label }</span></div>
-        })
+                }}>{ item.label }</menu-option>
+        });
 
         return (
 
-            <div id="chartTypeSelect">
+            <menu-select id="chartTypeSelect">
               <span>{ this.state.activeOption ? this.state.activeOption.label : this.state.activeOption }</span>
-              <div className="menu-hover">
+              <menu-select-options className="menu-hover">
                 { options }
-              </div>
-            </div>
+              </menu-select-options>
+            </menu-select>
 
 
         )
@@ -315,11 +311,10 @@ var Comparison = React.createClass({
     render: function() {
         var self = this;
         return (
-
-            <span> <input onChange={ function(event) {
+            <span> <input className="ciq" onChange={ function(event) {
                 self.compareChange(event.nativeEvent);
-            }} id="symbolCompareInput" type="text" ></input><button onClick={this.onOptionClick} >Add Comparison</button></span>
-        )
+            }} id="symbolCompareInput" placeholder="Add Comparison"  type="text" ></input><button className="ciq comparison-btn" onClick={this.onOptionClick} ></button></span>
+        );
     }
 });
 
@@ -332,6 +327,7 @@ var Crosshairs = React.createClass({
     onClick() {
         if (!this.state.ciq) return;
         this.state.ciq.layout.crosshair = !this.state.ciq.layout.crosshair;
+        this.forceUpdate();
 
     },
     componentWillReceiveProps(nextProps) {
@@ -342,10 +338,11 @@ var Crosshairs = React.createClass({
         }
     },
     render: function() {
-        var self = this;
+        var cName = "ciq crosshair-btn ";
+        cName +=  this.state.ciq?(this.state.ciq.layout.crosshair ? "activeBtn":""):"";
         return (
-            <span> <button onClick={ this.onClick }>Crosshairs</button></span>
-        )
+            <span> <button className = {cName} onClick={ this.onClick }>Crosshairs</button></span>
+        );
     }
 });
 
@@ -356,15 +353,13 @@ var ThemeUI = React.createClass({
                 "name": "+ New Theme"
             }],
             themeHelper: null
-        }
+        };
     },
     setThemeHelper(ciq) {
-
         if (!ciq) return;
         var themeHelper = new CIQ.ThemeHelper({
             'stx': ciq
         });
-        var self = this;
         this.setState({
             ciq: ciq,
             themeHelper: themeHelper,
@@ -403,24 +398,21 @@ var ThemeUI = React.createClass({
     render: function() {
         var self = this;
         var options = this.state.themeList.map(function(theme, index) {
-            return <div key={"theme" + index} className="option" onClick={function() {
+            return (<menu-option key={"theme" + index} className="option" onClick={function() {
                     self.themeSelect(theme)
-                }} ><span>{theme.name}</span></div>
-        })
+                }} >{theme.name}</menu-option>);
+        });
         return (
-            <div id="themeSelect">
-              <ThemeModal  ref="themeModal" themeHelper={this.state.themeHelper ? this.state.themeHelper : null}/>
-
-                <span>Select Theme</span>
-                <div className="menu-hover">
-                  {options}
-                </div>
-              </div>
-
-
-        )
-
-
+            <span>
+             <ThemeModal  ref="themeModal" themeHelper={this.state.themeHelper ? this.state.themeHelper : null}/>
+                <menu-select id="themeSelect">
+                    <span>Select Theme</span>
+                    <menu-select-options>
+                        {options}
+                    </menu-select-options>
+                </menu-select>
+              </span>
+        );
     }
 });
 

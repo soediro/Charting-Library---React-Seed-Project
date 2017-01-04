@@ -85,13 +85,14 @@ var StudyModal = React.createClass({
 
   },
   render: function() {
-    if (!this.state.open || !this.state.studyHelper) return <span></span>
     var self = this;
+
+    if (!this.state.open || !this.state.studyHelper) return <span></span>
     var inputs = this.state.inputs.map(function(input, index) {
       if (input.type === "select") return self.createSelectInput(input);
       return self.createOtherInput(input, input.type);
-
     })
+
     var outputs = this.state.outputs.map(function(output, index) {
       return <div key={ "output" + index } className="outputs">
                { output.color ? <div style={ { "backgroundColor": output.color } } className="color-picker-swatch output" 
@@ -135,10 +136,7 @@ var StudyModal = React.createClass({
           <button className="largeBtn" onClick={this.updateStudy}>Save</button>
         </div>
       </div>
-
     )
-
-
   }
 });
 
