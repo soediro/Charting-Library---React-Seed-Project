@@ -10,12 +10,34 @@ This is a basic build of the ChartIQ library within the React framework. This pr
 
 ## Getting started
 
-To view the example, add a system link to your ChartIQ JS and CSS directories inside of the chartiq directory. Once you have that, you can then open up index.html and get a fully working example.
+To view the example, you will need to copy or link the ChartIQ `js` and `css` directories inside of the `chartiq` directory. To do this, execute the following commands in a terminal or command line:
+
+### In OS X:
+
+```
+ln -s <path to extracted ChartIQ library>/js <path to React Seed project>/chartiq/js 
+ln -s <path to extracted ChartIQ library>/css <path to React Seed project>/chartiq/css
+```
+ 
+### In Windows:
+```
+mklink /d <path to React Seed project>\chartiq\js <path to extracted ChartIQ library>\js  
+mklink /d <path to React Seed project>\chartiq\css <path to extracted ChartIQ library>\css 
+```
+
+You will also need to install the project requirements using NPM by executing the following command from the React seed project's root:
+
+```
+npm install
+```
+
+Once you have that, you can then open up `index.html`, found in the root, in a web browser and get a fully working example.
 
 ## Customizing 
-All of the project source is in the ```src``` folder. The main ChartIQ React component is ```app.jsx```. There is also an ```index.js``` in this folder which loads RequireJs and all of our modules into it. This is basically a wrapper component that houses the charting engine in it's state. This wrapper function passes a reference of the engine to all of the UI components which allow each to manipulate the chart based on their functionality. 
+All of the project source is in the `src` folder. The main ChartIQ React component is `app.jsx`. There is also an `index.js` in this folder which loads RequireJs and all of our modules into it. This is basically a wrapper component that houses the charting engine in it's state. This wrapper function passes a reference of the engine to all of the UI components which allow each to manipulate the chart based on their functionality. 
 
-The chart engine is created inside of the ```componentDidMount``` function of the wrapper component. This is done in the location beacause React uses a vritual DOM and the chart component is not injected into the actual DOM until after the render function.
+The chart engine is created inside of the `componentDidMount` function of the wrapper component. This is done in the location because React uses a virtual DOM and the chart component is not injected into the actual DOM until after the render function.
+
 ``` 
 componentDidMount() {
     var ciq = new CIQ.ChartEngine({
@@ -32,7 +54,7 @@ componentDidMount() {
 ```
 
 
-## Buiding for use in the browser
+## Building for use in the browser
 
-This project is using Webpack to tranform JSX and ES6 to ES5. The configs for this are in the ```webpack.config.js```. Running the ```webpack``` command inside of your command line tool will create a file ```dist/chartIQ.js``` . This is a transformed and bundled version of everything in the src directory. ```src/index.js``` will automatically load this file.
+This project is using Webpack to transform JSX and ES6 to ES5. The configs for this are in the `webpack.config.js`. Running the `webpack` command inside of your command line tool will create a file `dist/chartIQ.js` . This is a transformed and bundled version of everything in the src directory. `src/index.js` will automatically load this file.
 
