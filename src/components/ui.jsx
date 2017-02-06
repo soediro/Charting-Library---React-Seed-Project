@@ -19,17 +19,20 @@ var UI = React.createClass({
     render: function() {
         return (
             <ciq-UI-Wrapper>
-                <ChartSymbol ciq={this.state.ciq}/>
-                <span className="right">
-           
-                <Periodicity  ciq={this.state.ciq}/>
-                <ChartTypes ciq={ this.state.ciq } />
-                <StudyUI ciq={this.state.ciq}/>
-                 <Crosshairs  ciq={this.state.ciq}/>
-                <ThemeUI ciq={this.state.ciq} />
-                <TimeZoneButton ciq={this.state.ciq}/>
-                <Comparison  ciq={this.state.ciq}/>
-              </span>
+                <nav className="ciq-nav">
+                    <div className="left">
+                        <ChartSymbol ciq={this.state.ciq}/>
+                    </div>
+                    <div className="right">
+                        <Periodicity  ciq={this.state.ciq}/>
+                        <ChartTypes ciq={ this.state.ciq } />
+                        <StudyUI ciq={this.state.ciq}/>
+                        <Crosshairs  ciq={this.state.ciq}/>
+                        <ThemeUI ciq={this.state.ciq} />
+                        <TimeZoneButton ciq={this.state.ciq}/>
+                        <Comparison  ciq={this.state.ciq}/>
+                    </div>
+                </nav>
             </ciq-UI-Wrapper>
         )
     }
@@ -85,7 +88,7 @@ var StudyUI = React.createClass({
             <span>
              <StudyModal ref="studyModal"/>
              <menu-select className="ciq" id="studySelect"> 
-                <span>Studies</span>
+                <span className="title">Studies</span>
                 <menu-select-options>
                     {studies}
                 </menu-select-options>
@@ -202,7 +205,7 @@ var Periodicity = React.createClass({
         return (
             <span>
                 <menu-select id="periodicitySelect">
-                <span>{ this.state.activeOption ? this.state.activeOption.label : null}</span>
+                <span className="title">{ this.state.activeOption ? this.state.activeOption.label : null}</span>
                 <menu-select-options className="menu-hover">
                     { options }
                 </menu-select-options>
@@ -259,7 +262,7 @@ var ChartTypes = React.createClass({
         return (
 
             <menu-select id="chartTypeSelect">
-              <span>{ this.state.activeOption ? this.state.activeOption.label : this.state.activeOption }</span>
+              <span className="title">{ this.state.activeOption ? this.state.activeOption.label : this.state.activeOption }</span>
               <menu-select-options className="menu-hover">
                 { options }
               </menu-select-options>
@@ -349,7 +352,16 @@ var Crosshairs = React.createClass({
 var ThemeUI = React.createClass({
     getInitialState: function() {
         return {
-            themeList: [{
+            themeList: [{"name": "Default",
+		"settings": // the default theme settings
+			{"chart":{"Axis Text":{"color":"rgba(186,189,192,1)"},
+				"Background":{"color":"rgba(28,42,53,1)"},
+				"Grid Dividers":{"color":"rgba(153,153,153,1)"},
+				"Grid Lines":{"color":"rgba(32,48,60,1)"}},
+				"chartTypes":{"Candle/Bar":{"down": {"border":"rgba(0,0,0,1)", "color":"rgba(184,44,12,1)", "wick":"rgba(0,0,0,1)"},
+					"up":{"border":"rgba(0,0,0,1)", "color":"rgba(140,193,118,1)", "wick":"rgba(0,0,0,1)"}},
+					"Line":{"color":"rgba(0,0,0,1)"},
+					"Mountain":{"color":"rgba(102,202,196,0.498039)"}}}},{
                 "name": "+ New Theme"
             }],
             themeHelper: null
@@ -406,7 +418,7 @@ var ThemeUI = React.createClass({
             <span>
              <ThemeModal  ref="themeModal" themeHelper={this.state.themeHelper ? this.state.themeHelper : null}/>
                 <menu-select id="themeSelect">
-                    <span>Select Theme</span>
+                    <span className="title">Select Theme</span>
                     <menu-select-options>
                         {options}
                     </menu-select-options>

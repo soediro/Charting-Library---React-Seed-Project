@@ -152,10 +152,10 @@ var ThemeModal = React.createClass({
                     }}></div>);
             });
 
-            return (<div key={"section" + sectionindex} className={ section.class }>
-                     <div className="dialog-item">
+            return (<div key={"section" + sectionindex} className={"dialog-item " + section.class }>
+                     <span>
                        { section.section }
-                     </div>
+                     </span>
                      { swatches }
                    </div>);
         });
@@ -165,10 +165,10 @@ var ThemeModal = React.createClass({
               <div className="ciq dialog">
                 <div className="heading">Custom Theme</div>
                 { sections }
-                <div className="theme-save">
-                  <input ref ="themeName" type="text" onChange={this.updateThemeName}></input>
-                  <button className="largeBtn" onClick={this.saveSettings}>Save</button>
-                  <button className="largeBtn" onClick={this.closeDialog}>Close</button>
+                <div className="dialog-item theme-save">
+                  <input className="ciq" ref ="themeName" type="text" placeholder="Name Your Theme" onChange={this.updateThemeName}></input>
+                  <button className="pull-right ciq" onClick={this.saveSettings}>Save</button>
+                  <button className="pull-right ciq" onClick={this.closeDialog}>Close</button>
                 </div>
               </div>
             </span>

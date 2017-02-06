@@ -1,55 +1,56 @@
 {
-	"name": "reactchartiq",
-	"version": "1.0.0",
-	"description": "",
-	"main": "helloworld.js",
-	"dependencies": {
-		"babel-cli": "^6.18.0",
-		"babel-preset-es2015": "^6.18.0",
-		"babel-preset-react": "^6.16.0",
-		"babel-preset-stage-0": "^6.16.0",
-		"react": "^15.3.2",
-		"react-dom": "^15.3.2",
-		"requirejs-babel": "^0.0.9",
-		"babel-loader": "^6.2.7"
-	},
-	"devDependencies": {
-		"esformatter-jsx": "^7.2.0",
-		"eslint": "^3.10.2",
-		"eslint-config-standard": "^6.2.1",
-		"eslint-plugin-promise": "^3.4.0-0",
-		"eslint-plugin-standard": "^2.0.1"
-	},
-	"esformatter": {
-		"plugins": [
-			"esformatter-jsx"
-		],
-		"jsx": {
-			"formatJSX": true,
-			"attrsOnSameLineAsTag": false,
-			"maxAttrsOnTag": 3,
-			"firstAttributeOnSameLine": true,
-			"formatJSXExpressions": true,
-			"JSXExpressionsSingleLine": true,
-			"alignWithFirstAttribute": false,
-			"spaceInJSXExpressionContainers": " ",
-			"removeSpaceBeforeClosingJSX": false,
-			"closingTagOnNewLine": false,
-			"htmlOptions": {}
-		}
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"babelPackage": "babel  ./src/components/Chart.js -o test.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/ChartIQ/Charting-Library---React-Seed-Project.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/ChartIQ/Charting-Library---React-Seed-Project/issues"
-	},
-	"homepage": "https://github.com/ChartIQ/Charting-Library---React-Seed-Project#readme"
+  "name": "reactchartiq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "helloworld.js",
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "requirejs-babel": "^0.0.9",
+    "webpack": "^2.2.1"
+  },
+  "devDependencies": {
+    "esformatter-jsx": "^7.2.0",
+    "eslint": "^3.10.2",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0-0",
+    "eslint-plugin-standard": "^2.0.1"
+  },
+  "esformatter": {
+    "plugins": [
+      "esformatter-jsx"
+    ],
+    "jsx": {
+      "formatJSX": true,
+      "attrsOnSameLineAsTag": false,
+      "maxAttrsOnTag": 3,
+      "firstAttributeOnSameLine": true,
+      "formatJSXExpressions": true,
+      "JSXExpressionsSingleLine": true,
+      "alignWithFirstAttribute": false,
+      "spaceInJSXExpressionContainers": " ",
+      "removeSpaceBeforeClosingJSX": false,
+      "closingTagOnNewLine": false,
+      "htmlOptions": {}
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babelPackage": "babel  ./src/components/Chart.js -o test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChartIQ/Charting-Library---React-Seed-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChartIQ/Charting-Library---React-Seed-Project/issues"
+  },
+  "homepage": "https://github.com/ChartIQ/Charting-Library---React-Seed-Project#readme"
 }

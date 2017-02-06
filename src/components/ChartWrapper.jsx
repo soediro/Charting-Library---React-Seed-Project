@@ -91,48 +91,50 @@ export default class ChartWrapper extends React.Component {
   render() {
     var windowSize = this.getWindowSize();
 
-    return (<div style={ { width: (windowSize.width) + "px"}}>
+    return (<div>
              <UI ciq={ this.state.ciq ? this.state.ciq : null } />
-             <div id="chartContainer" className="chartContainer" style={ {width:"100%",  height: (windowSize.height * .85) + "px",position: "relative" } }/>
-             <BottomUI ciq={ this.state.ciq ? this.state.ciq : null }/>
+             <div className="ciq-chart-area">
+                <div id="chartContainer" className="chartContainer"/>
+              </div>
+              <div className="ciq-footer">
+                <BottomUI ciq={ this.state.ciq ? this.state.ciq : null }/>
+             </div>
            </div>);
   }
 }
 
-var rangeConfig=[{
-  display:"1d",
-  span:"day",
+var rangeConfig=[
+{
+  display:"All",
+  span:"all",
   "multiplier":1
-},
-{
-  display:"5d",
-  span:"day",
+},{
+  display:"5y",
+  span:"year",
   "multiplier":5
-},
-{
-  display:"1m",
-  span:"month",
+},{
+  display:"1y",
+  span:"year",
+  "multiplier":1
+},{
+  display:"YTD",
+  span:"YTD",
   "multiplier":1
 },{
   "display":"3m",
   span:"month",
   "multiplier":3
 },{
-  display:"YTD",
-  span:"YTD",
+  display:"1m",
+  span:"month",
   "multiplier":1
 },{
-  display:"1y",
-  span:"year",
-  "multiplier":1
-},{
-  display:"5y",
-  span:"year",
+  display:"5d",
+  span:"day",
   "multiplier":5
-},
-{
-  display:"All",
-  span:"all",
+},{
+  display:"1d",
+  span:"day",
   "multiplier":1
 }];
 
@@ -156,7 +158,7 @@ var BottomUI = React.createClass({
     render() {
       var self = this;
       var ranges = rangeConfig.map(function(range,i){
-        return (<ciq-button key ={i} onClick={function(){
+        return (<ciq-button class="quick-link" key ={i} onClick={function(){
           self.setSpan(range.span,range.multiplier);
         }}>{range.display}</ciq-button>);
 
