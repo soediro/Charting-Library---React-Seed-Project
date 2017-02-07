@@ -259,6 +259,7 @@ var ChartTypes = React.createClass({
     render: function () {
         var self = this;
         var options = configs.chartTypes.types.map(function (item, index) {
+            console.log(item);
             return <menu-option key={"type" + index} className="option" onClick={function () {
                 self.onOptionClick(item, index);
             }}>{item.label}</menu-option>
@@ -360,7 +361,7 @@ var Crosshairs = React.createClass({
     },
     render: function () {
         var cName = "crosshair-btn ";
-        cName += this.state.ciq ? (this.state.ciq.layout.crosshair ? "activeBtn" : "") : "";
+        cName += this.state.ciq ? (this.state.ciq.layout.crosshair ? "active" : "") : "";
         return (
             <span> <button className={cName} onClick={this.onClick}></button></span>
         );

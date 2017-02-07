@@ -117,6 +117,7 @@ menu-select {
 	border: 0px transparent;
 	list-style:none;
 	cursor: pointer;
+	margin-left: 5px;
 }
 menu-select span.title{
 	color: #c5c7c9;
@@ -401,32 +402,32 @@ newtheme-option:before {
 	margin-top: -3px;
 }
 .timezone-btn:after {
-	content:url(../img/timezone_w.svg);
+	content:url(../img/ciq-timezone.svg);
 	display: inline-block;
-	height: 12px;
+	height: 17px;
 	width: 12px;
 	vertical-align: middle;
 }
 .comparison-btn:after {
 	content:url(../img/add_w.svg);
 	display: inline-block;
-	height: 12px;
+	height: 17px;
 	width: 12px;
 	vertical-align: middle;
 	padding: 2px 0px;
 }
 .symbol-btn:after {
-	content:url(../img/search_w.svg);
+	content:url(../img/search-ciq-icon.svg);
 	display: inline-block;
-	height: 12px;
+	height: 17px;
 	width: 12px;
 	vertical-align: middle;
 	padding: 2px 0px;
 }
 .crosshair-btn:after {
-	content:url(../img/crosshair_w.svg);
+	content:url(../img/ciq-crosshairs.svg);
 	display: inline-block;
-	height: 12px;
+	height: 17px;
 	width: 12px;
 	vertical-align: middle;
 }

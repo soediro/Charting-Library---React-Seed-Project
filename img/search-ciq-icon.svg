@@ -1,0 +1,16 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="16.4" height="16.4" viewBox="0 0 16.4 16.4">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>search-ciq-icon</title>
+  <g id="g4137">
+    <g id="g4139">
+      <path id="path4141" class="cls-1" d="M7,1A6,6,0,1,1,1,7,6,6,0,0,1,7,1M7,0A7,7,0,0,0,0,7a7,7,0,0,0,7,7,7,7,0,0,0,7-7A7,7,0,0,0,7,0Z"/>
+    </g>
+    <rect class="cls-1" x="13.54" y="11.19" width="1" height="5.7" transform="translate(-5.81 14.04) rotate(-45)"/>
+  </g>
+</svg>

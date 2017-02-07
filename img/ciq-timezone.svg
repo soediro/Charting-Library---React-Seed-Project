@@ -1,0 +1,27 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="22.02" height="22.07" viewBox="0 0 22.02 22.07">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <title>ciq-timezone</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1-2">
+      <circle class="cls-1" cx="11.01" cy="11.01" r="10.51"/>
+      <line class="cls-1" x1="11.01" y1="21.35" x2="11.01" y2="0.5"/>
+      <path class="cls-1" d="M11.12,21.57c-7.74,0-7.74-21,0-21"/>
+      <line class="cls-1" x1="0.5" y1="11.35" x2="11" y2="11.35"/>
+      <line class="cls-1" x1="18.63" y1="11.25" x2="20.64" y2="11.25"/>
+      <line class="cls-1" x1="17.66" y1="15.08" x2="19.4" y2="16.08"/>
+      <line class="cls-1" x1="14.9" y1="17.91" x2="15.91" y2="19.65"/>
+      <line class="cls-1" x1="17.6" y1="7.38" x2="19.34" y2="6.37"/>
+      <line class="cls-1" x1="14.76" y1="4.55" x2="15.77" y2="2.81"/>
+      <line class="cls-1" x1="10.85" y1="11.31" x2="16.88" y2="4.96"/>
+      <line class="cls-1" x1="11" y1="11.35" x2="14.26" y2="14.61"/>
+    </g>
+  </g>
+</svg>

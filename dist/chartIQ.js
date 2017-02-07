@@ -808,79 +808,79 @@ exports.default = {
 	chartTypes: {
 		types: [{
 			type: 'bar',
-			label: 'bar'
+			label: 'Bar'
 		}, {
 			type: 'candle',
-			label: 'candle'
+			label: 'Candle'
 		}, {
 			type: 'colored_bar',
-			label: 'colored bar'
+			label: 'Colored bar'
 		}, {
 			type: 'hollow_candle',
-			label: 'hollow candle'
+			label: 'Hollow candle'
 		}, {
 			type: 'line',
-			label: 'line'
+			label: 'Line'
 		}, {
 			type: 'mountain',
-			label: 'mountain'
+			label: 'Mountain'
 		}, {
 			type: 'volume_candle',
-			label: 'volume candle'
+			label: 'Volume candle'
 		}, {
 			type: 'heikinashi',
 			label: 'Heikin-Ashi'
 		}, {
 			type: 'kagi',
-			label: 'kagi',
+			label: 'Kagi',
 			aggregationEdit: {
 				title: 'Set Reversal Percentage',
 				inputs: [{
 					lookup: 'kagi',
-					label: 'kagi'
+					label: 'Kagi'
 				}]
 			}
 		}, {
 			type: 'linebreak',
-			label: 'line break',
+			label: 'Line break',
 			aggregationEdit: {
 				title: 'Set Price Lines',
 				inputs: [{
 					lookup: 'priceLines',
-					label: 'price line'
+					label: 'Price line'
 				}]
 			}
 		}, {
 			type: 'renko',
-			label: 'renko',
+			label: 'Renko',
 			aggregationEdit: {
 				title: 'Set Range',
 				inputs: [{
 					lookup: 'renko',
-					label: 'renko'
+					label: 'Renko'
 				}]
 			}
 		}, {
 			type: 'rangebars',
-			label: 'range bars',
+			label: 'Range bars',
 			aggregationEdit: {
 				title: 'Set Range',
 				inputs: [{
 					lookup: 'range',
-					label: 'range'
+					label: 'Range'
 				}]
 			}
 		}, {
 			type: 'pandf',
-			label: 'point & figure',
+			label: 'Point & figure',
 			aggregationEdit: {
 				title: 'Set Point & Figure Parameters',
 				inputs: [{
 					lookup: 'pandf.box',
-					label: 'box'
+					label: 'Box'
 				}, {
 					lookup: 'pandf.reversal',
-					label: 'reversal'
+					label: 'Reversal'
 				}]
 			}
 		}]
@@ -1799,6 +1799,7 @@ var ChartTypes = React.createClass({
     render: function render() {
         var self = this;
         var options = _ui2.default.chartTypes.types.map(function (item, index) {
+            console.log(item);
             return React.createElement(
                 "menu-option",
                 { key: "type" + index, className: "option", onClick: function onClick() {
@@ -1908,7 +1909,7 @@ var Crosshairs = React.createClass({
 
     render: function render() {
         var cName = "crosshair-btn ";
-        cName += this.state.ciq ? this.state.ciq.layout.crosshair ? "activeBtn" : "" : "";
+        cName += this.state.ciq ? this.state.ciq.layout.crosshair ? "active" : "" : "";
         return React.createElement(
             "span",
             null,
