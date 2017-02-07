@@ -147,7 +147,7 @@ menu-select-options{
 	padding-top:0px;
 	position:absolute;
 	min-width:100px;
-	max-height: 206px;
+	max-height: 90%;
 	overflow: auto;
 	background:#fff;
 	display:none;
