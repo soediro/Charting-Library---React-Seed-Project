@@ -712,21 +712,17 @@ var BottomUI = React.createClass({
     var self = this;
     var ranges = rangeConfig.map(function (range, i) {
       return React.createElement(
-        "ciq-button",
-        { "class": "quick-link", key: i, onClick: function onClick() {
+        "div",
+        { className: "quick-link", key: i, onClick: function onClick() {
             self.setSpan(range.span, range.multiplier);
           } },
         range.display
       );
     });
     return React.createElement(
-      "ciq-UI-Wrapper",
+      "div",
       null,
-      React.createElement(
-        "div",
-        { className: "right" },
-        ranges
-      )
+      ranges
     );
   }
 });
@@ -1523,7 +1519,8 @@ var UI = React.createClass({
                 React.createElement(
                     "div",
                     { className: "left" },
-                    React.createElement(ChartSymbol, { ciq: this.state.ciq })
+                    React.createElement(ChartSymbol, { ciq: this.state.ciq }),
+                    React.createElement(Comparison, { ciq: this.state.ciq })
                 ),
                 React.createElement(
                     "div",
@@ -1531,10 +1528,9 @@ var UI = React.createClass({
                     React.createElement(Periodicity, { ciq: this.state.ciq }),
                     React.createElement(ChartTypes, { ciq: this.state.ciq }),
                     React.createElement(StudyUI, { ciq: this.state.ciq }),
-                    React.createElement(Crosshairs, { ciq: this.state.ciq }),
                     React.createElement(ThemeUI, { ciq: this.state.ciq }),
-                    React.createElement(TimeZoneButton, { ciq: this.state.ciq }),
-                    React.createElement(Comparison, { ciq: this.state.ciq })
+                    React.createElement(Crosshairs, { ciq: this.state.ciq }),
+                    React.createElement(TimeZoneButton, { ciq: this.state.ciq })
                 )
             )
         );

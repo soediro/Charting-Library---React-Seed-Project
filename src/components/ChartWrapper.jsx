@@ -211,17 +211,16 @@ var BottomUI = React.createClass({
   render() {
     var self = this;
     var ranges = rangeConfig.map(function (range, i) {
-      return (<ciq-button class="quick-link" key={i} onClick={function () {
+      return (<div className="quick-link" key={i} onClick={function () {
         self.setSpan(range.span, range.multiplier);
-      }}>{range.display}</ciq-button>);
+      }}>{range.display}</div>);
 
 
     });
-    return (<ciq-UI-Wrapper>
-      <div className="right">
+    return (
+      <div>
         {ranges}
       </div>
-    </ciq-UI-Wrapper>
     );
   }
 });

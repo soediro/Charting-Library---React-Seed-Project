@@ -22,15 +22,15 @@ var UI = React.createClass({
                 <nav className="ciq-nav">
                     <div className="left">
                         <ChartSymbol ciq={this.state.ciq} />
+                        <Comparison ciq={this.state.ciq} />
                     </div>
                     <div className="right">
                         <Periodicity ciq={this.state.ciq} />
                         <ChartTypes ciq={this.state.ciq} />
                         <StudyUI ciq={this.state.ciq} />
-                        <Crosshairs ciq={this.state.ciq} />
                         <ThemeUI ciq={this.state.ciq} />
+                        <Crosshairs ciq={this.state.ciq} />
                         <TimeZoneButton ciq={this.state.ciq} />
-                        <Comparison ciq={this.state.ciq} />
                     </div>
                 </nav>
             </ciq-UI-Wrapper>
