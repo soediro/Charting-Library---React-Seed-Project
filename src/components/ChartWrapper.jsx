@@ -25,10 +25,10 @@ export default class ChartWrapper extends React.Component {
 
     this.setState({
       ciq: ciq,
-      service: new FeedService()
+      service: new FeedService().makeFeed()
     }, function () {
       this.state.ciq.setPeriodicityV2(1, 5);
-      this.state.service.attachQuoteFeed(this.state.ciq);
+      this.attachFeed(this.state.service);
       ciq.newChart(this.props.symbol ? this.props.symbol : "AAPL");
     });
   };
