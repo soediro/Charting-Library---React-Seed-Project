@@ -962,7 +962,7 @@ var StudyModal = React.createClass({
     }
     return React.createElement(
       'div',
-      { key: "select" + input.heading, className: 'inputs' },
+      { key: "select" + input.heading, className: 'inputs dialog-item' },
       React.createElement(
         'select',
         null,
@@ -978,7 +978,7 @@ var StudyModal = React.createClass({
   createOtherInput: function createOtherInput(input, type) {
     return React.createElement(
       'div',
-      { key: type + input.value, className: 'inputs' },
+      { key: type + input.value, className: 'inputs dialog-item' },
       React.createElement('input', { type: type, defaultValue: input.value }),
       React.createElement(
         'div',
@@ -1010,7 +1010,7 @@ var StudyModal = React.createClass({
     var outputs = this.state.outputs.map(function (output, index) {
       return React.createElement(
         'div',
-        { key: "output" + index, className: 'outputs' },
+        { key: "output" + index, className: 'outputs dialog-item' },
         output.color ? React.createElement('div', { style: { "backgroundColor": output.color }, className: 'color-picker-swatch output',
           onClick: function onClick(event) {
             self.openColorPicker(output, event.target);
@@ -1041,15 +1041,15 @@ var StudyModal = React.createClass({
 
     return React.createElement(
       'div',
-      { id: 'studyDialog' },
+      { className: 'dialog-overlay', id: 'studyDialog' },
       React.createElement(_ColorPicker2.default, { ref: 'colorPicker' }),
       React.createElement(
         'div',
-        { className: 'content' },
+        { className: 'dialog' },
         React.createElement(
-          'div',
-          { className: 'heading' },
-          this.state.studyHelper ? this.state.studyHelper.Name : ""
+          'h3',
+          null,
+          this.state.studyHelper ? this.state.studyHelper.title : ""
         ),
         React.createElement(
           'div',
@@ -1066,13 +1066,13 @@ var StudyModal = React.createClass({
           { id: 'parameters' },
           React.createElement(
             'div',
-            { className: 'parameters' },
+            { className: 'parameters dialog-item' },
             params
           )
         ),
         React.createElement(
           'button',
-          { className: 'largeBtn', onClick: this.updateStudy },
+          { className: 'pull-right', onClick: this.updateStudy },
           'Save'
         )
       )
@@ -1601,7 +1601,7 @@ var StudyUI = React.createClass({
             React.createElement(_StudyModal2.default, { ref: "studyModal" }),
             React.createElement(
                 "menu-select",
-                { className: "ciq", id: "studySelect" },
+                { id: "studySelect" },
                 React.createElement(
                     "span",
                     { className: "title" },
@@ -1645,11 +1645,7 @@ var TimeZoneButton = React.createClass({
                 } },
             React.createElement(_TimezoneModal2.default, { ref: "modal", ciq: this.state.ciq }),
             " ",
-            React.createElement(
-                "button",
-                { className: "ciq timezone-btn", onClick: this.onClick },
-                "Select Timezone"
-            )
+            React.createElement("button", { className: "timezone-btn", onClick: this.onClick })
         );
     }
 });
@@ -1690,10 +1686,10 @@ var ChartSymbol = React.createClass({
             "span",
             null,
             " ",
-            React.createElement("input", { ref: "symbolInput", className: "ciq", id: "symbolInput", type: "text", defaultValue: this.state.symbol, onChange: function onChange(event) {
+            React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", defaultValue: this.state.symbol, onChange: function onChange(event) {
                     self.onChange(event.nativeEvent);
                 } }),
-            React.createElement("button", { className: "ciq symbol-btn", onClick: this.onOptionClick })
+            React.createElement("button", { className: "symbol-btn", onClick: this.onOptionClick })
         );
     }
 });
@@ -1885,10 +1881,10 @@ var Comparison = React.createClass({
         return React.createElement(
             "span",
             null,
-            React.createElement("input", { ref: "compareInput", className: "ciq", onChange: function onChange(event) {
+            React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
                     self.compareChange(event.nativeEvent);
                 }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
-            React.createElement("button", { className: "ciq comparison-btn", onClick: this.onOptionClick })
+            React.createElement("button", { className: "comparison-btn", onClick: this.onOptionClick })
         );
     }
 });
@@ -1915,17 +1911,13 @@ var Crosshairs = React.createClass({
     },
 
     render: function render() {
-        var cName = "ciq crosshair-btn ";
+        var cName = "crosshair-btn ";
         cName += this.state.ciq ? this.state.ciq.layout.crosshair ? "activeBtn" : "" : "";
         return React.createElement(
             "span",
             null,
             " ",
-            React.createElement(
-                "button",
-                { className: cName, onClick: this.onClick },
-                "Crosshairs"
-            )
+            React.createElement("button", { className: cName, onClick: this.onClick })
         );
     }
 });

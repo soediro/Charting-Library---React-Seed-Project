@@ -87,7 +87,7 @@ var StudyUI = React.createClass({
         return (
             <span>
                 <StudyModal ref="studyModal" />
-                <menu-select className="ciq" id="studySelect">
+                <menu-select id="studySelect">
                     <span className="title">Studies</span>
                     <menu-select-options>
                         {studies}
@@ -120,7 +120,7 @@ var TimeZoneButton = React.createClass({
         return (
             <span style={{
                 display: "inline-block"
-            }}><TimeZone ref="modal" ciq={this.state.ciq} /> <button className="ciq timezone-btn" onClick={this.onClick}>Select Timezone</button></span>
+            }}><TimeZone ref="modal" ciq={this.state.ciq} /> <button className="timezone-btn" onClick={this.onClick}></button></span>
         )
     }
 });
@@ -158,9 +158,9 @@ var ChartSymbol = React.createClass({
         var self = this;
         return (
 
-            <span> <input ref="symbolInput" className="ciq" id="symbolInput" type="text" defaultValue={this.state.symbol} onChange={function (event) {
+            <span> <input ref="symbolInput" id="symbolInput" type="text" defaultValue={this.state.symbol} onChange={function (event) {
                 self.onChange(event.nativeEvent);
-            }} ></input><button className="ciq symbol-btn" onClick={this.onOptionClick}></button></span>
+            }} ></input><button className="symbol-btn" onClick={this.onOptionClick}></button></span>
 
 
         )
@@ -328,19 +328,15 @@ var Comparison = React.createClass({
         var self = this;
         return (
             <span>
-                <input ref="compareInput" className="ciq" onChange={function (event) {
+                <input ref="compareInput" onChange={function (event) {
                     self.compareChange(event.nativeEvent);
                 }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
                 </input>
-                <button className="ciq comparison-btn" onClick={this.onOptionClick} ></button>
+                <button className="comparison-btn" onClick={this.onOptionClick} ></button>
             </span>
         );
     }
 });
-
-
-
-
 
 
 var Crosshairs = React.createClass({
@@ -363,10 +359,10 @@ var Crosshairs = React.createClass({
         }
     },
     render: function () {
-        var cName = "ciq crosshair-btn ";
+        var cName = "crosshair-btn ";
         cName += this.state.ciq ? (this.state.ciq.layout.crosshair ? "activeBtn" : "") : "";
         return (
-            <span> <button className={cName} onClick={this.onClick}>Crosshairs</button></span>
+            <span> <button className={cName} onClick={this.onClick}></button></span>
         );
     }
 });

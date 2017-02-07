@@ -53,7 +53,7 @@ var StudyModal = React.createClass({
                           { option }
                         </option>)
     }
-    return <div key={ "select" + input.heading } className="inputs">
+    return <div key={ "select" + input.heading } className="inputs dialog-item">
              <select>
                { inputOptions }
              </select>
@@ -64,7 +64,7 @@ var StudyModal = React.createClass({
 
   },
   createOtherInput(input, type) {
-    return <div key={ type + input.value } className="inputs">
+    return <div key={ type + input.value } className="inputs dialog-item">
              <input type={ type } defaultValue={ input.value }></input>
              <div>
                { input.heading }
@@ -94,7 +94,7 @@ var StudyModal = React.createClass({
     })
 
     var outputs = this.state.outputs.map(function(output, index) {
-      return <div key={ "output" + index } className="outputs">
+      return <div key={ "output" + index } className="outputs dialog-item">
                { output.color ? <div style={ { "backgroundColor": output.color } } className="color-picker-swatch output" 
                onClick={ function(event){ self.openColorPicker(output,event.target);
                         } }></div> : <div></div> }
@@ -116,12 +116,12 @@ var StudyModal = React.createClass({
 
     return (
 
-      <div id="studyDialog">
-        <ColorPicker ref="colorPicker" />
-        <div className="content">
-          <div className="heading">
-            { this.state.studyHelper ? this.state.studyHelper.Name : "" }
-          </div>
+      <div className="dialog-overlay" id="studyDialog">
+        <ColorPicker ref="colorPicker"/>
+        <div className="dialog">
+          <h3>
+            { this.state.studyHelper ? this.state.studyHelper.title : "" }
+          </h3>
           <div id="inputs">
             { inputs }
           </div>
@@ -129,11 +129,11 @@ var StudyModal = React.createClass({
             { outputs }
           </div>
           <div id="parameters">
-          <div className="parameters">
+          <div className="parameters dialog-item">
           {params}
           </div>
           </div>
-          <button className="largeBtn" onClick={this.updateStudy}>Save</button>
+          <button className="pull-right" onClick={this.updateStudy}>Save</button>
         </div>
       </div>
     )
