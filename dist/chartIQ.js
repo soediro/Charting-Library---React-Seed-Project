@@ -1604,7 +1604,7 @@ var StudyUI = React.createClass({
                 ),
                 React.createElement(
                     "menu-select-options",
-                    null,
+                    { className: "ps-container" },
                     studies
                 )
             )
@@ -1673,6 +1673,11 @@ var ChartSymbol = React.createClass({
     onBlur: function onBlur() {
         this.refs["inputWrapper"].style.backgroundColor = '#151f28';
     },
+    handleKeyPress: function handleKeyPress(key) {
+        if (key == 'Enter') {
+            this.onOptionClick();
+        }
+    },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -1698,6 +1703,9 @@ var ChartSymbol = React.createClass({
                     },
                     onBlur: function onBlur() {
                         self.onBlur();
+                    },
+                    onKeyPress: function onKeyPress(event) {
+                        self.handleKeyPress(event.key);
                     } }),
                 React.createElement("div", { className: "symbol-btn", onClick: this.onOptionClick })
             )
@@ -1883,6 +1891,11 @@ var Comparison = React.createClass({
     onBlur: function onBlur() {
         this.refs["inputWrapper"].style.backgroundColor = '#151f28';
     },
+    handleKeyPress: function handleKeyPress(key) {
+        if (key == 'Enter') {
+            this.onOptionClick();
+        }
+    },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -1907,6 +1920,9 @@ var Comparison = React.createClass({
                     },
                     onBlur: function onBlur() {
                         self.onBlur();
+                    },
+                    onKeyPress: function onKeyPress(event) {
+                        self.handleKeyPress(event.key);
                     }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
                 React.createElement("div", { className: "comparison-btn", onClick: this.onOptionClick })
             )

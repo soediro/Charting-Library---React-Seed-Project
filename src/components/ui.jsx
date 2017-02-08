@@ -89,7 +89,7 @@ var StudyUI = React.createClass({
                 <StudyModal ref="studyModal" />
                 <menu-select id="studySelect">
                     <span className="title">Studies</span>
-                    <menu-select-options>
+                    <menu-select-options className="ps-container">
                         {studies}
                     </menu-select-options>
                 </menu-select>
@@ -154,6 +154,11 @@ var ChartSymbol = React.createClass({
 	onBlur(){
 		this.refs["inputWrapper"].style.backgroundColor='#151f28';
 	},
+	handleKeyPress(key){
+		if(key == 'Enter'){
+			this.onOptionClick();
+		}
+	},
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -171,7 +176,8 @@ var ChartSymbol = React.createClass({
 		            self.onChange(event.nativeEvent);
 	            }}
 	            onFocus={function(){ self.onFocus(); }}
-	            onBlur={function(){ self.onBlur(); }}></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
+	            onBlur={function(){ self.onBlur(); }}
+	            onKeyPress={function(event){ self.handleKeyPress(event.key); }}></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
             </div></span>
 
 
@@ -332,6 +338,11 @@ var Comparison = React.createClass({
 	onBlur(){
 		this.refs["inputWrapper"].style.backgroundColor='#151f28';
 	},
+	handleKeyPress(key){
+		if(key == 'Enter'){
+			this.onOptionClick();
+		}
+	},
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -347,7 +358,8 @@ var Comparison = React.createClass({
 		            self.compareChange(event.nativeEvent);
 	            }}
 	            onFocus={function(){ self.onFocus(); }}
-	            onBlur={function(){ self.onBlur(); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
+	            onBlur={function(){ self.onBlur(); }}
+	            onKeyPress={function(event){ self.handleKeyPress(event.key); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
                 </input>
                 <div className="comparison-btn" onClick={this.onOptionClick} ></div>
             </div></span>
