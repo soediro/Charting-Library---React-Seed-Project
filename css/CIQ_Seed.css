@@ -14,6 +14,15 @@ html, body, div, span {
 	line-height: 1.6em;
 }
 
+* {
+	box-sizing: border-box;	
+}
+
+input[type="text"], input[type="number"] {
+    border: #ddd solid 1px;
+    padding: 0 5px 0 10px;
+}
+
 .stx-chart-panel.stx-show {
 	display: inline-block !important;
 }
@@ -39,7 +48,6 @@ nav {
 }
 .left span{
 	margin-right:10px;
-	padding-top: 10px;
 }
 
 /* Standard Button Dimensions, Color */
@@ -66,21 +74,23 @@ nav {
 .ciq-nav input {
 	color:#c5c7c9;
 	background-color: #151f28;
-	border: none;
-	height: 24px;
-	padding: 5px 5px;
-	outline:none;
+/*	border: none;
+	outline:none;*/
 }
+
+#studyDialog input[type="number"], #studyDialog input[type="text"] {
+    width: 75px;
+    height: 27px;
+}
+
 #symbolCompareInput, #symbolInput{
-	width:100px;
-	height:13px;
+	width:100%;
 	border-radius: 1px;
 	display: inline;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-right:3px;
 	border: #333 1px solid;
+	height: 27px;
 }
+
 #symbolCompareInput{
 	width:115px;
 }
@@ -96,9 +106,28 @@ nav {
 	border:none;
 	display: inline-block;
 }
-.symbol-btn{
-	margin-left:-25px;
+
+.symbol-frame {
+	position:relative;
+	width: 120px;
 }
+
+.symbol-btn{
+	position: absolute;
+    height: 27px;
+    width: 27px;
+    right: 15px;
+    top: -5px;
+    background-image: url(img/stx-sprite-ui.svg);
+    background-position: -45px -25px;
+    opacity: .6;
+    transition: opacity .20s 0s;
+}
+
+.symbol-btn { /* night theme */
+	background-position: -45px -50px;
+}
+
 .comparison-btn{
 	margin-left:-20px;
 }
@@ -213,7 +242,6 @@ menu-select:hover menu-select-options{
 	padding: 5px 10px;
 	cursor: pointer;
 	border: none;
-	box-sizing: border-box;
 	border-radius: 1px;
 	box-shadow: 0 1px 2px rgba(0,0,0, 0.3);
 }
@@ -226,7 +254,6 @@ menu-select:hover menu-select-options{
 	padding: 5px 10px;
 	cursor: pointer;
 	border: none;
-	box-sizing: border-box;
 	border-radius: 1px;
 	box-shadow: 0 1px 2px rgba(69,143,209, 0.8);
 }
@@ -403,13 +430,7 @@ div.comparisons{
 	width: 12px;
 	padding: 2px 0px;
 }
-.symbol-btn:after {
-	content:url(../img/search-ciq-icon.svg);
-	display: inline-block;
-	height: 45px;
-	width: 12px;
-	transform: scale(0.6);
-}
+
 .crosshair-btn:after {
 	content:url(../img/ciq-crosshairs.svg);
 	display: inline-block;
@@ -417,16 +438,10 @@ div.comparisons{
 	transform: scale(0.7);
 }
 
-.crosshair-btn, .symbol-btn{
-	padding-right: 8px;
-	padding-left: 3px;
-}
-
 div.left{
 	float:left;
 	height:29px;
 	display: flex;
-	align-items: center;
 }
 div.right{
 	float:right;

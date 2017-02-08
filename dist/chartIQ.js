@@ -1690,7 +1690,7 @@ var ChartSymbol = React.createClass({
         var self = this;
         return React.createElement(
             "span",
-            null,
+            { className: "symbol-frame" },
             React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol",
                 onChange: function onChange(event) {
                     self.onChange(event.nativeEvent);
@@ -1904,7 +1904,7 @@ var Comparison = React.createClass({
         var self = this;
         return React.createElement(
             "span",
-            null,
+            { className: "symbol-frame" },
             React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
                     self.compareChange(event.nativeEvent);
                 },

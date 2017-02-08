@@ -170,7 +170,7 @@ var ChartSymbol = React.createClass({
         var self = this;
         return (
 
-            <span>
+            <span className="symbol-frame">
 	            <input ref="symbolInput" id="symbolInput" type="text" placeholder="Enter Symbol"
 	            onChange={function (event) {
 		            self.onChange(event.nativeEvent);
@@ -353,7 +353,7 @@ var Comparison = React.createClass({
     render: function () {
         var self = this;
         return (
-            <span>
+            <span className="symbol-frame">
 	            <input ref="compareInput" onChange={function (event) {
 		            self.compareChange(event.nativeEvent);
 	            }}
