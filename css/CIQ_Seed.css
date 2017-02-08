@@ -4,7 +4,7 @@ html, body, div, span {
 	padding:0;
 	border:0;
 	font-family: 'Roboto', sans-serif;
-	font-weight: 300;
+	font-weight: 400;
 	font-size:9pt;
 	text-align:left;
 	line-height: 1.6em;
@@ -64,6 +64,7 @@ nav {
 }
 .left span{
 	margin-right:10px;
+	padding-top: 10px;
 }
 
 /* Standard Button Dimensions, Color */
@@ -82,7 +83,7 @@ nav {
 .ciq-nav button.active, .ciq-nav button:hover, button:active, button:focus {
 	border-radius: 1px;
 	background: transparent;
-	border: solid thin #398dff ;
+	border: solid thin #e4e4e4 ;
 	outline: none;
 }
 /* Input Line */
@@ -92,19 +93,30 @@ nav {
 	border: none;
 	height: 24px;
 	padding: 5px 5px;
-	vertical-align: middle;
+	outline:none;
 }
-#symbolInput{
-	width:50px;
-}
-#symbolCompareInput{
+#symbolCompareInput, #symbolInput{
 	width:100px;
+	height:13px;
+}
+div.inputWrapper{
+	border-radius: 1px;
+	display: inline;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right:3px;
+	border: #333 1px solid;
+}
+div.inputWrapper:hover #symbolInput, div.inputWrapper:hover #symbolCompareInput, div.inputWrapper:hover{
+	transition: background .60s 0s;
+	background-color: #233542;
 }
 .ciq-nav input:placeholder {
 	color: #fafafa;
 }
 .ciq-nav .symbol-btn, .ciq-nav .comparison-btn{
 	border:none;
+	display: inline-block;
 }
 menu-select {
 	font-size: 9pt;
@@ -144,22 +156,27 @@ menu-select:after {
 
 menu-select-options menu-option{
 	font-size: 8pt;
-	padding: 0px 5px 0px 5px;
+	padding: 0px 20px;
 	position:relative;
-	line-height:21px;
 	text-align:left;
 	display:block;
+	line-height: 27px;
+	height: 27px;
+	color:#666;
+}
+menu-select-options menu-option span{
+	font-weight:300;
 }
 menu-select-options menu-option:hover{
 	color:#000;
 	background:#f3f3f3;
 }
 menu-select-options{
-	border-top: 2px solid #398dff;
-	margin: 5px 0px 0px -5px;
+	font-family: 'Roboto', sans-serif;
+	margin: 14px 0px 0px -5px;
 	padding-top:0px;
 	position:absolute;
-	min-width:100px;
+	min-width:200px;
 	max-height: 90%;
 	overflow: scroll;
 	background:#fff;
@@ -375,7 +392,7 @@ div.deleteSeries {
 	position:absolute;
 	left:95px;
 	z-index:21; /* minimum z-index to be over the chart so it's click-able */
-	cursor: hand;
+	cursor: pointer;
 }
 
 div.comparisonWrapper{
@@ -383,6 +400,7 @@ div.comparisonWrapper{
 	position:relative;
 	float:left;
 	display:flex;
+	margin-left:20px;
 }
 
 div.comparisons{
@@ -411,29 +429,35 @@ newtheme-option:before {
 .comparison-btn:after {
 	content:url(../img/add_w.svg);
 	display: inline-block;
-	height: 17px;
+	height: 30px;
 	width: 12px;
-	vertical-align: middle;
 	padding: 2px 0px;
 }
 .symbol-btn:after {
 	content:url(../img/search-ciq-icon.svg);
 	display: inline-block;
-	height: 17px;
+	height: 45px;
 	width: 12px;
-	vertical-align: middle;
-	padding: 2px 0px;
+	transform: scale(0.6);
 }
 .crosshair-btn:after {
 	content:url(../img/ciq-crosshairs.svg);
 	display: inline-block;
 	height: 17px;
 	width: 12px;
-	vertical-align: middle;
+	transform: scale(0.6);
+}
+
+.crosshair-btn, .symbol-btn{
+	padding-right: 8px;
+	padding-left: 3px;
 }
 
 div.left{
 	float:left;
+	height:29px;
+	display: flex;
+	align-items: center;
 }
 div.right{
 	float:right;

@@ -96,8 +96,9 @@ export default class ChartWrapper extends React.Component {
     return (<div>
       <UI ciq={this.state.ciq ? this.state.ciq : null} />
       <div className="ciq-chart-area">
-        <Legend ciq={this.state.ciq} />
-        <div id="chartContainer" className="chartContainer" />
+        <div id="chartContainer" className="chartContainer">
+	        <Legend ciq={this.state.ciq} />
+        </div>
       </div>
       <div className="ciq-footer">
         <BottomUI ciq={this.state.ciq ? this.state.ciq : null} />
@@ -135,7 +136,7 @@ var Legend = React.createClass({
 
     var comparisons = this.state.comparisons.map(function (comparison, i) {
       return (
-        <div className="comparisonItem" key={"comp" + i}>
+        <div className="comparisonWrapper" key={"comp" + i}>
           <div className="chartSeriesColor" style={{ "backgroundColor": comparison.parameters.color }} ></div>
           <div className="chartSeries">{comparison.display}</div>
           <div className="deleteSeries" onClick={function () {
@@ -147,10 +148,7 @@ var Legend = React.createClass({
 
 
     return <div className="comparisons">
-
-      <div className="comparisonWrapper" >
         {comparisons}
-      </div>
     </div>
   }
 });

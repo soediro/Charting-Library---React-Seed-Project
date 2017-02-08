@@ -579,8 +579,11 @@ var ChartWrapper = function (_React$Component) {
         React.createElement(
           "div",
           { className: "ciq-chart-area" },
-          React.createElement(Legend, { ciq: this.state.ciq }),
-          React.createElement("div", { id: "chartContainer", className: "chartContainer" })
+          React.createElement(
+            "div",
+            { id: "chartContainer", className: "chartContainer" },
+            React.createElement(Legend, { ciq: this.state.ciq })
+          )
         ),
         React.createElement(
           "div",
@@ -628,7 +631,7 @@ var Legend = React.createClass({
     var comparisons = this.state.comparisons.map(function (comparison, i) {
       return React.createElement(
         "div",
-        { className: "comparisonItem", key: "comp" + i },
+        { className: "comparisonWrapper", key: "comp" + i },
         React.createElement("div", { className: "chartSeriesColor", style: { "backgroundColor": comparison.parameters.color } }),
         React.createElement(
           "div",
@@ -648,11 +651,7 @@ var Legend = React.createClass({
     return React.createElement(
       "div",
       { className: "comparisons" },
-      React.createElement(
-        "div",
-        { className: "comparisonWrapper" },
-        comparisons
-      )
+      comparisons
     );
   }
 });
@@ -1681,11 +1680,14 @@ var ChartSymbol = React.createClass({
         return React.createElement(
             "span",
             null,
-            " ",
-            React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", defaultValue: this.state.symbol, onChange: function onChange(event) {
-                    self.onChange(event.nativeEvent);
-                } }),
-            React.createElement("button", { className: "symbol-btn", onClick: this.onOptionClick })
+            React.createElement(
+                "div",
+                { className: "inputWrapper" },
+                React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol", onChange: function onChange(event) {
+                        self.onChange(event.nativeEvent);
+                    } }),
+                React.createElement("div", { className: "symbol-btn", onClick: this.onOptionClick })
+            )
         );
     }
 });
@@ -1860,10 +1862,12 @@ var Comparison = React.createClass({
         this.setState({
             symbol: null
         });
-        console.log(this.refs);
         this.refs["compareInput"].value = "";
         _ChartStore.Actions.addComparisonSeries(newSeries);
-        //this.setState({ chartSeries: this.state.chartSeries.push(newSeries) })
+    },
+    onFocus: function onFocus() {
+        console.log('focusing!');
+        this.refs["inputWrapper"].style.backgroundColor = '#233542';
     },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
@@ -1878,10 +1882,17 @@ var Comparison = React.createClass({
         return React.createElement(
             "span",
             null,
-            React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
-                    self.compareChange(event.nativeEvent);
-                }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
-            React.createElement("button", { className: "comparison-btn", onClick: this.onOptionClick })
+            React.createElement(
+                "div",
+                { ref: "inputWrapper", className: "inputWrapper" },
+                React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
+                        self.compareChange(event.nativeEvent);
+                    },
+                    onFocus: function onFocus() {
+                        self.onFocus();
+                    }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
+                React.createElement("div", { className: "comparison-btn", onClick: this.onOptionClick })
+            )
         );
     }
 });

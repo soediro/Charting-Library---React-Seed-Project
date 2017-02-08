@@ -158,9 +158,11 @@ var ChartSymbol = React.createClass({
         var self = this;
         return (
 
-            <span> <input ref="symbolInput" id="symbolInput" type="text" defaultValue={this.state.symbol} onChange={function (event) {
-                self.onChange(event.nativeEvent);
-            }} ></input><button className="symbol-btn" onClick={this.onOptionClick}></button></span>
+            <span><div className="inputWrapper">
+	            <input ref="symbolInput" id="symbolInput" type="text" placeholder="Enter Symbol" onChange={function (event) {
+		            self.onChange(event.nativeEvent);
+	            }} ></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
+            </div></span>
 
 
         )
@@ -291,7 +293,6 @@ var Comparison = React.createClass({
             symbol: event.target.value
         })
     },
-
     onOptionClick() {
         if (!this.state.ciq) return;
         function getRandomColor() {
@@ -311,13 +312,15 @@ var Comparison = React.createClass({
         });
         this.setState({
             symbol: null
-        })
-        console.log(this.refs)
+        });
         this.refs["compareInput"].value = "";
         Actions.addComparisonSeries(newSeries);
-        //this.setState({ chartSeries: this.state.chartSeries.push(newSeries) })
-
     },
+	onFocus(){
+		    console.log('focusing!');
+			this.refs["inputWrapper"].style.backgroundColor = '#233542';
+
+	},
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -328,13 +331,14 @@ var Comparison = React.createClass({
     render: function () {
         var self = this;
         return (
-            <span>
-                <input ref="compareInput" onChange={function (event) {
-                    self.compareChange(event.nativeEvent);
-                }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
+            <span><div ref="inputWrapper" className="inputWrapper">
+	            <input ref="compareInput" onChange={function (event) {
+		            self.compareChange(event.nativeEvent);
+	            }}
+	            onFocus={function(){ self.onFocus(); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
                 </input>
-                <button className="comparison-btn" onClick={this.onOptionClick} ></button>
-            </span>
+                <div className="comparison-btn" onClick={this.onOptionClick} ></div>
+            </div></span>
         );
     }
 });
