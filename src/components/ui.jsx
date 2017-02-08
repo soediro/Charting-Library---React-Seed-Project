@@ -148,11 +148,11 @@ var ChartSymbol = React.createClass({
 
     },
 	onFocus(){
-		this.refs["inputWrapper"].style.backgroundColor='#233542';
+		this.refs["symbolInput"].style.backgroundColor='#233542';
 
 	},
 	onBlur(){
-		this.refs["inputWrapper"].style.backgroundColor='#151f28';
+		this.refs["symbolInput"].style.backgroundColor='#151f28';
 	},
 	handleKeyPress(key){
 		if(key == 'Enter'){
@@ -170,7 +170,7 @@ var ChartSymbol = React.createClass({
         var self = this;
         return (
 
-            <span><div ref="inputWrapper" className="inputWrapper">
+            <span>
 	            <input ref="symbolInput" id="symbolInput" type="text" placeholder="Enter Symbol"
 	            onChange={function (event) {
 		            self.onChange(event.nativeEvent);
@@ -178,7 +178,7 @@ var ChartSymbol = React.createClass({
 	            onFocus={function(){ self.onFocus(); }}
 	            onBlur={function(){ self.onBlur(); }}
 	            onKeyPress={function(event){ self.handleKeyPress(event.key); }}></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
-            </div></span>
+            </span>
 
 
         )
@@ -332,11 +332,11 @@ var Comparison = React.createClass({
         Actions.addComparisonSeries(newSeries);
     },
 	onFocus(){
-		this.refs["inputWrapper"].style.backgroundColor='#233542';
+		this.refs["compareInput"].style.backgroundColor='#233542';
 
 	},
 	onBlur(){
-		this.refs["inputWrapper"].style.backgroundColor='#151f28';
+		this.refs["compareInput"].style.backgroundColor='#151f28';
 	},
 	handleKeyPress(key){
 		if(key == 'Enter'){
@@ -353,7 +353,7 @@ var Comparison = React.createClass({
     render: function () {
         var self = this;
         return (
-            <span><div ref="inputWrapper" className="inputWrapper">
+            <span>
 	            <input ref="compareInput" onChange={function (event) {
 		            self.compareChange(event.nativeEvent);
 	            }}
@@ -362,7 +362,7 @@ var Comparison = React.createClass({
 	            onKeyPress={function(event){ self.handleKeyPress(event.key); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
                 </input>
                 <div className="comparison-btn" onClick={this.onOptionClick} ></div>
-            </div></span>
+            </span>
         );
     }
 });

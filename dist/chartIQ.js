@@ -1668,10 +1668,10 @@ var ChartSymbol = React.createClass({
         });
     },
     onFocus: function onFocus() {
-        this.refs["inputWrapper"].style.backgroundColor = '#233542';
+        this.refs["symbolInput"].style.backgroundColor = '#233542';
     },
     onBlur: function onBlur() {
-        this.refs["inputWrapper"].style.backgroundColor = '#151f28';
+        this.refs["symbolInput"].style.backgroundColor = '#151f28';
     },
     handleKeyPress: function handleKeyPress(key) {
         if (key == 'Enter') {
@@ -1691,24 +1691,20 @@ var ChartSymbol = React.createClass({
         return React.createElement(
             "span",
             null,
-            React.createElement(
-                "div",
-                { ref: "inputWrapper", className: "inputWrapper" },
-                React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol",
-                    onChange: function onChange(event) {
-                        self.onChange(event.nativeEvent);
-                    },
-                    onFocus: function onFocus() {
-                        self.onFocus();
-                    },
-                    onBlur: function onBlur() {
-                        self.onBlur();
-                    },
-                    onKeyPress: function onKeyPress(event) {
-                        self.handleKeyPress(event.key);
-                    } }),
-                React.createElement("div", { className: "symbol-btn", onClick: this.onOptionClick })
-            )
+            React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol",
+                onChange: function onChange(event) {
+                    self.onChange(event.nativeEvent);
+                },
+                onFocus: function onFocus() {
+                    self.onFocus();
+                },
+                onBlur: function onBlur() {
+                    self.onBlur();
+                },
+                onKeyPress: function onKeyPress(event) {
+                    self.handleKeyPress(event.key);
+                } }),
+            React.createElement("div", { className: "symbol-btn", onClick: this.onOptionClick })
         );
     }
 });
@@ -1886,10 +1882,10 @@ var Comparison = React.createClass({
         _ChartStore.Actions.addComparisonSeries(newSeries);
     },
     onFocus: function onFocus() {
-        this.refs["inputWrapper"].style.backgroundColor = '#233542';
+        this.refs["compareInput"].style.backgroundColor = '#233542';
     },
     onBlur: function onBlur() {
-        this.refs["inputWrapper"].style.backgroundColor = '#151f28';
+        this.refs["compareInput"].style.backgroundColor = '#151f28';
     },
     handleKeyPress: function handleKeyPress(key) {
         if (key == 'Enter') {
@@ -1909,23 +1905,19 @@ var Comparison = React.createClass({
         return React.createElement(
             "span",
             null,
-            React.createElement(
-                "div",
-                { ref: "inputWrapper", className: "inputWrapper" },
-                React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
-                        self.compareChange(event.nativeEvent);
-                    },
-                    onFocus: function onFocus() {
-                        self.onFocus();
-                    },
-                    onBlur: function onBlur() {
-                        self.onBlur();
-                    },
-                    onKeyPress: function onKeyPress(event) {
-                        self.handleKeyPress(event.key);
-                    }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
-                React.createElement("div", { className: "comparison-btn", onClick: this.onOptionClick })
-            )
+            React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
+                    self.compareChange(event.nativeEvent);
+                },
+                onFocus: function onFocus() {
+                    self.onFocus();
+                },
+                onBlur: function onBlur() {
+                    self.onBlur();
+                },
+                onKeyPress: function onKeyPress(event) {
+                    self.handleKeyPress(event.key);
+                }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
+            React.createElement("div", { className: "comparison-btn", onClick: this.onOptionClick })
         );
     }
 });
