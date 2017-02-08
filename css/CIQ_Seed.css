@@ -173,7 +173,7 @@ menu-select-options menu-option:hover{
 }
 menu-select-options{
 	font-family: 'Roboto', sans-serif;
-	margin: 14px 0px 0px -5px;
+	margin: 5px 0px 0px -5px;
 	padding-top:0px;
 	position:absolute;
 	min-width:200px;
