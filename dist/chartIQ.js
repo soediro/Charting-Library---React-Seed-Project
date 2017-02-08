@@ -1667,6 +1667,12 @@ var ChartSymbol = React.createClass({
             symbol: event.target.value
         });
     },
+    onFocus: function onFocus() {
+        this.refs["inputWrapper"].style.backgroundColor = '#233542';
+    },
+    onBlur: function onBlur() {
+        this.refs["inputWrapper"].style.backgroundColor = '#151f28';
+    },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -1682,9 +1688,16 @@ var ChartSymbol = React.createClass({
             null,
             React.createElement(
                 "div",
-                { className: "inputWrapper" },
-                React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol", onChange: function onChange(event) {
+                { ref: "inputWrapper", className: "inputWrapper" },
+                React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol",
+                    onChange: function onChange(event) {
                         self.onChange(event.nativeEvent);
+                    },
+                    onFocus: function onFocus() {
+                        self.onFocus();
+                    },
+                    onBlur: function onBlur() {
+                        self.onBlur();
                     } }),
                 React.createElement("div", { className: "symbol-btn", onClick: this.onOptionClick })
             )
@@ -1801,7 +1814,6 @@ var ChartTypes = React.createClass({
     render: function render() {
         var self = this;
         var options = _ui2.default.chartTypes.types.map(function (item, index) {
-            console.log(item);
             return React.createElement(
                 "menu-option",
                 { key: "type" + index, className: "option", onClick: function onClick() {
@@ -1866,8 +1878,10 @@ var Comparison = React.createClass({
         _ChartStore.Actions.addComparisonSeries(newSeries);
     },
     onFocus: function onFocus() {
-        console.log('focusing!');
         this.refs["inputWrapper"].style.backgroundColor = '#233542';
+    },
+    onBlur: function onBlur() {
+        this.refs["inputWrapper"].style.backgroundColor = '#151f28';
     },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
@@ -1890,6 +1904,9 @@ var Comparison = React.createClass({
                     },
                     onFocus: function onFocus() {
                         self.onFocus();
+                    },
+                    onBlur: function onBlur() {
+                        self.onBlur();
                     }, id: "symbolCompareInput", placeholder: "Add Comparison", type: "text" }),
                 React.createElement("div", { className: "comparison-btn", onClick: this.onOptionClick })
             )

@@ -147,6 +147,13 @@ var ChartSymbol = React.createClass({
         })
 
     },
+	onFocus(){
+		this.refs["inputWrapper"].style.backgroundColor='#233542';
+
+	},
+	onBlur(){
+		this.refs["inputWrapper"].style.backgroundColor='#151f28';
+	},
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
@@ -158,10 +165,13 @@ var ChartSymbol = React.createClass({
         var self = this;
         return (
 
-            <span><div className="inputWrapper">
-	            <input ref="symbolInput" id="symbolInput" type="text" placeholder="Enter Symbol" onChange={function (event) {
+            <span><div ref="inputWrapper" className="inputWrapper">
+	            <input ref="symbolInput" id="symbolInput" type="text" placeholder="Enter Symbol"
+	            onChange={function (event) {
 		            self.onChange(event.nativeEvent);
-	            }} ></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
+	            }}
+	            onFocus={function(){ self.onFocus(); }}
+	            onBlur={function(){ self.onBlur(); }}></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
             </div></span>
 
 
@@ -261,7 +271,6 @@ var ChartTypes = React.createClass({
     render: function () {
         var self = this;
         var options = configs.chartTypes.types.map(function (item, index) {
-            console.log(item);
             return <menu-option key={"type" + index} className="option" onClick={function () {
                 self.onOptionClick(item, index);
             }}>{item.label}</menu-option>
@@ -317,9 +326,11 @@ var Comparison = React.createClass({
         Actions.addComparisonSeries(newSeries);
     },
 	onFocus(){
-		    console.log('focusing!');
-			this.refs["inputWrapper"].style.backgroundColor = '#233542';
+		this.refs["inputWrapper"].style.backgroundColor='#233542';
 
+	},
+	onBlur(){
+		this.refs["inputWrapper"].style.backgroundColor='#151f28';
 	},
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
@@ -335,7 +346,8 @@ var Comparison = React.createClass({
 	            <input ref="compareInput" onChange={function (event) {
 		            self.compareChange(event.nativeEvent);
 	            }}
-	            onFocus={function(){ self.onFocus(); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
+	            onFocus={function(){ self.onFocus(); }}
+	            onBlur={function(){ self.onBlur(); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
                 </input>
                 <div className="comparison-btn" onClick={this.onOptionClick} ></div>
             </div></span>

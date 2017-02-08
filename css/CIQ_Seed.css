@@ -107,7 +107,8 @@ div.inputWrapper{
 	padding-right:3px;
 	border: #333 1px solid;
 }
-div.inputWrapper:hover #symbolInput, div.inputWrapper:hover #symbolCompareInput, div.inputWrapper:hover{
+div.inputWrapper:hover #symbolInput, div.inputWrapper:hover #symbolCompareInput, div.inputWrapper:hover,
+#symbolInput:focus, #symbolCompareInput:focus{
 	transition: background .60s 0s;
 	background-color: #233542;
 }
