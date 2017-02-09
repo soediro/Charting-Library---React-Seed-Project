@@ -618,11 +618,12 @@ var Legend = React.createClass({
   componentWillUnmount: function componentWillUnmount() {
     _ChartStore.ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
   },
-
   removeSeries: function removeSeries(comparison) {
+    console.log(comparison);
     _ChartStore.Actions.removeComparisonSeries(comparison);
     this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
   },
+
   render: function render() {
     var self = this;
     if (!this.state.comparisons || this.state.comparisons.length === 0) return React.createElement("span", null);

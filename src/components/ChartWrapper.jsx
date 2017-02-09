@@ -125,7 +125,8 @@ var Legend = React.createClass({
 	componentWillUnmount() {
 		ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
 	},
-	removeSeries: function (comparison) {
+	removeSeries(comparison) {
+		console.log(comparison);
 		Actions.removeComparisonSeries(comparison);
 		this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
 	},
@@ -139,7 +140,7 @@ var Legend = React.createClass({
 		      <div className="chartSeriesColor" style={{ "backgroundColor": comparison.parameters.color }} ></div>
 		      <div className="chartSeries">{comparison.display}</div>
 		      <div className="deleteSeries" onClick={function () {
-		        self.removeSeries(comparison)
+		        self.removeSeries(comparison);
 		      }} ></div >
 		    </div>
 		  )

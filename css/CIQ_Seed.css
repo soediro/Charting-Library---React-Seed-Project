@@ -437,6 +437,7 @@ cq-plus {
 	position:relative;
 	left:12px;
 	z-index:21;
+	cursor: default;
 }
 
 .chartSeriesColor{
@@ -473,17 +474,6 @@ cq-plus {
 
 .comparisonWrapper:first-child{
 	margin-top:35px;
-}
-
-.deleteSeries:hover .comparisonWrapper,
-.chartSeriesColor:hover .comparisonWrapper,
-.chartSeries:hover .comparisonWrapper,
-.comparisonWrapper:hover{
-	transition: background .20s 0s, padding .20s 0s, opacity .20s .20s, height .20s .40s, font-size .0s .40s, margin .2s .40s;
-	background-color: #21323f;
-	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-	opacity: 1;
-	z-index:1;
 }
 
 .comparisons{
