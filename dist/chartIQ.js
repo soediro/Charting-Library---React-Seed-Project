@@ -619,13 +619,11 @@ var Legend = React.createClass({
   },
 
   removeSeries: function removeSeries(comparison) {
-    console.log("click here");
     _ChartStore.Actions.removeComparisonSeries(comparison);
     this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
   },
   render: function render() {
     var self = this;
-    console.log("this.state.comparisons ", this.state.comparisons);
     if (!this.state.comparisons || this.state.comparisons.length === 0) return React.createElement("span", null);
 
     var comparisons = this.state.comparisons.map(function (comparison, i) {
@@ -638,13 +636,9 @@ var Legend = React.createClass({
           { className: "chartSeries" },
           comparison.display
         ),
-        React.createElement(
-          "div",
-          { className: "deleteSeries", onClick: function onClick() {
-              self.removeSeries(comparison);
-            } },
-          " x"
-        )
+        React.createElement("div", { className: "deleteSeries", onClick: function onClick() {
+            self.removeSeries(comparison);
+          } })
       );
     });
 
@@ -1667,12 +1661,6 @@ var ChartSymbol = React.createClass({
             symbol: event.target.value
         });
     },
-    onFocus: function onFocus() {
-        this.refs["symbolInput"].style.backgroundColor = '#233542';
-    },
-    onBlur: function onBlur() {
-        this.refs["symbolInput"].style.backgroundColor = '#151f28';
-    },
     handleKeyPress: function handleKeyPress(key) {
         if (key == 'Enter') {
             this.onOptionClick();
@@ -1694,12 +1682,6 @@ var ChartSymbol = React.createClass({
             React.createElement("input", { ref: "symbolInput", id: "symbolInput", type: "text", placeholder: "Enter Symbol",
                 onChange: function onChange(event) {
                     self.onChange(event.nativeEvent);
-                },
-                onFocus: function onFocus() {
-                    self.onFocus();
-                },
-                onBlur: function onBlur() {
-                    self.onBlur();
                 },
                 onKeyPress: function onKeyPress(event) {
                     self.handleKeyPress(event.key);
@@ -1881,12 +1863,6 @@ var Comparison = React.createClass({
         this.refs["compareInput"].value = "";
         _ChartStore.Actions.addComparisonSeries(newSeries);
     },
-    onFocus: function onFocus() {
-        this.refs["compareInput"].style.backgroundColor = '#233542';
-    },
-    onBlur: function onBlur() {
-        this.refs["compareInput"].style.backgroundColor = '#151f28';
-    },
     handleKeyPress: function handleKeyPress(key) {
         if (key == 'Enter') {
             this.onOptionClick();
@@ -1907,12 +1883,6 @@ var Comparison = React.createClass({
             { className: "symbol-frame" },
             React.createElement("input", { ref: "compareInput", onChange: function onChange(event) {
                     self.compareChange(event.nativeEvent);
-                },
-                onFocus: function onFocus() {
-                    self.onFocus();
-                },
-                onBlur: function onBlur() {
-                    self.onBlur();
                 },
                 onKeyPress: function onKeyPress(event) {
                     self.handleKeyPress(event.key);

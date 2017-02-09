@@ -110,47 +110,44 @@ export default class ChartWrapper extends React.Component {
 
 
 var Legend = React.createClass({
-  getInitialState: function () {
-    return {
-      comparisons: ChartStore.getComparisons()
-    }
-  },
-  onStoreChange: function () {
-    this.setState({ comparisons: ChartStore.getComparisons() });
-  },
-  componentWillMount() {
-    ChartStore.addListener(["comparisonsChange"], this.onStoreChange);
-  },
-  componentWillUnmount() {
-    ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
-  },
-  removeSeries: function (comparison) {
-    console.log("click here");
-    Actions.removeComparisonSeries(comparison);
-    this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
-  },
-  render: function () {
-    var self = this;
-    console.log("this.state.comparisons ", this.state.comparisons)
-    if (!this.state.comparisons || this.state.comparisons.length === 0) return <span></span>
+	getInitialState: function () {
+		return {
+		  comparisons: ChartStore.getComparisons()
+		}
+	},
+	onStoreChange: function () {
+		this.setState({ comparisons: ChartStore.getComparisons() });
+	},
+	componentWillMount() {
+		ChartStore.addListener(["comparisonsChange"], this.onStoreChange);
+	},
+	componentWillUnmount() {
+		ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
+	},
+	removeSeries: function (comparison) {
+		Actions.removeComparisonSeries(comparison);
+		this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
+	},
+	render: function () {
+		var self = this;
+		if (!this.state.comparisons || this.state.comparisons.length === 0) return <span></span>
 
-    var comparisons = this.state.comparisons.map(function (comparison, i) {
-      return (
-        <div className="comparisonWrapper" key={"comp" + i}>
-          <div className="chartSeriesColor" style={{ "backgroundColor": comparison.parameters.color }} ></div>
-          <div className="chartSeries">{comparison.display}</div>
-          <div className="deleteSeries" onClick={function () {
-            self.removeSeries(comparison)
-          }} > x</div >
-        </div>
-      )
-    })
+		var comparisons = this.state.comparisons.map(function (comparison, i) {
+		  return (
+		    <div className="comparisonWrapper" key={"comp" + i}>
+		      <div className="chartSeriesColor" style={{ "backgroundColor": comparison.parameters.color }} ></div>
+		      <div className="chartSeries">{comparison.display}</div>
+		      <div className="deleteSeries" onClick={function () {
+		        self.removeSeries(comparison)
+		      }} ></div >
+		    </div>
+		  )
+	});
 
-
-    return <div className="comparisons">
-        {comparisons}
-    </div>
-  }
+	return <div className="comparisons">
+	    {comparisons}
+	</div>
+	}
 });
 
 

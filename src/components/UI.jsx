@@ -147,13 +147,6 @@ var ChartSymbol = React.createClass({
         })
 
     },
-	onFocus(){
-		this.refs["symbolInput"].style.backgroundColor='#233542';
-
-	},
-	onBlur(){
-		this.refs["symbolInput"].style.backgroundColor='#151f28';
-	},
 	handleKeyPress(key){
 		if(key == 'Enter'){
 			this.onOptionClick();
@@ -175,8 +168,6 @@ var ChartSymbol = React.createClass({
 	            onChange={function (event) {
 		            self.onChange(event.nativeEvent);
 	            }}
-	            onFocus={function(){ self.onFocus(); }}
-	            onBlur={function(){ self.onBlur(); }}
 	            onKeyPress={function(event){ self.handleKeyPress(event.key); }}></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
             </span>
 
@@ -331,13 +322,6 @@ var Comparison = React.createClass({
         this.refs["compareInput"].value = "";
         Actions.addComparisonSeries(newSeries);
     },
-	onFocus(){
-		this.refs["compareInput"].style.backgroundColor='#233542';
-
-	},
-	onBlur(){
-		this.refs["compareInput"].style.backgroundColor='#151f28';
-	},
 	handleKeyPress(key){
 		if(key == 'Enter'){
 			this.onOptionClick();
@@ -357,8 +341,6 @@ var Comparison = React.createClass({
 	            <input ref="compareInput" onChange={function (event) {
 		            self.compareChange(event.nativeEvent);
 	            }}
-	            onFocus={function(){ self.onFocus(); }}
-	            onBlur={function(){ self.onBlur(); }}
 	            onKeyPress={function(event){ self.handleKeyPress(event.key); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
                 </input>
                 <div className="comparison-btn" onClick={this.onOptionClick} ></div>
