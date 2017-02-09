@@ -18,6 +18,7 @@ export default class ChartWrapper extends React.Component {
     var ciq = new CIQ.ChartEngine({
       container: $$$("#chartContainer")
     });
+    ciq.xaxisHeight=30;
     //You can add an event listener to the window,however, older browsers don't support this.
     window.addEventListener("resize", function () {
       self.updateChartContainerSize()

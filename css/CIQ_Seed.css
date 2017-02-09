@@ -53,7 +53,7 @@ nav {
 /* Standard Button Dimensions, Color */
 .ciq-nav button {
 	border-radius: 1px;
-	background: transparent;
+	background-color: transparent;
 	border: none;
 	color: #c5c7c9;
 	height: 28px;
@@ -91,9 +91,6 @@ nav {
 	height: 27px;
 }
 
-#symbolCompareInput{
-	width:115px;
-}
 #symbolInput:hover, #symbolCompareInput:hover,
 #symbolInput:focus, #symbolCompareInput:focus{
 	transition: background .60s 0s;
@@ -109,7 +106,7 @@ nav {
 
 .symbol-frame {
 	position:relative;
-	width: 120px;
+	width: 130px;
 }
 
 .symbol-btn{
@@ -117,7 +114,7 @@ nav {
     height: 27px;
     width: 27px;
     right: 15px;
-    top: -5px;
+    top: 1px;
     background-image: url(img/stx-sprite-ui.svg);
     background-position: -45px -25px;
     opacity: .6;
@@ -129,8 +126,34 @@ nav {
 }
 
 .comparison-btn{
-	margin-left:-20px;
+	position: absolute;
+    height: 27px;
+    width: 27px;
+    right: 0px;
+    top: 1px;
+    background-image: url(img/stx-sprite-ui.svg);
+    background-position: -443px -25px;
+    opacity: .6;
+    transition: opacity .20s 0s;
 }
+
+.comparison-btn { /* night theme */
+	background-position: -443px -50px;
+}
+
+.crosshair-btn{
+   height: 27px;
+    width: 27px;
+    background-image: url(img/stx-sprite-ui.svg);
+    background-position: -443px -25px;
+    opacity: .6;
+    transition: opacity .20s 0s;
+}
+
+.crosshair-btn { /* night theme */
+	background-position: -443px -50px;
+}
+
 menu-select {
 	font-size: 9pt;
 	vertical-align: middle;
@@ -443,20 +466,6 @@ menu-select:hover menu-select-options{
 	width: 12px;
 	vertical-align: middle;
 	transform: scale(1.4);
-}
-.comparison-btn:after {
-	content:url(../img/add_w.svg);
-	display: inline-block;
-	height: 30px;
-	width: 12px;
-	padding: 2px 0px;
-}
-
-.crosshair-btn:after {
-	content:url(../img/ciq-crosshairs.svg);
-	display: inline-block;
-	width: 14px;
-	transform: scale(0.7);
 }
 
 div.left{
