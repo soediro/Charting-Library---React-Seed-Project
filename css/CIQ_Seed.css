@@ -1,7 +1,7 @@
 /* General Global Style */
 
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+/*@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');*/
 
 html, body, div, span {
 	margin:0;
@@ -52,23 +52,16 @@ nav {
 
 /* Standard Button Dimensions, Color */
 .ciq-nav button {
-	border-radius: 1px;
 	background-color: transparent;
-	border: none;
-	color: #c5c7c9;
-	height: 28px;
-	width: 28px;
-	font-weight: 300;
-	outline: none;
 	vertical-align: middle;
 	cursor: pointer;
-	margin-right:8px;
+	border:solid 1px transparent;
 }
 .ciq-nav button.active, .ciq-nav button:hover, button:active, button:focus {
 	border-radius: 1px;
-	background: transparent;
 	border: solid 1px #273949;;
 	outline: none;
+	opacity: 1;
 }
 /* Input Line */
 .ciq-nav input {
@@ -102,6 +95,11 @@ nav {
 .ciq-nav .symbol-btn, .ciq-nav .comparison-btn{
 	border:none;
 	display: inline-block;
+	cursor: pointer;
+}
+
+.ciq-nav .symbol-btn:hover, .ciq-nav .comparison-btn:hover{
+	opacity: 1;
 }
 
 .symbol-frame {
@@ -141,8 +139,19 @@ nav {
 	background-position: -443px -50px;
 }
 
-.crosshair-btn{
+/* Button Icon Individuals */
+.timezone-btn {
    height: 27px;
+    width: 27px;
+    background-image: url(img/ciq-timezone.svg);
+	background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;    opacity: .6;
+    transition: opacity .20s 0s;
+}
+
+.crosshair-btn{
+	height: 27px;
     width: 27px;
     background-image: url(img/stx-sprite-ui.svg);
     background-position: -443px -25px;
@@ -165,11 +174,17 @@ menu-select {
 	border: 0px transparent;
 	list-style:none;
 	cursor: pointer;
-	margin-left: 5px;
 }
+
 menu-select span.title{
 	color: #c5c7c9;
+	transition: color .20s 0s;
 }
+
+menu-select span.title:hover{
+	color: #ffffff;
+}
+
 menu-select:after {
 	content:"";
 	position: relative;
@@ -191,7 +206,6 @@ menu-select:after {
 }
 
 menu-select-options menu-option{
-	font-size: 8pt;
 	padding: 0px 20px;
 	position:relative;
 	text-align:left;
@@ -208,7 +222,6 @@ menu-select-options menu-option:hover{
 	background:#f3f3f3;
 }
 menu-select-options{
-	font-family: 'Roboto', sans-serif;
 	margin: 5px 0px 0px -5px;
 	padding-top:0px;
 	position:absolute;
@@ -224,11 +237,32 @@ menu-select-options{
 	box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
 	border-radius: 1px;
 }
+
+#periodicitySelect menu-select-options {
+	min-width:100px;
+}
+
+#themeSelect menu-select-options {
+	min-width:100px;
+}
+
+
 menu-select:hover menu-select-options{
 	display:block;
+	padding: 10px 0 10px 0;
 }
-#themeSelect menu-select-options{
-	margin-left:-107px;
+
+cq-plus {
+    display: inline-block;
+    float: left;
+    margin-left: -8px;
+}
+cq-plus {
+    width: 27px;
+    height: 27px;
+    background-image: url(img/stx-sprite-panels.svg);
+    background-position: -100px -25px;
+    opacity: .5;
 }
 
 /* Dialog Specific CSS */
@@ -458,16 +492,6 @@ menu-select:hover menu-select-options{
 	float:left;
 }
 
-/* Button Icon Individuals */
-.timezone-btn:after {
-	content:url(../img/ciq-timezone.svg);
-	display: inline-block;
-	height: 17px;
-	width: 12px;
-	vertical-align: middle;
-	transform: scale(1.4);
-}
-
 div.left{
 	float:left;
 	height:29px;
@@ -475,6 +499,16 @@ div.left{
 }
 div.right{
 	float:right;
+}
+
+div.right > span {
+	display:inline-block;
+	margin-right:8px;
+}
+
+div.right > menu-select {
+	display:inline-block;
+	margin-right:8px;
 }
 
 div.quick-link{

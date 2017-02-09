@@ -118,9 +118,7 @@ var TimeZoneButton = React.createClass({
     render: function () {
         var self = this;
         return (
-            <span style={{
-                display: "inline-block"
-            }}><TimeZone ref="modal" ciq={this.state.ciq} /> <button className="timezone-btn" onClick={this.onClick}></button></span>
+            <span><TimeZone ref="modal" ciq={this.state.ciq} /><button className="timezone-btn" onClick={this.onClick}></button></span>
         )
     }
 });

@@ -1630,11 +1630,8 @@ var TimeZoneButton = React.createClass({
         var self = this;
         return React.createElement(
             "span",
-            { style: {
-                    display: "inline-block"
-                } },
+            null,
             React.createElement(_TimezoneModal2.default, { ref: "modal", ciq: this.state.ciq }),
-            " ",
             React.createElement("button", { className: "timezone-btn", onClick: this.onClick })
         );
     }
