@@ -41,11 +41,12 @@ var TimeZone = React.createClass({
     return (
 
       <div className="ciq dialog-overlay">
-        <div className="ciq dialog">
-              <h3 className="center">Select Time Zone</h3>
-          <ul>
+        <div className="ciq dialog timezone">
+              <h3 className="center">Select Timezone</h3>
+          <ul className="timezoneList">
             { this.state.timeZones }
           </ul>
+	        <div className="instruct">(Scroll for more options)</div>
           <div className="center"><button onClick={ this.toggle }>Done</button></div>
         </div>
       </div>

@@ -1434,16 +1434,21 @@ var TimeZone = React.createClass({
       { className: "ciq dialog-overlay" },
       React.createElement(
         "div",
-        { className: "ciq dialog" },
+        { className: "ciq dialog timezone" },
         React.createElement(
           "h3",
           { className: "center" },
-          "Select Time Zone"
+          "Select Timezone"
         ),
         React.createElement(
           "ul",
-          null,
+          { className: "timezoneList" },
           this.state.timeZones
+        ),
+        React.createElement(
+          "div",
+          { className: "instruct" },
+          "(Scroll for more options)"
         ),
         React.createElement(
           "div",
@@ -1547,7 +1552,6 @@ var StudyUI = React.createClass({
     getStudyList: function getStudyList() {
         var studies = [];
         for (var study in CIQ.Studies.studyLibrary) {
-            console.log(CIQ.Studies.studyLibrary[study]);
             if (CIQ.Studies.studyLibrary.hasOwnProperty(study)) {
                 studies.push(CIQ.Studies.studyLibrary[study].name);
             }

@@ -42,6 +42,10 @@ h3 {
 	color: #398dff;
 	margin-top: 0px;
 }
+.timezone h3{
+	display: flex;
+	justify-content: center;
+}
 nav {
 	padding: 10px 12px;
 	font-family: 'Roboto', sans-serif;
@@ -137,6 +141,24 @@ nav {
 
 .comparison-btn { /* night theme */
 	background-position: -443px -50px;
+}
+
+.timezoneList li:hover{
+	background-color: #F0F0F0;
+}
+
+.timezoneList{
+	border-top:solid 1px #ddd;
+	border-bottom:solid 1px #ddd;;
+}
+
+.timezone .instruct{
+	text-align: center;
+	margin: -6px auto 0;
+	font-style: italic;
+	font-family: Georgia,"Times New Roman",Times,serif;
+	font-size: 11px;
+	color: #999;
 }
 
 /* Button Icon Individuals */
@@ -282,8 +304,8 @@ cq-plus {
 	border:1px solid #888;
 	border-radius: 3px;
 	width:350px;
-	min-height: 330px;
-	max-height: 380px;
+	min-height: 400px;
+	max-height: 430px;
 	overflow: auto;
 	cursor: pointer;
 	font-weight: 300;
@@ -348,7 +370,7 @@ cq-plus {
 	margin-left: 5px;
 }
 .dialog ul {
-	max-height: 275px;
+	max-height: 287px;
 	overflow: scroll;
 }
 .dialog ul, .dialog li {
