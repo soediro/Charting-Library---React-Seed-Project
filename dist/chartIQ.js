@@ -1546,9 +1546,12 @@ var StudyUI = React.createClass({
     },
     getStudyList: function getStudyList() {
         var studies = [];
-        Object.keys(CIQ.Studies.studyLibrary).map(function (study, index) {
-            studies.push(study);
-        });
+        for (var study in CIQ.Studies.studyLibrary) {
+            console.log(CIQ.Studies.studyLibrary[study]);
+            if (CIQ.Studies.studyLibrary.hasOwnProperty(study)) {
+                studies.push(CIQ.Studies.studyLibrary[study].name);
+            }
+        }
         return studies.sort();
     },
     openModal: function openModal(params) {

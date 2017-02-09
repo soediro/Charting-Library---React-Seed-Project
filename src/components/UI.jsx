@@ -52,9 +52,11 @@ var StudyUI = React.createClass({
     },
     getStudyList() {
         var studies = [];
-        Object.keys(CIQ.Studies.studyLibrary).map(function (study, index) {
-            studies.push(study);
-        })
+        for(var study in CIQ.Studies.studyLibrary){
+        	if(CIQ.Studies.studyLibrary.hasOwnProperty(study)) {
+		        studies.push(CIQ.Studies.studyLibrary[study].name);
+	        }
+        }
         return studies.sort();
     },
     openModal(params) {
