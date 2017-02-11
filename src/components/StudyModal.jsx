@@ -8,8 +8,6 @@ var StudyModal = React.createClass({
       outputs:{},
       inputs:{},
       parameters:{}
-
-
     }
   },
   open(params) {
@@ -64,7 +62,7 @@ var StudyModal = React.createClass({
 
   },
   createOtherInput(input, type) {
-    return <div key={ type + input.value } className="inputs dialog-item">
+    return <div key={ type + input.name } className="inputs dialog-item">
              <input type={ type } defaultValue={ input.value }></input>
              <div>
                { input.heading }
@@ -91,7 +89,7 @@ var StudyModal = React.createClass({
     var inputs = this.state.inputs.map(function(input, index) {
       if (input.type === "select") return self.createSelectInput(input);
       return self.createOtherInput(input, input.type);
-    })
+    });
 
     var outputs = this.state.outputs.map(function(output, index) {
       return <div key={ "output" + index } className="outputs dialog-item">
@@ -102,7 +100,7 @@ var StudyModal = React.createClass({
                  { output.heading }
                </div>
              </div>
-    })
+    });
     var params = this.state.params.map(function(param,index){
         <div>
             { param.color ? <div style={ { "backgroundColor": param.color } } className="color-picker-swatch param" 

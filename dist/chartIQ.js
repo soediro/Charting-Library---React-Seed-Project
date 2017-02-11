@@ -905,7 +905,6 @@ var StudyModal = React.createClass({
       outputs: {},
       inputs: {},
       parameters: {}
-
     };
   },
   open: function open(params) {
@@ -967,9 +966,10 @@ var StudyModal = React.createClass({
     );
   },
   createOtherInput: function createOtherInput(input, type) {
+    console.log('here', input, type);
     return React.createElement(
       'div',
-      { key: type + input.value, className: 'inputs dialog-item' },
+      { key: type + input.name, className: 'inputs dialog-item' },
       React.createElement('input', { type: type, defaultValue: input.value }),
       React.createElement(
         'div',
@@ -1537,6 +1537,60 @@ var UI = React.createClass({
     }
 });
 
+var OverlayMenu = React.createClass({
+    displayName: "OverlayMenu",
+
+    getInitialState: function getInitialState() {
+        return {
+            open: false,
+            params: {},
+            top: '',
+            left: ''
+        };
+    },
+    open: function open(params) {
+        this.setState({
+            open: true,
+            params: params,
+            top: params.stx.cy + 'px',
+            left: params.stx.cx + 'px'
+        });
+    },
+    close: function close() {
+        this.setState({
+            open: false
+        });
+    },
+
+    clickHandler: function clickHandler(event) {
+        if (typeof this.props.onClick === 'function') {
+            this.props.onClick(event, this.state.params);
+        }
+    },
+    render: function render() {
+        if (!this.state.open) return React.createElement("span", null);
+        var self = this;
+        return React.createElement(
+            "span",
+            { className: "overlayMenu", style: { top: self.state.top, left: self.state.left } },
+            React.createElement(
+                "div",
+                { className: "edit", onClick: function onClick() {
+                        self.clickHandler('edit');
+                    } },
+                "Edit settings"
+            ),
+            React.createElement(
+                "div",
+                { className: "delete", onClick: function onClick() {
+                        self.clickHandler('delete');
+                    } },
+                "Delete study"
+            )
+        );
+    }
+});
+
 var StudyUI = React.createClass({
     displayName: "StudyUI",
 
@@ -1548,6 +1602,9 @@ var StudyUI = React.createClass({
     componentWillMount: function componentWillMount() {},
     addStudy: function addStudy(study) {
         CIQ.Studies.addStudy(this.state.ciq, study);
+    },
+    removeStudy: function removeStudy(params) {
+        CIQ.Studies.removeStudy(params.stx, params.sd);
     },
     getStudyList: function getStudyList() {
         var studies = [];
@@ -1561,6 +1618,9 @@ var StudyUI = React.createClass({
     openModal: function openModal(params) {
         this.refs.studyModal.open(params);
     },
+    openDialog: function openDialog(params) {
+        this.refs.overlayMenu.open(params);
+    },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         var self = this;
         if (nextProps.ciq) {
@@ -1570,7 +1630,7 @@ var StudyUI = React.createClass({
                 };
             };
 
-            nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openModal);
+            nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openDialog);
             nextProps.ciq.callbacks.studyPanelEdit = closure(self.openModal);
             this.setState({
                 ciq: nextProps.ciq
@@ -1578,6 +1638,14 @@ var StudyUI = React.createClass({
         }
     },
 
+    clickHandler: function clickHandler(event, params) {
+        if (event === 'edit') {
+            this.openModal(params);
+        } else if (event === 'delete') {
+            this.removeStudy(params);
+        }
+        this.refs.overlayMenu.close();
+    },
     render: function render() {
         var self = this;
         var studies = this.getStudyList().map(function (study, index) {
@@ -1596,6 +1664,7 @@ var StudyUI = React.createClass({
         return React.createElement(
             "span",
             null,
+            React.createElement(OverlayMenu, { ref: "overlayMenu", onClick: this.clickHandler }),
             React.createElement(_StudyModal2.default, { ref: "studyModal" }),
             React.createElement(
                 "menu-select",

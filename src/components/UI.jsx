@@ -38,6 +38,49 @@ var UI = React.createClass({
     }
 });
 
+var OverlayMenu = React.createClass({
+	getInitialState: function() {
+		return {
+			open: false,
+			params:{},
+			top:'',
+			left:''
+		}
+	},
+	open(params){
+		this.setState({
+			open: true,
+			params:params,
+			top:params.stx.cy+'px',
+			left:params.stx.cx+'px'
+		});
+	},
+	close(){
+		this.setState({
+			open: false
+		});
+	},
+	clickHandler: function(event) {
+		if (typeof this.props.onClick === 'function') {
+			this.props.onClick(event, this.state.params);
+		}
+	},
+	render: function(){
+		if (!this.state.open) return <span></span>;
+		var self=this;
+		return (
+			<span className="overlayMenu" style={{top:self.state.top, left:self.state.left}}>
+	            <div className="edit" onClick={ function() {
+		            self.clickHandler('edit');
+	            }}>Edit settings...</div>
+				<div className="delete" onClick={ function() {
+					self.clickHandler('delete');
+				}}>Delete study</div>
+            </span>
+		);
+	}
+});
+
 var StudyUI = React.createClass({
     getInitialState: function () {
         return {
@@ -50,6 +93,9 @@ var StudyUI = React.createClass({
     addStudy(study) {
         CIQ.Studies.addStudy(this.state.ciq, study);
     },
+	removeStudy(params){
+    	CIQ.Studies.removeStudy(params.stx, params.sd);
+	},
     getStudyList() {
         var studies = [];
         for(var study in CIQ.Studies.studyLibrary){
@@ -62,6 +108,9 @@ var StudyUI = React.createClass({
     openModal(params) {
         this.refs.studyModal.open(params);
     },
+	openDialog(params){
+		this.refs.overlayMenu.open(params);
+	},
     componentWillReceiveProps(nextProps) {
         var self = this;
         if (nextProps.ciq) {
@@ -70,14 +119,22 @@ var StudyUI = React.createClass({
                     fc.apply(self, arguments);
                 };
             }
-            nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openModal);
+            nextProps.ciq.callbacks.studyOverlayEdit = closure(self.openDialog);
             nextProps.ciq.callbacks.studyPanelEdit = closure(self.openModal);
             this.setState({
                 ciq: nextProps.ciq
             });
         }
-
     },
+	clickHandler: function(event, params) {
+		if(event==='edit'){
+			this.openModal(params);
+		}
+		else if(event==='delete'){
+			this.removeStudy(params);
+		}
+		this.refs.overlayMenu.close();
+	},
     render: function () {
         var self = this;
         var studies = this.getStudyList().map(function (study, index) {
@@ -88,6 +145,7 @@ var StudyUI = React.createClass({
         });
         return (
             <span>
+	            <OverlayMenu ref="overlayMenu" onClick={this.clickHandler} />
                 <StudyModal ref="studyModal" />
                 <menu-select id="studySelect">
                     <span className="title">Studies</span>
