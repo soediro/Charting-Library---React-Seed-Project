@@ -301,6 +301,7 @@ var ChartTypes = React.createClass({
             this.state.ciq.setChartType('candle');
             this.state.ciq.setAggregationType(type.type);
         } else {
+	        this.state.ciq.setAggregationType(null);
             this.state.ciq.setChartType(type.type);
         }
         this.setState({
