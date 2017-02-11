@@ -91,7 +91,8 @@ var StudyUI = React.createClass({
 
     },
     addStudy(study) {
-        CIQ.Studies.addStudy(this.state.ciq, study);
+    	var studyLookup=CIQ.Studies.getStudyList();
+        CIQ.Studies.addStudy(this.state.ciq, studyLookup[study]);
     },
 	removeStudy(params){
     	CIQ.Studies.removeStudy(params.stx, params.sd);

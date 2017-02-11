@@ -966,7 +966,6 @@ var StudyModal = React.createClass({
     );
   },
   createOtherInput: function createOtherInput(input, type) {
-    console.log('here', input, type);
     return React.createElement(
       'div',
       { key: type + input.name, className: 'inputs dialog-item' },
@@ -1578,7 +1577,7 @@ var OverlayMenu = React.createClass({
                 { className: "edit", onClick: function onClick() {
                         self.clickHandler('edit');
                     } },
-                "Edit settings"
+                "Edit settings..."
             ),
             React.createElement(
                 "div",
@@ -1601,7 +1600,8 @@ var StudyUI = React.createClass({
     },
     componentWillMount: function componentWillMount() {},
     addStudy: function addStudy(study) {
-        CIQ.Studies.addStudy(this.state.ciq, study);
+        var studyLookup = CIQ.Studies.getStudyList();
+        CIQ.Studies.addStudy(this.state.ciq, studyLookup[study]);
     },
     removeStudy: function removeStudy(params) {
         CIQ.Studies.removeStudy(params.stx, params.sd);
