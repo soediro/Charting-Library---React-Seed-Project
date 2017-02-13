@@ -1,7 +1,6 @@
 /* General Global Style */
 
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700,500,100,300,400italic|Roboto+Condensed:400,700,300');
 
 html, body, div, span {
 	margin:0;
@@ -82,7 +81,6 @@ nav {
 
 .overlayMenu{
 	width:130px;
-	height:53px;
 	display:inline-block;
 	position: fixed;
 	text-align: left;
@@ -93,12 +91,13 @@ nav {
 }
 
 .overlayMenu div{
-	padding:3px;
-	cursor: pointer;
+    padding: 0 20px;
+    cursor: pointer;
+    line-height: 27px;
 }
 
 .overlayMenu div:hover{
-	background: #b1b1b1;
+	background: #f3f3f3;
 }
 
 #symbolCompareInput, #symbolInput{
@@ -374,6 +373,10 @@ cq-plus {
 	border:2px inset #e4e4e4;
 	color: black;
     padding: initial;
+    padding-left:5px;
+}
+#inputs select {
+	height:28px;
 }
 #parameters .dialog-item input{
 	float:right;
