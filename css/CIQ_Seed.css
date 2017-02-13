@@ -393,6 +393,7 @@ cq-plus {
 .dialog ul {
 	max-height: 287px;
 	overflow: scroll;
+	overflow-x: hidden;
 }
 .dialog ul, .dialog li {
 	list-style: none;
