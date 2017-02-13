@@ -58,3 +58,7 @@ componentDidMount() {
 
 This project is using Webpack to transform JSX and ES6 to ES5. The configs for this are in the `webpack.config.js`. Running the `webpack` command inside of your command line tool will create a file `dist/chartIQ.js` . This is a transformed and bundled version of everything in the src directory. `src/index.js` will automatically load this file.
 
+
+## Contributing to this project
+
+If you wish to contribute to this project, please do all your work on your own branch and then submit a pull request. One of the contributors will then review the submitted code and either merge it into master or request changes from you.
