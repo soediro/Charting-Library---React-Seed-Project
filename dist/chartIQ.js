@@ -1401,6 +1401,18 @@ var TimeZone = React.createClass({
     for (var zone in CIQ.timeZoneMap) {
       addZone(CIQ.timeZoneMap[zone]);
     }
+    zones.sort(function (a, b) {
+      var A = a.key;
+      var B = b.key;
+      if (A < B) {
+        return -1;
+      }
+      if (A > B) {
+        return 1;
+      }
+      // must be equal
+      return 0;
+    });
     return {
       ciq: null,
       open: false,
@@ -2011,15 +2023,15 @@ var ThemeUI = React.createClass({
                 "settings": // the default theme settings
                 {
                     "chart": {
-                        "Axis Text": { "color": "rgba(186,189,192,1)" },
+                        "Axis Text": { "color": "rgba(197,199,201,1)" },
                         "Background": { "color": "rgba(28,42,53,1)" },
-                        "Grid Dividers": { "color": "rgba(153,153,153,1)" },
-                        "Grid Lines": { "color": "rgba(32,48,60,1)" }
+                        "Grid Dividers": { "color": "rgba(37,55,70,1)" },
+                        "Grid Lines": { "color": "rgba(33,50,63,1)" }
                     },
                     "chartTypes": {
                         "Candle/Bar": {
-                            "down": { "border": "rgba(0,0,0,1)", "color": "rgba(184,44,12,1)", "wick": "rgba(0,0,0,1)" },
-                            "up": { "border": "rgba(0,0,0,1)", "color": "rgba(140,193,118,1)", "wick": "rgba(0,0,0,1)" }
+                            "down": { "border": "rgba(227,70,33,1)", "color": "rgba(184,44,12,1)", "wick": "rgba(0,0,0,1)" },
+                            "up": { "border": "rgba(184,222,168,1)", "color": "rgba(140,193,118,1)", "wick": "rgba(0,0,0,1)" }
                         },
                         "Line": { "color": "rgba(0,0,0,1)" },
                         "Mountain": { "color": "rgba(102,202,196,0.498039)" }

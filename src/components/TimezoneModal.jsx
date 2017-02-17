@@ -12,6 +12,18 @@ var TimeZone = React.createClass({
     for (var zone in CIQ.timeZoneMap) {
       addZone(CIQ.timeZoneMap[zone]);
     }
+    zones.sort(function(a, b) {
+	    var A = a.key; // sort by the keys (effectively the names of the zones)
+	    var B = b.key;
+	    if (A < B) {
+		    return -1;
+	    }
+	    if (A > B) {
+		    return 1;
+	    }
+	    // must be equal
+	    return 0;
+    });
     return {
       ciq: null,
       open: false,
