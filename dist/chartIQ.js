@@ -558,7 +558,6 @@ var ChartWrapper = function (_React$Component) {
           useDefaultQuoteFeed: true
         }
       });
-      console.log("set state");
       this.setState({ chartSeries: this.state.chartSeries.push(newSeries) });
     }
   }, {
@@ -619,7 +618,6 @@ var Legend = React.createClass({
     _ChartStore.ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
   },
   removeSeries: function removeSeries(comparison) {
-    console.log(comparison);
     _ChartStore.Actions.removeComparisonSeries(comparison);
     this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
   },
@@ -1954,6 +1952,7 @@ var Comparison = React.createClass({
     },
     onOptionClick: function onOptionClick() {
         if (!this.state.ciq) return;
+        if (!this.state.ciq.callbacks.symbolChange) this.state.ciq.callbacks.symbolChange = this.updateComparisonSeries;
         function getRandomColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -1985,6 +1984,13 @@ var Comparison = React.createClass({
             return this.setState({
                 ciq: nextProps.ciq
             });
+        }
+    },
+    updateComparisonSeries: function updateComparisonSeries() {
+        if (arguments[0].action == 'remove-series') {
+            _ChartStore.Actions.removeComparisonSeries(arguments[0].symbolObject);
+            //this.props.ciq.removeSeries(arguments[0].symbol, this.props.ciq.ciq);
+            console.log(arguments);
         }
     },
 
@@ -2092,10 +2098,6 @@ var ThemeUI = React.createClass({
             settings: theme
         };
         this.state.themeList.splice(this.state.themeList.length - 1, 0, item);
-        /*this.state.themeList.push({
-            name: themeName,
-            settings: theme
-        });*/
         this.setState({
             themeList: this.state.themeList
         });

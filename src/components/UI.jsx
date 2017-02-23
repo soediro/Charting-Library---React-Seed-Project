@@ -273,7 +273,7 @@ var Periodicity = React.createClass({
             return <menu-option key={"period" + index} className="option" onClick={function () {
                 self.onOptionClick(item.period, item.interval, index);
             }}>{item.label}</menu-option>
-        })
+        });
 
         return (
             <span>
@@ -361,6 +361,7 @@ var Comparison = React.createClass({
     },
     onOptionClick() {
         if (!this.state.ciq) return;
+	    if(!this.state.ciq.callbacks.symbolChange) this.state.ciq.callbacks.symbolChange=this.updateComparisonSeries;
         function getRandomColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -394,6 +395,11 @@ var Comparison = React.createClass({
             });
         }
     },
+	updateComparisonSeries(){
+		if(arguments[0].action=='remove-series'){
+			Actions.removeComparisonSeries(arguments[0].symbolObject);
+		}
+	},
     render: function () {
         var self = this;
         return (
@@ -491,10 +497,6 @@ var ThemeUI = React.createClass({
 		    settings: theme
 	    };
 	    this.state.themeList.splice((this.state.themeList.length-1), 0, item);
-        /*this.state.themeList.push({
-            name: themeName,
-            settings: theme
-        });*/
         this.setState({
             themeList: this.state.themeList
         });

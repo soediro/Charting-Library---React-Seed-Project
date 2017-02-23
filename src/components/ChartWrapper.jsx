@@ -83,7 +83,6 @@ export default class ChartWrapper extends React.Component {
         useDefaultQuoteFeed: true
       }
     });
-    console.log("set state")
     this.setState({ chartSeries: this.state.chartSeries.push(newSeries) })
   }
   attachFeed(feed) {
@@ -93,7 +92,6 @@ export default class ChartWrapper extends React.Component {
   }
   render() {
     var windowSize = this.getWindowSize();
-    console.log("this.state.chartSeries", this.state.chartSeries)
     return (<div>
       <UI ciq={this.state.ciq ? this.state.ciq : null} />
       <div className="ciq-chart-area">
@@ -126,7 +124,6 @@ var Legend = React.createClass({
 		ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
 	},
 	removeSeries(comparison) {
-		console.log(comparison);
 		Actions.removeComparisonSeries(comparison);
 		this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
 	},
