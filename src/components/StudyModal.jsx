@@ -117,6 +117,7 @@ var StudyModal = React.createClass({
       <div className="dialog-overlay" id="studyDialog">
         <ColorPicker ref="colorPicker"/>
         <div className="dialog">
+	      <div className="cq-close" onClick={ this.close }></div>
           <h3>
             { this.state.studyHelper ? this.state.studyHelper.title : "" }
           </h3>

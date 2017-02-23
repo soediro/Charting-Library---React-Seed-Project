@@ -1036,6 +1036,7 @@ var StudyModal = React.createClass({
       React.createElement(
         'div',
         { className: 'dialog' },
+        React.createElement('div', { className: 'cq-close', onClick: this.close }),
         React.createElement(
           'h3',
           null,
