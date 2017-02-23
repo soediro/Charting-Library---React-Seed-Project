@@ -1387,6 +1387,11 @@ var TimeZone = React.createClass({
   getInitialState: function getInitialState() {
     var zones = [];
     var self = this;
+    var myZone = React.createElement(
+      "div",
+      { className: "current-location-message" },
+      "Your timezone is your current location"
+    );
     function addZone(zone) {
       zones.push(React.createElement(
         "li",
@@ -1402,7 +1407,7 @@ var TimeZone = React.createClass({
       addZone(CIQ.timeZoneMap[zone]);
     }
     zones.sort(function (a, b) {
-      var A = a.key;
+      var A = a.key; // sort by the keys (effectively the names of the zones)
       var B = b.key;
       if (A < B) {
         return -1;
@@ -1416,7 +1421,8 @@ var TimeZone = React.createClass({
     return {
       ciq: null,
       open: false,
-      timeZones: zones
+      timeZones: zones,
+      myZone: myZone
     };
   },
   toggle: function toggle() {
@@ -1426,6 +1432,20 @@ var TimeZone = React.createClass({
   },
   setTimeZone: function setTimeZone(zone) {
     this.state.ciq.setTimeZone(this.state.ciq.dataZone, "America/Costa_Rica");
+    this.getMyZoneObj();
+    if (this.state.ciq.chart.symbol) this.state.ciq.draw();
+    this.toggle();
+  },
+  myTimeZone: function myTimeZone() {
+    this.state.ciq.defaultDisplayTimeZone = null;
+    for (var i = 0; i < CIQ.ChartEngine.registeredContainers.length; i++) {
+      var stx = CIQ.ChartEngine.registeredContainers[i].stx;
+      stx.displayZone = null;
+      stx.setTimeZone();
+
+      if (stx.displayInitialized) stx.draw();
+    }
+    this.getMyZoneObj();
     if (this.state.ciq.chart.symbol) this.state.ciq.draw();
     this.toggle();
   },
@@ -1434,6 +1454,21 @@ var TimeZone = React.createClass({
       return this.setState({
         ciq: nextProps.ciq
       });
+    }
+  },
+  getMyZoneObj: function getMyZoneObj() {
+    if (this.state.ciq.displayZone) {
+      this.state.myZone = React.createElement(
+        "button",
+        { className: "current-location-btn", onClick: this.myTimeZone },
+        "Use my current location"
+      );
+    } else {
+      this.state.myZone = React.createElement(
+        "div",
+        { className: "current-location-message" },
+        "Your timezone is your current location"
+      );
     }
   },
 
@@ -1446,11 +1481,13 @@ var TimeZone = React.createClass({
       React.createElement(
         "div",
         { className: "ciq dialog timezone" },
+        React.createElement("div", { className: "cq-close", onClick: this.toggle }),
         React.createElement(
           "h3",
           { className: "center" },
           "Select Timezone"
         ),
+        this.state.myZone,
         React.createElement(
           "ul",
           { className: "timezoneList" },
@@ -1460,21 +1497,11 @@ var TimeZone = React.createClass({
           "div",
           { className: "instruct" },
           "(Scroll for more options)"
-        ),
-        React.createElement(
-          "div",
-          { className: "center" },
-          React.createElement(
-            "button",
-            { onClick: this.toggle },
-            "Done"
-          )
         )
       )
     );
   }
 });
-
 module.exports = TimeZone;
 
 /***/ }),

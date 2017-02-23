@@ -38,7 +38,7 @@ h3 {
 	font-weight: 300;
 	font-size: 11pt;
 	text-transform: uppercase;
-	color: #398dff;
+	color: #000;
 	margin-top: 0px;
 }
 .timezone h3{
@@ -135,7 +135,7 @@ nav {
 	position: absolute;
     height: 27px;
     width: 27px;
-    right: 15px;
+    right: 10px;
     top: 1px;
     background-image: url(img/stx-sprite-ui.svg);
     background-position: -45px -25px;
@@ -169,7 +169,7 @@ nav {
 
 .timezoneList{
 	border-top:solid 1px #ddd;
-	border-bottom:solid 1px #ddd;;
+	border-bottom:solid 1px #ddd;
 }
 
 .timezone .instruct{
@@ -188,11 +188,41 @@ nav {
     background-image: url(img/ciq-timezone.svg);
 	background-size: 20px 20px;
     background-repeat: no-repeat;
-    background-position: center;    opacity: .6;
+    background-position: center;
+	opacity: .6;
     transition: opacity .20s 0s;
 }
 
-.crosshair-btn{
+.current-location-message {
+	text-align: center;
+	margin: -6px auto 0;
+	color: #999;
+}
+
+.dialog button.current-location-btn {
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #398dff;
+	position: relative;
+	height: 27px;
+	padding: 0 10px;
+	cursor: pointer;
+	border: none;
+	box-sizing: border-box;
+	border-radius: 1px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	margin-right: auto;
+	margin-left: 20%;
+}
+
+.dialog button.current-location-btn:hover {
+	padding:0 10px;
+	font-size: 11px;
+	box-shadow: 0 1px 2px rgba(69,143,209, 0.8);
+}
+
+.crosshair-btn {
 	height: 27px;
     width: 27px;
     background-image: url(img/stx-sprite-ui.svg);
@@ -402,6 +432,27 @@ cq-plus {
 	list-style: none;
 	padding-left: 0px;
 	color:#666;
+}
+div.cq-close:after{
+	background-position: -253px -25px;
+	position: absolute;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	content: "";
+	opacity: 0.5;
+	background-image: url(img/stx-sprite-panels.svg);
+}
+div.cq-close{
+	float: right;
+	margin-top: -15px;
+	margin-right: -28px;
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	text-shadow: none;
+	color: transparent;
 }
 #colorPicker{
 	position:relative;
