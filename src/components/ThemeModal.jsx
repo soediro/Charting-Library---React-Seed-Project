@@ -163,12 +163,12 @@ var ThemeModal = React.createClass({
             <span className = "ciq dialog-overlay" >
             <ColorPicker ref="colorPicker"/>
               <div className="ciq dialog">
+	            <div className="cq-close" onClick={ this.closeDialog }></div>
                 <div className="heading">Custom Theme</div>
                 { sections }
                 <div className="dialog-item theme-save">
                   <input className="ciq" ref ="themeName" type="text" placeholder="Name Your Theme" onChange={this.updateThemeName}></input>
                   <button className="pull-right ciq" onClick={this.saveSettings}>Save</button>
-                  <button className="pull-right ciq" onClick={this.closeDialog}>Close</button>
                 </div>
               </div>
             </span>

@@ -1248,6 +1248,7 @@ var ThemeModal = React.createClass({
             React.createElement(
                 'div',
                 { className: 'ciq dialog' },
+                React.createElement('div', { className: 'cq-close', onClick: this.closeDialog }),
                 React.createElement(
                     'div',
                     { className: 'heading' },
@@ -1262,11 +1263,6 @@ var ThemeModal = React.createClass({
                         'button',
                         { className: 'pull-right ciq', onClick: this.saveSettings },
                         'Save'
-                    ),
-                    React.createElement(
-                        'button',
-                        { className: 'pull-right ciq', onClick: this.closeDialog },
-                        'Close'
                     )
                 )
             )
