@@ -2087,10 +2087,15 @@ var ThemeUI = React.createClass({
         this.refs.themeModal.openDialog(this.addTheme);
     },
     addTheme: function addTheme(theme, themeName) {
-        this.state.themeList.push({
+        var item = {
             name: themeName,
             settings: theme
-        });
+        };
+        this.state.themeList.splice(this.state.themeList.length - 1, 0, item);
+        /*this.state.themeList.push({
+            name: themeName,
+            settings: theme
+        });*/
         this.setState({
             themeList: this.state.themeList
         });
