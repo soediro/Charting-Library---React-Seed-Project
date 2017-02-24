@@ -468,8 +468,8 @@ var ChartWrapper = function (_React$Component) {
       ciq: null,
       feed: "Demo",
       service: null,
-      chartSeries: []
-
+      chartSeries: [],
+      loader: false
     };
     return _this;
   }
@@ -535,11 +535,6 @@ var ChartWrapper = function (_React$Component) {
       this.state.ciq.layout.crosshair = !state;
     }
   }, {
-    key: "changeSymbol",
-    value: function changeSymbol(symbol) {
-      this.state.ciq.newChart(symbol);
-    }
-  }, {
     key: "addComparison",
     value: function addComparison(symbolComparison) {
 
@@ -568,27 +563,41 @@ var ChartWrapper = function (_React$Component) {
       });
     }
   }, {
+    key: "showLoader",
+    value: function showLoader() {
+      this.setState({
+        loader: true
+      });
+    }
+  }, {
+    key: "hideLoader",
+    value: function hideLoader() {
+      this.setState({
+        loader: false
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var windowSize = this.getWindowSize();
-      console.log("this.state.chartSeries", this.state.chartSeries);
       return React.createElement(
         "div",
         null,
-        React.createElement(_UI2.default, { ciq: this.state.ciq ? this.state.ciq : null }),
+        React.createElement(_UI2.default, { showLoader: this.showLoader.bind(this), hideLoader: this.hideLoader.bind(this), ciq: this.state.ciq ? this.state.ciq : null }),
         React.createElement(
           "div",
           { className: "ciq-chart-area" },
           React.createElement(
             "div",
             { id: "chartContainer", className: "chartContainer" },
+            React.createElement("div", { className: this.state.loader ? 'loader' : '' }),
             React.createElement(Legend, { ciq: this.state.ciq })
           )
         ),
         React.createElement(
           "div",
           { className: "ciq-footer" },
-          React.createElement(BottomUI, { ciq: this.state.ciq ? this.state.ciq : null })
+          React.createElement(BottomUI, { showLoader: this.showLoader.bind(this), hideLoader: this.hideLoader.bind(this), ciq: this.state.ciq ? this.state.ciq : null })
         )
       );
     }
@@ -694,12 +703,21 @@ var BottomUI = React.createClass({
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     if (nextProps.ciq) {
       return this.setState({
-        ciq: nextProps.ciq
+        ciq: nextProps.ciq,
+        showLoader: nextProps.showLoader,
+        hideLoader: nextProps.hideLoader
       });
     }
   },
   setSpan: function setSpan(span, multiplier) {
-    if (this.state.ciq) this.state.ciq.setSpan({ span: span, multiplier: multiplier });
+    if (this.state.ciq) {
+      this.props.showLoader();
+      this.state.ciq.setSpan({ span: span, multiplier: multiplier });
+      var that = this;
+      window.setTimeout(function () {
+        that.props.hideLoader();
+      }, 1000);
+    }
   },
   render: function render() {
     var self = this;
@@ -1537,7 +1555,9 @@ var UI = React.createClass({
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
-                ciq: nextProps.ciq
+                ciq: nextProps.ciq,
+                showLoader: nextProps.showLoader,
+                hideLoader: nextProps.hideLoader
             });
         }
     },
@@ -1552,13 +1572,13 @@ var UI = React.createClass({
                 React.createElement(
                     "div",
                     { className: "left" },
-                    React.createElement(ChartSymbol, { ciq: this.state.ciq }),
+                    React.createElement(ChartSymbol, { showLoader: this.props.showLoader.bind(this), hideLoader: this.props.hideLoader.bind(this), ciq: this.state.ciq }),
                     React.createElement(Comparison, { ciq: this.state.ciq })
                 ),
                 React.createElement(
                     "div",
                     { className: "right" },
-                    React.createElement(Periodicity, { ciq: this.state.ciq }),
+                    React.createElement(Periodicity, { showLoader: this.props.showLoader.bind(this), hideLoader: this.props.hideLoader.bind(this), ciq: this.state.ciq }),
                     React.createElement(ChartTypes, { ciq: this.state.ciq }),
                     React.createElement(StudyUI, { ciq: this.state.ciq }),
                     React.createElement(ThemeUI, { ciq: this.state.ciq }),
@@ -1759,11 +1779,16 @@ var ChartSymbol = React.createClass({
     },
     onOptionClick: function onOptionClick() {
         if (!this.state.ciq || !this.state.symbol) return;
+        this.props.showLoader();
         this.state.ciq.newChart(this.state.symbol);
         this.setState({
             symbol: null
         });
         this.refs["symbolInput"].value = "";
+        var that = this;
+        window.setTimeout(function () {
+            that.props.hideLoader();
+        }, 1000);
     },
     onChange: function onChange(event) {
         this.setState({
@@ -1778,7 +1803,9 @@ var ChartSymbol = React.createClass({
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
-                ciq: nextProps.ciq
+                ciq: nextProps.ciq,
+                showLoader: nextProps.showLoader,
+                hideLoader: nextProps.hideLoader
             });
         }
     },
@@ -1811,16 +1838,23 @@ var Periodicity = React.createClass({
     },
     onOptionClick: function onOptionClick(period, interval, index) {
         if (!this.state.ciq) return;
+        this.props.showLoader();
         this.state.ciq.setPeriodicityV2(period, interval);
         this.setState({
             activeOption: _ui2.default.periodicity.options[index]
         });
+        var that = this;
+        window.setTimeout(function () {
+            that.props.hideLoader();
+        }, 1000);
     },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
                 ciq: nextProps.ciq,
-                activeOption: this.getCurrentOption(nextProps.ciq.layout)
+                activeOption: this.getCurrentOption(nextProps.ciq.layout),
+                showLoader: nextProps.showLoader,
+                hideLoader: nextProps.hideLoader
             });
         }
     },
@@ -1989,8 +2023,6 @@ var Comparison = React.createClass({
     updateComparisonSeries: function updateComparisonSeries() {
         if (arguments[0].action == 'remove-series') {
             _ChartStore.Actions.removeComparisonSeries(arguments[0].symbolObject);
-            //this.props.ciq.removeSeries(arguments[0].symbol, this.props.ciq.ciq);
-            console.log(arguments);
         }
     },
 

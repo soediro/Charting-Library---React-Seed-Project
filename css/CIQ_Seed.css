@@ -525,6 +525,16 @@ div.cq-close{
 	border:1px solid #aaa;
 }
 
+div.loader{
+	background-image: url(img/loading-spin-white.svg);
+	display:block;
+	position: absolute;
+	height: 32px;
+	width: 32px;
+	left: 50%;
+	top: 50%;
+}
+
 .chartContainer{
 	width:100%;
 	min-height:100%;
@@ -623,4 +633,8 @@ div.quick-link{
 	font-weight: 400;
 	height:100%;
 	margin-top: 10px;
+}
+
+div.quick-link:hover{
+	color:white;
 }

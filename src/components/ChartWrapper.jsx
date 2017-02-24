@@ -9,8 +9,8 @@ export default class ChartWrapper extends React.Component {
       ciq: null,
       feed: "Demo",
       service: null,
-      chartSeries: []
-
+      chartSeries: [],
+	  loader:false
     };
   }
   componentDidMount() {
@@ -63,9 +63,6 @@ export default class ChartWrapper extends React.Component {
     this.state.ciq.layout.crosshair = !state;
 
   };
-  changeSymbol(symbol) {
-    this.state.ciq.newChart(symbol);
-  };
   addComparison(symbolComparison) {
 
     function getRandomColor() {
@@ -90,17 +87,28 @@ export default class ChartWrapper extends React.Component {
       refreshInterval: 1
     });
   }
+  showLoader(){
+  	this.setState({
+  		loader:true
+    });
+  }
+  hideLoader(){
+	  this.setState({
+		  loader:false
+	  });
+  }
   render() {
     var windowSize = this.getWindowSize();
     return (<div>
-      <UI ciq={this.state.ciq ? this.state.ciq : null} />
+      <UI showLoader={this.showLoader.bind(this)} hideLoader={this.hideLoader.bind(this)} ciq={this.state.ciq ? this.state.ciq : null} />
       <div className="ciq-chart-area">
         <div id="chartContainer" className="chartContainer">
+	        <div className={this.state.loader ? 'loader' : ''}></div>
 	        <Legend ciq={this.state.ciq} />
         </div>
       </div>
       <div className="ciq-footer">
-        <BottomUI ciq={this.state.ciq ? this.state.ciq : null} />
+        <BottomUI showLoader={this.showLoader.bind(this)} hideLoader={this.hideLoader.bind(this)} ciq={this.state.ciq ? this.state.ciq : null} />
       </div>
     </div>
     );
@@ -195,12 +203,21 @@ var BottomUI = React.createClass({
   componentWillReceiveProps(nextProps) {
     if (nextProps.ciq) {
       return this.setState({
-        ciq: nextProps.ciq
+          ciq: nextProps.ciq,
+	      showLoader: nextProps.showLoader,
+	      hideLoader: nextProps.hideLoader
       });
     }
   },
   setSpan(span, multiplier) {
-    if (this.state.ciq) this.state.ciq.setSpan({ span: span, multiplier: multiplier });
+    if (this.state.ciq) {
+	    this.props.showLoader();
+	    this.state.ciq.setSpan({span: span, multiplier: multiplier});
+	    var that=this;
+	    window.setTimeout(function() {
+		    that.props.hideLoader();
+	    }, 1000);
+    }
   },
   render() {
     var self = this;

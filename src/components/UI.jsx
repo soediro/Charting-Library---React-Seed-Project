@@ -12,7 +12,9 @@ var UI = React.createClass({
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
-                ciq: nextProps.ciq
+                ciq: nextProps.ciq,
+	            showLoader: nextProps.showLoader,
+	            hideLoader: nextProps.hideLoader
             });
         }
     },
@@ -21,11 +23,11 @@ var UI = React.createClass({
             <ciq-UI-Wrapper>
                 <nav className="ciq-nav">
                     <div className="left">
-                        <ChartSymbol ciq={this.state.ciq} />
+                        <ChartSymbol showLoader={this.props.showLoader.bind(this)} hideLoader={this.props.hideLoader.bind(this)} ciq={this.state.ciq} />
                         <Comparison ciq={this.state.ciq} />
                     </div>
                     <div className="right">
-                        <Periodicity ciq={this.state.ciq} />
+                        <Periodicity showLoader={this.props.showLoader.bind(this)} hideLoader={this.props.hideLoader.bind(this)} ciq={this.state.ciq} />
                         <ChartTypes ciq={this.state.ciq} />
                         <StudyUI ciq={this.state.ciq} />
                         <ThemeUI ciq={this.state.ciq} />
@@ -193,18 +195,21 @@ var ChartSymbol = React.createClass({
     },
     onOptionClick() {
         if (!this.state.ciq || !this.state.symbol) return;
+        this.props.showLoader();
         this.state.ciq.newChart(this.state.symbol);
         this.setState({
             symbol: null
-        })
+        });
         this.refs["symbolInput"].value="";
-
+        var that=this;
+	    window.setTimeout(function() {
+		    that.props.hideLoader();
+	    }, 1000);
     },
     onChange(event) {
         this.setState({
             symbol: event.target.value
         })
-
     },
 	handleKeyPress(key){
 		if(key == 'Enter'){
@@ -214,7 +219,9 @@ var ChartSymbol = React.createClass({
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
-                ciq: nextProps.ciq
+                ciq: nextProps.ciq,
+	            showLoader: nextProps.showLoader,
+	            hideLoader: nextProps.hideLoader
             });
         }
     },
@@ -244,17 +251,23 @@ var Periodicity = React.createClass({
     },
     onOptionClick(period, interval, index) {
         if (!this.state.ciq) return;
+	    this.props.showLoader();
         this.state.ciq.setPeriodicityV2(period, interval);
         this.setState({
             activeOption: configs.periodicity.options[index]
-        })
-
+        });
+	    var that=this;
+	    window.setTimeout(function() {
+		    that.props.hideLoader();
+	    }, 1000);
     },
     componentWillReceiveProps(nextProps) {
         if (nextProps.ciq) {
             return this.setState({
                 ciq: nextProps.ciq,
-                activeOption: this.getCurrentOption(nextProps.ciq.layout)
+                activeOption: this.getCurrentOption(nextProps.ciq.layout),
+	            showLoader: nextProps.showLoader,
+	            hideLoader: nextProps.hideLoader
             });
         }
     },
