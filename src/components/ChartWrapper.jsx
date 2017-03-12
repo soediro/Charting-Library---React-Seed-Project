@@ -57,31 +57,11 @@ export default class ChartWrapper extends React.Component {
       this.state.ciq.setAggregationType('ohlc');
     }
   };
-
   toggleCrosshairs() {
     var state = this.state.ciq.layout.crosshair;
     this.state.ciq.layout.crosshair = !state;
 
   };
-  addComparison(symbolComparison) {
-
-    function getRandomColor() {
-      var letters = '0123456789ABCDEF';
-      var color = '#';
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
-    var newSeries = this.state.ciq.addSeries(symbolComparison, {
-      isComparison: false,
-      color: getRandomColor(),
-      data: {
-        useDefaultQuoteFeed: true
-      }
-    });
-    this.setState({ chartSeries: this.state.chartSeries.push(newSeries) })
-  }
   attachFeed(feed) {
     this.state.ciq.attachQuoteFeed(feed, {
       refreshInterval: 1
@@ -110,11 +90,9 @@ export default class ChartWrapper extends React.Component {
       <div className="ciq-footer">
         <BottomUI showLoader={this.showLoader.bind(this)} hideLoader={this.hideLoader.bind(this)} ciq={this.state.ciq ? this.state.ciq : null} />
       </div>
-    </div>
-    );
+    </div>);
   }
 }
-
 
 var Legend = React.createClass({
 	getInitialState: function () {

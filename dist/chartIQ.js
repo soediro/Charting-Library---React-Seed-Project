@@ -228,6 +228,7 @@ var Actions = {
         });
     },
     removeComparisonSeries: function removeComparisonSeries(comparisons) {
+        console.log(comparisons);
         Dispatcher.dispatch({
             actionType: constants.REMOVE_COMPARISON_SERIES,
             data: comparisons
@@ -533,27 +534,6 @@ var ChartWrapper = function (_React$Component) {
     value: function toggleCrosshairs() {
       var state = this.state.ciq.layout.crosshair;
       this.state.ciq.layout.crosshair = !state;
-    }
-  }, {
-    key: "addComparison",
-    value: function addComparison(symbolComparison) {
-
-      function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
-      var newSeries = this.state.ciq.addSeries(symbolComparison, {
-        isComparison: false,
-        color: getRandomColor(),
-        data: {
-          useDefaultQuoteFeed: true
-        }
-      });
-      this.setState({ chartSeries: this.state.chartSeries.push(newSeries) });
     }
   }, {
     key: "attachFeed",
@@ -1652,7 +1632,6 @@ var StudyUI = React.createClass({
             ciq: null
         };
     },
-    componentWillMount: function componentWillMount() {},
     addStudy: function addStudy(study) {
         var studyLookup = CIQ.Studies.getStudyList();
         CIQ.Studies.addStudy(this.state.ciq, studyLookup[study]);
@@ -1975,8 +1954,7 @@ var Comparison = React.createClass({
     getInitialState: function getInitialState() {
         return {
             ciq: null,
-            symbol: null,
-            chartSeries: []
+            symbol: null
         };
     },
     compareChange: function compareChange(event) {
@@ -2021,8 +1999,11 @@ var Comparison = React.createClass({
         }
     },
     updateComparisonSeries: function updateComparisonSeries() {
+        console.log('here!');
+        console.log(arguments);
         if (arguments[0].action == 'remove-series') {
-            _ChartStore.Actions.removeComparisonSeries(arguments[0].symbolObject);
+            _ChartStore.Actions.removeComparisonSeries(arguments[0].stx.chart.series[arguments[0].symbol]);
+            this.state.ciq.removeSeries(arguments[0].symbol, this.state.ciq.chart);
         }
     },
 

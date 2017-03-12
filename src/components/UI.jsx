@@ -2,7 +2,7 @@ import configs from "../../configs/ui.js";
 import TimeZone from "./TimezoneModal";
 import ThemeModal from "./ThemeModal";
 import StudyModal from "./StudyModal";
-import { ChartStore, Actions } from "../stores/ChartStore";
+import { Actions } from "../stores/ChartStore";
 var UI = React.createClass({
     getInitialState: function () {
         return {
@@ -88,9 +88,6 @@ var StudyUI = React.createClass({
         return {
             ciq: null
         }
-    },
-    componentWillMount() {
-
     },
     addStudy(study) {
     	var studyLookup=CIQ.Studies.getStudyList();
@@ -363,8 +360,7 @@ var Comparison = React.createClass({
     getInitialState: function () {
         return {
             ciq: null,
-            symbol: null,
-            chartSeries: []
+            symbol: null
         }
     },
     compareChange(event) {
@@ -409,8 +405,11 @@ var Comparison = React.createClass({
         }
     },
 	updateComparisonSeries(){
+		console.log('here!');
+		console.log(arguments);
 		if(arguments[0].action=='remove-series'){
-			Actions.removeComparisonSeries(arguments[0].symbolObject);
+			Actions.removeComparisonSeries(arguments[0].stx.chart.series[arguments[0].symbol]);
+			this.state.ciq.removeSeries(arguments[0].symbol, this.state.ciq.chart);
 		}
 	},
     render: function () {

@@ -65,6 +65,7 @@ var Actions = {
         });
     },
     removeComparisonSeries: function (comparisons) {
+    	console.log(comparisons);
         Dispatcher.dispatch({
             actionType: constants.REMOVE_COMPARISON_SERIES,
             data: comparisons
