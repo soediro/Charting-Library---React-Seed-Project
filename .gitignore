@@ -1,4 +1,27 @@
+# Vendor files
 node_modules/
 launch.json
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# ChartIQ library files
+chartiq/
+
+# Yarn lock file (https://yarnpkg.com)
+yarn.lock
+
+# Editor files
+.idea
+.vscode/
+
+# OS generated files
 .DS_Store
-/chartiq/*
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
