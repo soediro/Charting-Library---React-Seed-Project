@@ -2,6 +2,9 @@
 node_modules/
 launch.json
 
+# Distribution folder
+dist/
+
 # Optional npm cache directory
 .npm
 
