@@ -69,4 +69,5 @@ If you have questions or get stuck using this project or the ChartIQ library, th
 
 ## Contributing to this project
 
-If you wish to contribute to this project, please do all your work on your own branch and then submit a pull request. One of the contributors will then review the submitted code and either merge it into master or request changes from you.
+If you wish to contribute to this project, fork it and send us a pull request.
+We'd love to see what it is you want to do with our charting tools!
