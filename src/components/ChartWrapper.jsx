@@ -108,6 +108,9 @@ var Legend = React.createClass({
 	},
 	componentWillUnmount() {
 		ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
+		// This will remove the quoteDriver, styles and
+		// eventListeners for this ChartEngine instance.
+		this.state.ciq.destroy();
 	},
 	removeSeries(comparison) {
 		Actions.removeComparisonSeries(comparison);
