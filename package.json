@@ -41,8 +41,8 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "babelPackage": "babel  ./src/components/Chart.js -o test.js"
+    "build": "webpack",
+    "postinstall": "webpack"
   },
   "repository": {
     "type": "git",
