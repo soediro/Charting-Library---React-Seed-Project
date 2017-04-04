@@ -4,8 +4,8 @@ var TimeZone = React.createClass({
     var self = this;
     var myZone = (<div className="current-location-message">Your timezone is your current location</div>);
     function addZone(zone){
-      zones.push(<li key={"zone"  + zone} 
-        onClick={function(){self.setTimeZone(zone)}} 
+      zones.push(<li key={"zone"  + zone}
+        onClick={function(){self.setTimeZone(zone)}}
         className="dialog-item" >
             { zone }
         </li>);
@@ -29,7 +29,7 @@ var TimeZone = React.createClass({
       ciq: null,
       open: false,
       timeZones: zones,
-	  myZone:myZone
+	    myZone:myZone
     }
   },
   toggle() {
@@ -72,7 +72,6 @@ var TimeZone = React.createClass({
 	}
   },
   render: function() {
-    var self = this;
     if (!this.state.open) return <span></span>
     return (
       <div className="ciq dialog-overlay">
@@ -86,8 +85,6 @@ var TimeZone = React.createClass({
 	        <div className="instruct">(Scroll for more options)</div>
         </div>
       </div>
-
-
     )
   }
 });

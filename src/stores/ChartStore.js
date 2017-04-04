@@ -5,13 +5,14 @@ var assign = require('object-assign');
 
 const constants = {
     "ADD_COMPARISON_SERIES": "ADD_COMPARISON_SERIES",
-    "REMOVE_COMPARISON_SERIES": "REMOVE_COMPARISON_SERIES"
+    "REMOVE_COMPARISON_SERIES": "REMOVE_COMPARISON_SERIES",
+    "TOGGLE_DRAWING_TOOLBAR": "TOGGLE_DRAWING_TOOLBAR"
 };
 
 var ChartStore = assign({}, EventEmitter.prototype, {
     initialize: function () {
     },
-    values: { comparisons: [] },
+    values: { comparisons: [], toolbarActive:false },
     getComparisons: function () {
         return this.values.comparisons;
     },
@@ -28,13 +29,17 @@ var ChartStore = assign({}, EventEmitter.prototype, {
         for (var i = 0; i < events.length; i++) {
             this.on(events[i], callback);
         }
-
     },
     removeListener: function (events, callback) {
         for (var i = 0; i < events.length; i++) {
             this.removeListener(events[i], callback);
         }
-
+    },
+    toggleDrawingToolbar:function(){
+        this.values.toolbarActive=!this.values.toolbarActive;
+    },
+    getToolbarStatus:function(){
+        return this.values.toolbarActive;
     }
 });
 
@@ -47,15 +52,16 @@ Dispatcher.register(function (action) {
         "REMOVE_COMPARISON_SERIES": function () {
             ChartStore.removeComparison(action.data);
             ChartStore.emit("comparisonsChange");
+        },
+        "TOGGLE_DRAWING_TOOLBAR":function () {
+            ChartStore.toggleDrawingToolbar();
+            ChartStore.emit("drawingToolbarChange");
         }
-
     };
     if (actions[action.actionType]) {
         actions[action.actionType]();
     }
 });
-
-
 
 var Actions = {
     addComparisonSeries: function (comparisons) {
@@ -65,10 +71,14 @@ var Actions = {
         });
     },
     removeComparisonSeries: function (comparisons) {
-    	console.log(comparisons);
         Dispatcher.dispatch({
             actionType: constants.REMOVE_COMPARISON_SERIES,
             data: comparisons
+        });
+    },
+    toggleDrawingToolbar: function (){
+        Dispatcher.dispatch({
+          actionType: constants.TOGGLE_DRAWING_TOOLBAR,
         });
     }
 };

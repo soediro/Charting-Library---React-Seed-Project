@@ -20,13 +20,12 @@ var StudyModal = React.createClass({
       params:studyHelper.parameters
     });
   },
-    close(studyHelper) {
+    close() {
     this.setState({
       open: false
     });
   },
-  updateStudy(color, params) {
-
+  updateStudy() {
         var currentInputs={};
         var currentOutputs={};
         var currentParams={};
@@ -45,7 +44,7 @@ var StudyModal = React.createClass({
         this.close();
   },
   createSelectInput(input) {
-    var inputOptions = []
+    var inputOptions = [];
     for (var option in input.options) {
       inputOptions.push(<option key={ "option" + option }>
                           { option }
@@ -68,8 +67,6 @@ var StudyModal = React.createClass({
                { input.heading }
              </div>
            </div>
-
-
   },
   openColorPicker: function(output, target) {
     var self = this;
@@ -80,7 +77,6 @@ var StudyModal = React.createClass({
       output.color = CIQ.hexToRgba('#' + color);
       self.forceUpdate();
     })
-
   },
   render: function() {
     var self = this;
@@ -93,7 +89,7 @@ var StudyModal = React.createClass({
 
     var outputs = this.state.outputs.map(function(output, index) {
       return <div key={ "output" + index } className="outputs dialog-item">
-               { output.color ? <div style={ { "backgroundColor": output.color } } className="color-picker-swatch output" 
+               { output.color ? <div style={ { "backgroundColor": output.color } } className="color-picker-swatch output"
                onClick={ function(event){ self.openColorPicker(output,event.target);
                         } }></div> : <div></div> }
                <div>
@@ -102,15 +98,15 @@ var StudyModal = React.createClass({
              </div>
     });
     var params = this.state.params.map(function(param,index){
-        <div>
-            { param.color ? <div style={ { "backgroundColor": param.color } } className="color-picker-swatch param" 
+       return <div>
+            { param.color ? <div style={ { "backgroundColor": param.color } } className="color-picker-swatch param"
              onClick={ function(event){ self.openColorPicker(param,event.target);
                         } }></div>:<div></div>}
             <input type={param.name==="studyOverZones"?"checkbox":"number"}></input>
             <div>{param.heading}</div>
 
         </div>
-    })
+    });
 
     return (
 
