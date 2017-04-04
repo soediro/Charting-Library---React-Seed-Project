@@ -33,6 +33,7 @@ var UI = React.createClass({
             <ThemeUI ciq={this.state.ciq} />
             <Crosshairs ciq={this.state.ciq} />
             <TimeZoneButton ciq={this.state.ciq} />
+            <DrawingToolbarButton />
           </div>
         </nav>
       </ciq-UI-Wrapper>
@@ -169,7 +170,6 @@ var TimeZoneButton = React.createClass({
   },
   onClick() {
     this.refs.modal.toggle();
-
   },
   componentWillReceiveProps(nextProps) {
     if (nextProps.ciq) {
@@ -179,9 +179,19 @@ var TimeZoneButton = React.createClass({
     }
   },
   render: function () {
-    var self = this;
     return (
       <span><TimeZone ref="modal" ciq={this.state.ciq} /><button className="timezone-btn" onClick={this.onClick}></button></span>
+    )
+  }
+});
+
+var DrawingToolbarButton = React.createClass({
+  onClick() {
+    Actions.toggleDrawingToolbar();
+  },
+  render: function () {
+    return (
+      <span><button className="drawing-toolbar-btn" onClick={this.onClick}></button></span>
     )
   }
 });
@@ -347,15 +357,12 @@ var ChartTypes = React.createClass({
     });
 
     return (
-
       <menu-select id="chartTypeSelect">
         <span className="title">{this.state.activeOption ? this.state.activeOption.label : this.state.activeOption}</span>
         <menu-select-options className="menu-hover">
           {options}
         </menu-select-options>
       </menu-select>
-
-
     )
   }
 });
@@ -408,8 +415,6 @@ var Comparison = React.createClass({
     }
   },
  updateComparisonSeries(){
-  console.log('here!');
-  console.log(arguments);
   if(arguments[0].action=='remove-series'){
    Actions.removeComparisonSeries(arguments[0].stx.chart.series[arguments[0].symbol]);
    this.state.ciq.removeSeries(arguments[0].symbol, this.state.ciq.chart);

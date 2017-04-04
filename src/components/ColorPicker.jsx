@@ -47,11 +47,8 @@ var ColorPicker = React.createClass({
                     background: "#" + color
                 }}>{color}</a></li>
 
-        })
-
-
+        });
         return (
-
             <div id="colorPicker" style={ {
                 'top': this.state.top,
                 'left': this.state.left,
@@ -59,7 +56,6 @@ var ColorPicker = React.createClass({
             }}>
               <div className="color-picker-options"><ul>{colorEls}</ul></div>
             </div>
-
         )
 
 

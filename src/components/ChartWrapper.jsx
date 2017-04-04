@@ -1,6 +1,7 @@
 import UI from "./UI";
 //This just loads the feed into the CIQ engine
 import FeedService from "../feeds/template";
+import DrawingToolbar from "./DrawingToolbar"
 import { ChartStore, Actions } from "../stores/ChartStore";
 export default class ChartWrapper extends React.Component {
   constructor(props) {
@@ -78,10 +79,10 @@ export default class ChartWrapper extends React.Component {
 	  });
   }
   render() {
-    var windowSize = this.getWindowSize();
     return (<div>
       <UI showLoader={this.showLoader.bind(this)} hideLoader={this.hideLoader.bind(this)} ciq={this.state.ciq ? this.state.ciq : null} />
       <div className="ciq-chart-area">
+        <DrawingToolbarWrapper ciq={this.state.ciq} />
         <div id="chartContainer" className="chartContainer">
 	        <div className={this.state.loader ? 'loader' : ''}></div>
 	        <Legend ciq={this.state.ciq} />
@@ -93,6 +94,47 @@ export default class ChartWrapper extends React.Component {
     </div>);
   }
 }
+
+var DrawingToolbarWrapper = React.createClass({
+  getInitialState: function () {
+    return {
+      ciq: null,
+      active: ChartStore.getToolbarStatus()
+    }
+  },
+  onStoreChange: function () {
+    this.setState({ active: ChartStore.getToolbarStatus() });
+    var elem = document.getElementById("chartContainer");
+    if(ChartStore.getToolbarStatus()){
+      //resize the chart based on if the toolbar is now open or closed
+      elem.className += " toolbarOn";
+    }
+    else elem.classList.remove("toolbarOn");
+    this.state.ciq.draw();
+  },
+  componentWillMount() {
+    ChartStore.addListener(["drawingToolbarChange"], this.onStoreChange);
+  },
+  componentWillUnmount() {
+    ChartStore.removeListener(["drawingToolbarChange"], this.onStoreChange);
+    // This will remove the quoteDriver, styles and
+    // eventListeners for this ChartEngine instance.
+    this.state.ciq.destroy();
+  },
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.ciq) {
+      return this.setState({
+        ciq: nextProps.ciq
+      });
+    }
+  },
+  render: function () {
+    if(!this.state.active) return <span></span>;
+    return (
+      <span><DrawingToolbar ciq={this.state.ciq} /></span>
+    )
+  }
+});
 
 var Legend = React.createClass({
 	getInitialState: function () {

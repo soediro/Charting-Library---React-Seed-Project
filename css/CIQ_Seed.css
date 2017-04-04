@@ -14,12 +14,12 @@ html, body, div, span {
 }
 
 * {
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }
 
 input[type="text"], input[type="number"] {
-    border: #ddd solid 1px;
-    padding: 0 5px 0 10px;
+	border: #ddd solid 1px;
+	padding: 0 5px 0 10px;
 }
 
 .stx-chart-panel.stx-show {
@@ -54,29 +54,43 @@ nav {
 }
 
 /* Standard Button Dimensions, Color */
-.ciq-nav button {
+.ciq-nav button, button:active, button:focus {
 	background-color: transparent;
 	vertical-align: middle;
 	cursor: pointer;
 	border:solid 1px transparent;
+	outline:none;
 }
-.ciq-nav button.active, .ciq-nav button:hover, button:active, button:focus {
+.ciq-nav button.active, .ciq-nav button:hover {
 	border-radius: 1px;
 	border: solid 1px #273949;;
 	outline: none;
 	opacity: 1;
 }
-/* Input Line */
+
 .ciq-nav input {
 	color:#c5c7c9;
 	background-color: #151f28;
-/*	border: none;
-	outline:none;*/
+	outline:none;
 }
 
 #studyDialog input[type="number"], #studyDialog input[type="text"] {
-    width: 75px;
-    height: 27px;
+	width: 75px;
+	height: 27px;
+}
+
+.undoSection{
+	float:right;
+	margin-left:auto;
+}
+
+.ciq-btn.undo, .ciq-btn.redo{
+	opacity:.45;
+	cursor: pointer;
+}
+
+.ciq-btn.undo:active, .ciq-btn.undo:focus, .ciq-btn.redo:active, .ciq-btn.redo:focus{
+	background: #fff;
 }
 
 .overlayMenu{
@@ -91,9 +105,9 @@ nav {
 }
 
 .overlayMenu div{
-    padding: 0 20px;
-    cursor: pointer;
-    line-height: 27px;
+	padding: 0 20px;
+	cursor: pointer;
+	line-height: 27px;
 }
 
 .overlayMenu div:hover{
@@ -131,35 +145,20 @@ nav {
 	width: 130px;
 }
 
-.symbol-btn{
+.symbol-btn, .comparison-btn{
 	position: absolute;
-    height: 27px;
-    width: 27px;
-    right: 10px;
-    top: 1px;
-    background-image: url(img/stx-sprite-ui.svg);
-    background-position: -45px -25px;
-    opacity: .6;
-    transition: opacity .20s 0s;
-}
-
-.symbol-btn { /* night theme */
+	height: 27px;
+	width: 27px;
+	right: 10px;
+	top: 1px;
+	background-image: url(img/stx-sprite-ui.svg);
 	background-position: -45px -50px;
+	opacity: .6;
+	transition: opacity .20s 0s;
 }
 
 .comparison-btn{
-	position: absolute;
-    height: 27px;
-    width: 27px;
-    right: 0px;
-    top: 1px;
-    background-image: url(img/stx-sprite-ui.svg);
-    background-position: -443px -25px;
-    opacity: .6;
-    transition: opacity .20s 0s;
-}
-
-.comparison-btn { /* night theme */
+	right: 0px;
 	background-position: -443px -50px;
 }
 
@@ -181,16 +180,15 @@ nav {
 	color: #999;
 }
 
-/* Button Icon Individuals */
 .timezone-btn {
-   height: 27px;
-    width: 27px;
-    background-image: url(img/ciq-timezone.svg);
+	height: 27px;
+	width: 27px;
+	background-image: url(img/ciq-timezone.svg);
 	background-size: 20px 20px;
-    background-repeat: no-repeat;
-    background-position: center;
+	background-repeat: no-repeat;
+	background-position: center;
 	opacity: .6;
-    transition: opacity .20s 0s;
+	transition: opacity .20s 0s;
 }
 
 .current-location-message {
@@ -222,17 +220,17 @@ nav {
 	box-shadow: 0 1px 2px rgba(69,143,209, 0.8);
 }
 
-.crosshair-btn {
+.crosshair-btn, .drawing-toolbar-btn {
 	height: 27px;
-    width: 27px;
-    background-image: url(img/stx-sprite-ui.svg);
-    background-position: -443px -25px;
-    opacity: .6;
-    transition: opacity .20s 0s;
+	width: 27px;
+	background-image: url(img/stx-sprite-ui.svg);
+	opacity: .6;
+	transition: opacity .20s 0s;
+	background-position: -443px -50px;
 }
 
-.crosshair-btn { /* night theme */
-	background-position: -443px -50px;
+.drawing-toolbar-btn{
+	background-position: -250px -50px;
 }
 
 menu-select {
@@ -325,16 +323,16 @@ menu-select:hover menu-select-options{
 }
 
 cq-plus {
-    display: inline-block;
-    float: left;
-    margin-left: -8px;
+	display: inline-block;
+	float: left;
+	margin-left: -8px;
 }
 cq-plus {
-    width: 27px;
-    height: 27px;
-    background-image: url(img/stx-sprite-panels.svg);
-    background-position: -100px -25px;
-    opacity: .5;
+	width: 27px;
+	height: 27px;
+	background-image: url(img/stx-sprite-panels.svg);
+	background-position: -100px -25px;
+	opacity: .5;
 }
 
 /* Dialog Specific CSS */
@@ -402,8 +400,8 @@ cq-plus {
 	background-color: white;
 	border:2px inset #e4e4e4;
 	color: black;
-    padding: initial;
-    padding-left:5px;
+	padding: initial;
+	padding-left:5px;
 }
 #inputs select {
 	height:28px;
@@ -456,7 +454,6 @@ div.cq-close{
 }
 #colorPicker{
 	position:relative;
-	width: 200px;
 	z-index:32;
 	left:0;
 	top:0;
@@ -484,11 +481,7 @@ div.cq-close{
 	width:20px;
 	border:1px solid black;
 }
-#colorPicker{
-	position:relative;
-	width: 200px;
-	z-index:32;
-}
+
 .color-picker-options {/* This is the actual color picker block */
 	position:absolute;
 	background:#FFF;
@@ -536,8 +529,114 @@ div.loader{
 }
 
 .chartContainer{
-	width:100%;
-	min-height:100%;
+	height:100%;
+}
+
+.chartContainer.toolbarOn{
+	height:92%;
+}
+
+.toolbar{
+	border-bottom: 1px solid #131d24;
+	height: 40px;
+	padding: 5px 10px 0;
+	z-index: 2;
+	transition: height .20s 0s, padding .20s 0s;
+	display: flex;
+	color: white;
+	background: #1c2a35;
+}
+
+.drawingParameters{
+	padding:5px;
+	margin-left:10px;
+	width: 200px;
+	display: flex;
+}
+
+#lineSelect{
+	height:10px;
+	padding:0;
+	width:100px;
+	display:flex;
+	margin-top:8px;
+}
+
+#lineSelect menu-select-options{
+	margin-top:10px;
+}
+
+.option .ciq-solid-1,
+.option .ciq-solid-3,
+.option .ciq-solid-5,
+.option .ciq-dotted-1,
+.option .ciq-dotted-3,
+.option .ciq-dotted-5,
+.option .ciq-dashed-1,
+.option .ciq-dashed-3,
+.option .ciq-dashed-5
+{
+	display: block;
+	width: auto;
+	height: 0;
+	padding: 0;
+	border-top-color: #666;
+	border-radius: 0;
+}
+
+span.title.ciq-solid-1,
+span.title.ciq-solid-3,
+span.title.ciq-solid-5,
+span.title.ciq-dotted-1,
+span.title.ciq-dotted-3,
+span.title.ciq-dotted-5,
+span.title.ciq-dashed-1,
+span.title.ciq-dashed-3,
+span.title.ciq-dashed-5{
+	border-top-color: white;
+	border-radius: 0;
+	width:70%;
+	color:white;
+	display:block;
+	height:50%;
+	top:5px;
+}
+
+.ciq-solid-1{
+	border-top-style: solid;
+	border-top-width: 1px;
+}
+.ciq-solid-3{
+	border-top-style: solid;
+	border-top-width: 3px;
+}
+.ciq-solid-5{
+	border-top-style: solid;
+	border-top-width: 5px;
+}
+.ciq-dotted-1{
+	border-top-style: dotted;
+	border-top-width: 1px;
+}
+.ciq-dotted-3{
+	border-top-style: dotted;
+	border-top-width: 3px;
+}
+.ciq-dotted-5{
+	border-top-style: dotted;
+	border-top-width: 5px;
+}
+.ciq-dashed-1{
+	border-top-style: dashed;
+	border-top-width: 1px;
+}
+.ciq-dashed-3{
+	border-top-style: dashed;
+	border-top-width: 3px;
+}
+.ciq-dashed-5{
+	border-top-style: dashed;
+	border-top-width: 5px;
 }
 
 .chartSeries{
@@ -546,9 +645,8 @@ div.loader{
 	left:12px;
 	cursor: default;
 	text-transform: uppercase;
-	text-transform: uppercase;
-    font-weight: 700;
-    top: 4px;
+	font-weight: 700;
+	top: 4px;
 }
 
 .chartSeriesColor{
