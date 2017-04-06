@@ -13,17 +13,6 @@ var DrawingToolbar = React.createClass({
       selectedTool:false,
     }
   },
-  toggle() {
-    this.setState({
-      launchToolbar: !this.state.launchToolbar
-    });
-    if(!this.state.launchToolbar){
-      this.setState({
-        selectedTool:false,
-        toolParams:false,
-      });
-    }
-  },
   setTool(tool){
     // Set all the info for the toolbar
     this.setState({

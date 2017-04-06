@@ -79,20 +79,6 @@ nav {
 	height: 27px;
 }
 
-.undoSection{
-	float:right;
-	margin-left:auto;
-}
-
-.ciq-btn.undo, .ciq-btn.redo{
-	opacity:.45;
-	cursor: pointer;
-}
-
-.ciq-btn.undo:active, .ciq-btn.undo:focus, .ciq-btn.redo:active, .ciq-btn.redo:focus{
-	background: #fff;
-}
-
 .overlayMenu{
 	width:130px;
 	display:inline-block;
@@ -454,6 +440,7 @@ div.cq-close{
 }
 #colorPicker{
 	position:relative;
+	width: 200px;
 	z-index:32;
 	left:0;
 	top:0;
@@ -481,7 +468,11 @@ div.cq-close{
 	width:20px;
 	border:1px solid black;
 }
-
+#colorPicker{
+	position:relative;
+	width: 200px;
+	z-index:32;
+}
 .color-picker-options {/* This is the actual color picker block */
 	position:absolute;
 	background:#FFF;
@@ -555,9 +546,9 @@ div.loader{
 }
 
 #lineSelect{
-	height:10px;
 	padding:0;
 	width:100px;
+	height:15px;
 	display:flex;
 	margin-top:8px;
 }
