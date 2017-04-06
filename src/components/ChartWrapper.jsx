@@ -109,7 +109,10 @@ var DrawingToolbarWrapper = React.createClass({
       //resize the chart based on if the toolbar is now open or closed
       elem.className += " toolbarOn";
     }
-    else elem.classList.remove("toolbarOn");
+    else{
+      elem.classList.remove("toolbarOn");
+      this.props.ciq.changeVectorType('');
+    }
     this.state.ciq.draw();
   },
   componentWillMount() {
