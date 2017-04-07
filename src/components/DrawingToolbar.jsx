@@ -13,10 +13,13 @@ var DrawingToolbar = React.createClass({
       selectedTool:false,
     }
   },
+  toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  },
   setTool(tool){
     // Set all the info for the toolbar
     this.setState({
-      selectedTool:tool,
+      selectedTool:this.toTitleCase(tool),
       toolParams:CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
     });
     // Activate the tool
@@ -25,17 +28,14 @@ var DrawingToolbar = React.createClass({
   render: function() {
     var self = this;
     var options = this.state.arrOfTools.map(function (item, index) {
-      function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-      }
       return <menu-option key={"tool" + index} className="option" onClick={function () {
         self.setTool(item);
-      }}>{toTitleCase(item)}</menu-option>
+      }}>{self.toTitleCase(item)}</menu-option>
     });
     return (
       <div className="toolbar">
         <menu-select id="toolSelect">
-          <span className="title">Select Tool</span>
+          <span className="title">{this.state.selectedTool || "Select Tool"}</span>
           <menu-select-options className="menu-hover">
             {options}
           </menu-select-options>

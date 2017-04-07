@@ -49,30 +49,15 @@ var ColorPicker = React.createClass({
 
         });
         return (
-            <div id="colorPicker" style={ {
-                'top': this.state.top,
-                'left': this.state.left,
-                'display': this.state.open ? 'block' : 'none'
-            }}>
-              <div className="color-picker-options"><ul>{colorEls}</ul></div>
+            <div id="colorPicker">
+              <div className="color-picker-options"
+                   style={ {
+                     'top': this.state.top,
+                     'left': this.state.left,
+                     'display': this.state.open ? 'block' : 'none'
+                   }}><ul>{colorEls}</ul></div>
             </div>
         )
-
-
-    }
-});
-
-
-var ThemeDialog = React.createClass({
-    getInitialState: function() {
-        return {
-
-        }
-    },
-    render: function() {
-
-        return <div></div>
-
     }
 });
 
