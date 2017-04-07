@@ -440,7 +440,6 @@ div.cq-close{
 }
 #colorPicker{
 	position:relative;
-	width: 200px;
 	z-index:32;
 	left:0;
 	top:0;
@@ -467,11 +466,6 @@ div.cq-close{
 	height:20px;
 	width:20px;
 	border:1px solid black;
-}
-#colorPicker{
-	position:relative;
-	width: 200px;
-	z-index:32;
 }
 .color-picker-options {/* This is the actual color picker block */
 	position:absolute;
