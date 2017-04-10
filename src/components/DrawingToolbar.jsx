@@ -58,7 +58,6 @@ var DrawingParameters = React.createClass({
   },
   componentWillReceiveProps(nextProps) {
     if (nextProps.parameters) {
-      console.log(nextProps.parameters);
       return this.setState({
         fill:nextProps.parameters.fillColor,
         line:nextProps.parameters.color,
@@ -88,7 +87,6 @@ var DrawingParameters = React.createClass({
     })
   },
   updateLineParams(weight, pattern){
-    console.log('in th drawing parameters obj! ',weight, pattern);
     this.props.ciq.currentVectorParameters.lineWidth=weight;
     this.props.ciq.currentVectorParameters.pattern=pattern;
   },
