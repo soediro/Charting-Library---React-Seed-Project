@@ -59,7 +59,7 @@ componentDidMount() {
 ## Building for use in the browser
 
 This project is using Webpack to transform JSX and ES6 to ES5. The configs for this are in the `webpack.config.js`.
-Running `npm run webpack` from the command line will re-create the distribution file `dist/chartIQ.js`.
+Running `npm run build` from the command line will re-create the distribution file `dist/chartIQ.js`.
 This is a transformed and bundled version of everything in the src directory. `src/index.js` will automatically load this file.
 
 
