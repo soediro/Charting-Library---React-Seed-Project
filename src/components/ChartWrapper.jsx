@@ -11,7 +11,7 @@ export default class ChartWrapper extends React.Component {
       feed: "Demo",
       service: null,
       chartSeries: [],
-	  loader:false
+      loader: false
     };
   }
   componentDidMount() {
@@ -69,14 +69,14 @@ export default class ChartWrapper extends React.Component {
     });
   }
   showLoader(){
-  	this.setState({
-  		loader:true
+    this.setState({
+      loader:true
     });
   }
   hideLoader(){
-	  this.setState({
-		  loader:false
-	  });
+    this.setState({
+      loader:false
+    });
   }
   render() {
     return (<div>
@@ -84,8 +84,8 @@ export default class ChartWrapper extends React.Component {
       <div className="ciq-chart-area">
         <DrawingToolbarWrapper ciq={this.state.ciq} />
         <div id="chartContainer" className="chartContainer">
-	        <div className={this.state.loader ? 'loader' : ''}></div>
-	        <Legend ciq={this.state.ciq} />
+          <div className={this.state.loader ? 'loader' : ''}></div>
+          <Legend ciq={this.state.ciq} />
         </div>
       </div>
       <div className="ciq-footer">
@@ -95,14 +95,16 @@ export default class ChartWrapper extends React.Component {
   }
 }
 
-var DrawingToolbarWrapper = React.createClass({
-  getInitialState: function () {
-    return {
+class DrawingToolbarWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       ciq: null,
       active: ChartStore.getToolbarStatus()
     }
-  },
-  onStoreChange: function () {
+    this.onStoreChange = this.onStoreChange.bind(this);
+  }
+  onStoreChange() {
     this.setState({ active: ChartStore.getToolbarStatus() });
     var elem = document.getElementById("chartContainer");
     if(ChartStore.getToolbarStatus()){
@@ -114,74 +116,76 @@ var DrawingToolbarWrapper = React.createClass({
       this.props.ciq.changeVectorType('');
     }
     this.state.ciq.draw();
-  },
+  }
   componentWillMount() {
     ChartStore.addListener(["drawingToolbarChange"], this.onStoreChange);
-  },
+  }
   componentWillUnmount() {
     ChartStore.removeListener(["drawingToolbarChange"], this.onStoreChange);
     // This will remove the quoteDriver, styles and
     // eventListeners for this ChartEngine instance.
     this.state.ciq.destroy();
-  },
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.ciq) {
       return this.setState({
         ciq: nextProps.ciq
       });
     }
-  },
-  render: function () {
+  }
+  render() {
     if(!this.state.active) return <span></span>;
     return (
       <span><DrawingToolbar ciq={this.state.ciq} /></span>
     )
   }
-});
+}
 
-var Legend = React.createClass({
-	getInitialState: function () {
-		return {
-		  comparisons: ChartStore.getComparisons()
-		}
-	},
-	onStoreChange: function () {
-		this.setState({ comparisons: ChartStore.getComparisons() });
-	},
-	componentWillMount() {
-		ChartStore.addListener(["comparisonsChange"], this.onStoreChange);
-	},
-	componentWillUnmount() {
-		ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
-		// This will remove the quoteDriver, styles and
-		// eventListeners for this ChartEngine instance.
-		this.state.ciq.destroy();
-	},
-	removeSeries(comparison) {
-		Actions.removeComparisonSeries(comparison);
-		this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
-	},
-	render: function () {
-		var self = this;
-		if (!this.state.comparisons || this.state.comparisons.length === 0) return <span></span>
+class Legend extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comparisons: ChartStore.getComparisons()
+    }
+    this.onStoreChange = this.onStoreChange.bind(this);
+  }
+  onStoreChange() {
+    this.setState({ comparisons: ChartStore.getComparisons() });
+  }
+  componentWillMount() {
+    ChartStore.addListener(["comparisonsChange"], this.onStoreChange);
+  }
+  componentWillUnmount() {
+    ChartStore.removeListener(["comparisonsChange"], this.onStoreChange);
+    // This will remove the quoteDriver, styles and
+    // eventListeners for this ChartEngine instance.
+    this.state.ciq.destroy();
+  }
+  removeSeries(comparison) {
+    Actions.removeComparisonSeries(comparison);
+    this.props.ciq.removeSeries(comparison.display, this.props.ciq.ciq);
+  }
+  render() {
+    var self = this;
+    if (!this.state.comparisons || this.state.comparisons.length === 0) return <span></span>
 
-		var comparisons = this.state.comparisons.map(function (comparison, i) {
-		  return (
-		    <div className="comparisonWrapper" key={"comp" + i}>
-		      <div className="chartSeriesColor" style={{ "backgroundColor": comparison.parameters.color }} ></div>
-		      <div className="chartSeries">{comparison.display}</div>
-		      <div className="deleteSeries" onClick={function () {
-		        self.removeSeries(comparison);
-		      }} ></div >
-		    </div>
-		  )
-	});
+    var comparisons = this.state.comparisons.map(function (comparison, i) {
+      return (
+        <div className="comparisonWrapper" key={"comp" + i}>
+          <div className="chartSeriesColor" style={{ "backgroundColor": comparison.parameters.color }} ></div>
+          <div className="chartSeries">{comparison.display}</div>
+          <div className="deleteSeries" onClick={function () {
+            self.removeSeries(comparison);
+          }} ></div >
+        </div>
+      )
+    });
 
-	return <div className="comparisons">
-	    {comparisons}
-	</div>
-	}
-});
+    return <div className="comparisons">
+      {comparisons}
+    </div>
+  }
+}
 
 
 var rangeConfig = [
@@ -220,39 +224,38 @@ var rangeConfig = [
   }];
 
 
-var BottomUI = React.createClass({
-  getInitialState() {
-    return {
+class BottomUI extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       ciq: null
     };
-  },
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.ciq) {
       return this.setState({
-          ciq: nextProps.ciq,
-	      showLoader: nextProps.showLoader,
-	      hideLoader: nextProps.hideLoader
+        ciq: nextProps.ciq,
+        showLoader: nextProps.showLoader,
+        hideLoader: nextProps.hideLoader
       });
     }
-  },
+  }
   setSpan(span, multiplier) {
     if (this.state.ciq) {
-	    this.props.showLoader();
-	    this.state.ciq.setSpan({span: span, multiplier: multiplier});
-	    var that=this;
-	    window.setTimeout(function() {
-		    that.props.hideLoader();
-	    }, 1000);
+      this.props.showLoader();
+      this.state.ciq.setSpan({span: span, multiplier: multiplier});
+      var that=this;
+      window.setTimeout(function() {
+        that.props.hideLoader();
+      }, 1000);
     }
-  },
+  }
   render() {
     var self = this;
     var ranges = rangeConfig.map(function (range, i) {
       return (<div className="quick-link" key={i} onClick={function () {
         self.setSpan(range.span, range.multiplier);
       }}>{range.display}</div>);
-
-
     });
     return (
       <div>
@@ -260,5 +263,5 @@ var BottomUI = React.createClass({
       </div>
     );
   }
-});
+}
 
