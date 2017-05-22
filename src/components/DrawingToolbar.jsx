@@ -17,6 +17,22 @@ var DrawingToolbar = React.createClass({
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   },
   setTool(tool){
+    if(tool=='annotation' || tool=='callout'){ // no need to do this every time
+      // Sync the defaults for font tool
+      var style = this.props.ciq.canvasStyle("stx_annotation");
+
+      var initialSize = this.props.ciq.currentVectorParameters.annotation.font.size;
+      if (!initialSize){
+        initialSize = style.fontSize;
+      }
+      this.props.ciq.currentVectorParameters.annotation.font.size=CIQ.stripPX(initialSize);
+
+      var initialFamily = this.props.ciq.currentVectorParameters.annotation.font.family;
+      if (!initialFamily){
+        initialFamily = style.fontFamily;
+      }
+      this.props.ciq.currentVectorParameters.annotation.font.family=initialFamily;
+    }
     // Set all the info for the toolbar
     this.setState({
       selectedTool:this.toTitleCase(tool),
@@ -53,10 +69,12 @@ var DrawingParameters = React.createClass({
       line:null,
       lineWidth:null,
       linePattern:null,
-      parameters:null
+      parameters:null,
+      fontOptions:null
     }
   },
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.parameters);
     if (nextProps.parameters) {
       return this.setState({
         fill:nextProps.parameters.fillColor,
@@ -99,6 +117,10 @@ var DrawingParameters = React.createClass({
           <FillColor color={this.state.fill} openColorPicker={this.openColorPicker} />
           <LineColor color={this.state.line} openColorPicker={this.openColorPicker} />
           <LineStyle width={this.state.lineWidth} pattern={this.state.linePattern} updateLineParams={this.updateLineParams} />
+          <Bold fontOptions={this.state.fontOptions} />
+          <Italic fontOptions={this.state.fontOptions} />
+          <FontSize fontOptions={this.state.fontOptions} />
+          <FontFamily fontOptions={this.state.fontOptions} />
         </div>
       </span>
     )
@@ -167,6 +189,54 @@ var LineStyle = React.createClass({
 				</menu-select-options>
 			</menu-select>
       </span>
+    )
+  }
+});
+
+var Bold = React.createClass({
+  onClick(e){
+    this.props.openColorPicker(e.target);
+  },
+  render: function(){
+    if(!this.props.fontOptions) return <span></span>;
+    return(
+      <span><div className="boldBtn" onClick={this.onClick()} style="font-weight:bold">B</div></span>
+    )
+  }
+});
+
+var Italic = React.createClass({
+  onClick(e){
+    this.props.openColorPicker(e.target);
+  },
+  render: function(){
+    if(!this.props.fontOptions) return <span></span>;
+    return(
+      <span><div className="boldBtn" onClick={this.onClick()} style="font-weight:bold">B</div></span>
+    )
+  }
+});
+
+var FontSize = React.createClass({
+  onClick(e){
+    this.props.openColorPicker(e.target);
+  },
+  render: function(){
+    if(!this.props.fontOptions) return <span></span>;
+    return(
+      <span><div className="boldBtn" onClick={this.onClick()} style="font-weight:bold">B</div></span>
+    )
+  }
+});
+
+var FontFamily = React.createClass({
+  onClick(e){
+    this.props.openColorPicker(e.target);
+  },
+  render: function(){
+    if(!this.props.fontOptions) return <span></span>;
+    return(
+      <span><div className="boldBtn" onClick={this.onClick()} style="font-weight:bold">B</div></span>
     )
   }
 });
