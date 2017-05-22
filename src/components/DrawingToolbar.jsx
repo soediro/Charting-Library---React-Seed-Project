@@ -1,21 +1,22 @@
 import ColorPicker from "./ColorPicker"
 
-var DrawingToolbar = React.createClass({
-  getInitialState: function() {
+class DrawingToolbar extends React.Component {
+  constructor(props) {
+    super(props);
     var tools = CIQ.Drawing.getDrawingToolList({});
     var toolsArray=Object.keys(tools).map(function (key) {
       return tools[key];
     });
-    return {
+    this.state = {
       launchToolbar:false,
       arrOfTools:toolsArray.sort(),
       toolParams:false,
       selectedTool:false,
     }
-  },
+  }
   toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-  },
+  }
   setTool(tool){
     if(tool=='annotation' || tool=='callout'){ // no need to do this every time
       // Sync the defaults for font tool
@@ -40,8 +41,8 @@ var DrawingToolbar = React.createClass({
     });
     // Activate the tool
     this.props.ciq.changeVectorType(tool);
-  },
-  render: function() {
+  }
+  render() {
     var self = this;
     var options = this.state.arrOfTools.map(function (item, index) {
       return <menu-option key={"tool" + index} className="option" onClick={function () {
@@ -60,11 +61,12 @@ var DrawingToolbar = React.createClass({
       </div>
     )
   }
-});
+}
 
-var DrawingParameters = React.createClass({
-  getInitialState: function () {
-    return {
+class DrawingParameters extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       fill:null,
       line:null,
       lineWidth:null,
@@ -72,9 +74,10 @@ var DrawingParameters = React.createClass({
       parameters:null,
       fontOptions:null
     }
-  },
+    this.openColorPicker = this.openColorPicker.bind(this);
+    this.updateLineParams = this.updateLineParams.bind(this);
+  }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.parameters);
     if (nextProps.parameters) {
       return this.setState({
         fill:nextProps.parameters.fillColor,
@@ -84,7 +87,7 @@ var DrawingParameters = React.createClass({
         parameters: nextProps.parameters
       });
     }
-  },
+  }
   openColorPicker(target) {
     var targetBounds = target.getBoundingClientRect();
     var self=this;
@@ -103,12 +106,12 @@ var DrawingParameters = React.createClass({
         self.props.ciq.currentVectorParameters.fillColor='#' + color;
       }
     })
-  },
+  }
   updateLineParams(weight, pattern){
     this.props.ciq.currentVectorParameters.lineWidth=weight;
     this.props.ciq.currentVectorParameters.pattern=pattern;
-  },
-  render: function(){
+  }
+  render() {
     if(!this.state.parameters) return <span></span>;
     return(
       <span>
@@ -125,26 +128,35 @@ var DrawingParameters = React.createClass({
       </span>
     )
   }
-});
+}
 
-var FillColor = React.createClass({
-  onClick(e){
+class FillColor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick(e) {
     this.props.openColorPicker(e.target);
-  },
-  render: function(){
+  }
+  render() {
     if(!this.props.color) return <span></span>;
     var activeColor={background: this.props.color};
     return(
       <span><div style={activeColor} className="color-picker-swatch fill" onClick={this.onClick}></div></span>
     )
   }
-});
+}
 
-var LineColor = React.createClass({
-  onClick(e){
+class LineColor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+  onClick(e) {
     this.props.openColorPicker(e.target);
-  },
-  render: function(){
+  }
+  render() {
     if(!this.props.color) return <span></span>;
     var activeColor=null;
     if(this.props.color=="auto") activeColor={background:"white"};
@@ -153,15 +165,17 @@ var LineColor = React.createClass({
       <span><div style={activeColor} className="color-picker-swatch line" onClick={this.onClick}></div></span>
     )
   }
-});
+}
 
-var LineStyle = React.createClass({
-  getInitialState: function(){
-    return{
+class LineStyle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       selectedLineClass:"ciq-"+this.props.pattern+"-"+this.props.width,
     }
-  },
-  onClick(newClass, newWeight, newPattern){
+    this.onClick = this.onClick.bind(this);
+  }
+  onClick(newClass, newWeight, newPattern) {
     var self=this;
     return function(){
       self.setState({
@@ -169,29 +183,29 @@ var LineStyle = React.createClass({
       });
       self.props.updateLineParams(newWeight, newPattern);
     }
-  },
-  render: function(){
+  }
+  render() {
     if(!this.props.width && !this.props.pattern) return <span></span>;
     return(
       <span>
         <menu-select id="lineSelect">
-				<span className={"title " + this.state.selectedLineClass}></span>
-				<menu-select-options class="menu-hover">
-					<menu-option class="option" onClick={this.onClick('ciq-solid-1', 1, 'solid')}><span className="ciq-line-style-option ciq-solid-1"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-solid-3', 3, 'solid')}><span className="ciq-line-style-option ciq-solid-3"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-solid-5', 5, 'solid')}><span className="ciq-line-style-option ciq-solid-5"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-dotted-1', 1, 'dotted')}><span className="ciq-line-style-option ciq-dotted-1"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-dotted-3', 3, 'dotted')}><span className="ciq-line-style-option ciq-dotted-3"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-dotted-5', 5, 'dotted')}><span className="ciq-line-style-option ciq-dotted-5"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-dashed-1', 1, 'dashed')}><span className="ciq-line-style-option ciq-dashed-1"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-dashed-3', 3, 'dashed')}><span className="ciq-line-style-option ciq-dashed-3"></span></menu-option>
-					<menu-option class="option" onClick={this.onClick('ciq-dashed-5', 5, 'dashed')}><span className="ciq-line-style-option ciq-dashed-5"></span></menu-option>
-				</menu-select-options>
-			</menu-select>
+        <span className={"title " + this.state.selectedLineClass}></span>
+        <menu-select-options class="menu-hover">
+          <menu-option class="option" onClick={this.onClick('ciq-solid-1', 1, 'solid')}><span className="ciq-line-style-option ciq-solid-1"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-solid-3', 3, 'solid')}><span className="ciq-line-style-option ciq-solid-3"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-solid-5', 5, 'solid')}><span className="ciq-line-style-option ciq-solid-5"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-dotted-1', 1, 'dotted')}><span className="ciq-line-style-option ciq-dotted-1"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-dotted-3', 3, 'dotted')}><span className="ciq-line-style-option ciq-dotted-3"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-dotted-5', 5, 'dotted')}><span className="ciq-line-style-option ciq-dotted-5"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-dashed-1', 1, 'dashed')}><span className="ciq-line-style-option ciq-dashed-1"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-dashed-3', 3, 'dashed')}><span className="ciq-line-style-option ciq-dashed-3"></span></menu-option>
+          <menu-option class="option" onClick={this.onClick('ciq-dashed-5', 5, 'dashed')}><span className="ciq-line-style-option ciq-dashed-5"></span></menu-option>
+        </menu-select-options>
+      </menu-select>
       </span>
     )
   }
-});
+}
 
 var Bold = React.createClass({
   onClick(e){

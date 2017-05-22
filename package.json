@@ -10,8 +10,8 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "flux": "^3.1.2",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "requirejs-babel": "^0.0.9",
     "webpack": "2.2.1"
   },
@@ -20,7 +20,8 @@
     "eslint": "^3.10.2",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0-0",
-    "eslint-plugin-standard": "^2.0.1"
+    "eslint-plugin-standard": "^2.0.1",
+    "webpack-dev-server": "^2.4.2"
   },
   "esformatter": {
     "plugins": [
@@ -42,7 +43,9 @@
   },
   "scripts": {
     "build": "webpack",
-    "postinstall": "webpack"
+    "postinstall": "webpack",
+    "server": "webpack-dev-server --inline --progress --port 3000 --content-base .",
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",
