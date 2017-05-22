@@ -1,15 +1,18 @@
 import ColorPicker from "./ColorPicker"
 
-var ThemeModal = React.createClass({
-  getInitialState: function() {
-    return {
+class ThemeModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       open: false,
       themeHelper: null,
       themeName: null
     }
-  },
+    this.saveSettings = this.saveSettings.bind(this);
+    this.updateThemeName = this.updateThemeName.bind(this);
+    this.closeDialog = this.closeDialog.bind(this);
+  }
   setThemeHelper(ciq) {
-
     if (!ciq) return;
     var themeHelper = new CIQ.ThemeHelper({
       'stx': ciq
@@ -22,7 +25,7 @@ var ThemeModal = React.createClass({
       self.loadDefaultColors();
       self.forceUpdate();
     });
-  },
+  }
   loadDefaultColors() {
     var self = this;
     options.map(function(section, index) {
@@ -30,18 +33,18 @@ var ThemeModal = React.createClass({
         self.updateTheme(null, swatch.item, swatch);
       })
     })
-  },
-  openDialog: function(callback) {
+  }
+  openDialog(callback) {
     this.setState({
       open: true,
       callback: callback
     });
-  },
-  closeDialog: function() {
+  }
+  closeDialog() {
     this.setState({
       open: false
     });
-  },
+  }
   componentWillReceiveProps(nextProps) {
     var self = this;
     if (nextProps.themeHelper) {
@@ -52,22 +55,20 @@ var ThemeModal = React.createClass({
         self.forceUpdate();
       });
     }
-
-  },
-  openColorPicker: function(swatch, target) {
+  }
+  openColorPicker(swatch, target) {
     var self = this;
     var targetBounds = target.getBoundingClientRect();
     this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function(color) {
       self.updateTheme(color, swatch.item, swatch)
       self.forceUpdate();
     })
-
-  },
+  }
   saveSettings() {
     if (!this.state.themeName) return;
     this.closeDialog();
     if (this.state.callback) this.state.callback(this.state.themeHelper.settings, this.state.themeName)
-  },
+  }
   updateTheme(color, item, swatch) {
     switch (item) {
     case 'candleUp':
@@ -132,13 +133,13 @@ var ThemeModal = React.createClass({
       swatch.color = this.state.themeHelper.settings.chart["Axis Text"].color ;
       break;
     }
-  },
+  }
   updateThemeName(event) {
     this.setState({
       themeName: event.target.value
     });
-  },
-  render: function() {
+  }
+  render() {
     var self = this;
     if (!this.state.open) return <span></span>
     var sections = options.map(function(section, sectionindex) {
@@ -173,8 +174,7 @@ var ThemeModal = React.createClass({
       </span>
     );
   }
-});
-
+}
 
 var options = [
   {
