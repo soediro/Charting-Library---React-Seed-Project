@@ -26,15 +26,19 @@ mklink /d <path to React Seed project>\chartiq\js <path to extracted ChartIQ lib
 mklink /d <path to React Seed project>\chartiq\css <path to extracted ChartIQ library>\css
 ```
 
-You will also need to install the project's dependencies and build the distribution file by running the following command from the project's root:
+### Running Locally
+
+You will need to install the project's dependencies and build the distribution file by running the following command from the project's root:
 
 ```
 npm install
 ```
 
-Once you have that, you can then open up `index.html`, found in the root, in a web browser and get a fully working example.
+Once you have that, run ```npm start``` and open your browser window to localhost port 3000 to view the fully working example.
 
 ## Customizing
+
+*Note: We do not recommend using the web components from template-advanced.html within frameworks. Unless you have very advanced skills, you are better off building framework components that interface with the charting library.*
 
 All of the project source is in the `src` folder. The main ChartIQ React component is `app.jsx`. There is also an `index.js` in this folder which loads RequireJs and all of our modules into it. This is basically a wrapper component that houses the charting engine in it's state. This wrapper function passes a reference of the engine to all of the UI components which allow each to manipulate the chart based on their functionality.
 
