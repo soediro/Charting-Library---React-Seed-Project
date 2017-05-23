@@ -77,16 +77,27 @@ class DrawingParameters extends React.Component {
     this.toggleItalic = this.toggleItalic.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
+	  if(nextProps.parameters.font){
+	    this.setState({
+        fontOptions: nextProps.parameters.font,
+        fontFamily: nextProps.parameters.font.family,
+        fontSize: nextProps.parameters.font.size
+      });
+    }
+    else{
+      this.setState({
+        fontOptions: null,
+        fontFamily: null,
+        fontSize: null
+      });
+    }
 		if (nextProps.parameters) {
 			return this.setState({
 				fill:nextProps.parameters.fillColor,
 				line:nextProps.parameters.color,
 				lineWidth:nextProps.parameters.lineWidth,
 				linePattern:nextProps.parameters.pattern,
-				parameters: nextProps.parameters,
-        fontOptions: nextProps.parameters.font,
-        fontFamily: nextProps.parameters.font.family,
-        fontSize: nextProps.parameters.font.size
+				parameters: nextProps.parameters
 			});
 		}
 	}
