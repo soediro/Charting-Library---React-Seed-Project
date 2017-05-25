@@ -222,7 +222,6 @@ nav {
 menu-select {
 	font-size: 9pt;
 	vertical-align: middle;
-	display: inline-block;
 	padding: 5px 5px;
 	font-weight: 300;
 	background: transparent;
@@ -278,8 +277,8 @@ menu-select-options menu-option:hover{
 	background:#f3f3f3;
 }
 menu-select-options{
-	margin: 5px 0px 0px -5px;
-	padding-top:0px;
+	margin: 2px 0 0 -5px;
+	padding-top:0;
 	position:absolute;
 	min-width:200px;
 	max-height: 90%;
@@ -290,7 +289,7 @@ menu-select-options{
 	left:inherit;
 	-webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
-	box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 	border-radius: 1px;
 }
 
@@ -302,8 +301,15 @@ menu-select-options{
 	min-width:100px;
 }
 
+#fontFamilySelect menu-select-options {
+	min-width: 130px;
+}
 
-menu-select:hover menu-select-options{
+#fontSizeSelect menu-select-options {
+	min-width: 60px;
+}
+
+menu-select:hover menu-select-options {
 	display:block;
 	padding: 10px 0 10px 0;
 }
@@ -518,7 +524,7 @@ div.loader{
 }
 
 .chartContainer.toolbarOn{
-	height:92%;
+	height:95%;
 }
 
 .toolbar{
@@ -535,20 +541,43 @@ div.loader{
 .drawingParameters{
 	padding:5px;
 	margin-left:10px;
-	width: 200px;
+	width: 415px;
 	display: flex;
+}
+
+.boldBtn, .italicBtn{
+	display: inline-block;
+	min-width: 25px;
+	cursor: pointer;
+	color: #c5c7c9;
+	transition: color .20s 0s;
+}
+
+.boldBtn:hover, .italicBtn:hover{
+	color:#fff;
+}
+
+.italicBtn, .boldBtn{
+	font-family: serif;
+}
+
+.boldBtn{
+	font-weight: bold;
+}
+
+.italicBtn{
+	font-style: italic;
 }
 
 #lineSelect{
 	padding:0;
 	width:100px;
-	height:15px;
 	display:flex;
 	margin-top:8px;
 }
 
 #lineSelect menu-select-options{
-	margin-top:10px;
+	margin-top:7px;
 }
 
 .option .ciq-solid-1,
@@ -720,4 +749,19 @@ div.quick-link{
 
 div.quick-link:hover{
 	color:white;
+}
+
+div.ciq-footer div.share{
+	float: left;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+#shareDialog{
+	min-height:250px;
+}
+
+div.shareMsg{
+	font-family: 'Roboto', sans-serif;
+	color: #666;
 }
