@@ -46,6 +46,14 @@ class StudyModal extends React.Component {
 		this.state.studyHelper.updateStudy({inputs:currentInputs, outputs:currentOutputs, parameters:currentParams});
 		this.close();
 	}
+  updateInputs = (name, val) => {
+    for (let input of this.state.inputs) {
+      if (input.name === name) {
+        input.value = val;
+        break;
+      }
+    }
+  };
 	createSelectInput(input) {
 		var inputOptions = [];
 		for (var option in input.options) {
@@ -54,7 +62,9 @@ class StudyModal extends React.Component {
 			</option>)
 		}
 		return <div key={ "select" + input.heading } className="inputs dialog-item">
-			<select>
+			<select onChange={event => {
+        this.updateInputs(input.name, event.target.value);
+      }}>
 				{ inputOptions }
 			</select>
 			<div>
@@ -65,7 +75,10 @@ class StudyModal extends React.Component {
 	}
 	createOtherInput(input, type) {
 		return <div key={ type + input.name } className="inputs dialog-item">
-			<input type={ type } defaultValue={ input.value }></input>
+			<input type={ type } defaultValue={ input.value }
+             onChange={event => {
+               this.updateInputs(input.name, event.target.value);
+             }}></input>
 			<div>
 				{ input.heading }
 			</div>
