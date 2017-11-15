@@ -62,7 +62,7 @@ class StudyModal extends React.Component {
 			</option>)
 		}
 		return <div key={ "select" + input.heading } className="inputs dialog-item">
-			<select onChange={event => {
+			<select defaultValue={input.value} onChange={event => {
         this.updateInputs(input.name, event.target.value);
       }}>
 				{ inputOptions }
