@@ -9,7 +9,7 @@ class StudyModal extends React.Component {
 			outputs:{},
 			inputs:{},
 			parameters:{}
-		}
+		};
 		this.updateStudy = this.updateStudy.bind(this);
 		this.close = this.close.bind(this);
 	}
@@ -46,10 +46,16 @@ class StudyModal extends React.Component {
 		this.state.studyHelper.updateStudy({inputs:currentInputs, outputs:currentOutputs, parameters:currentParams});
 		this.close();
 	}
-  updateInputs = (name, val) => {
+  updateInputs = (name, target) => {
     for (let input of this.state.inputs) {
+      if(input.type==="checkbox"){
+        console.log(input.value);
+        input.value=target.checked;
+        console.log(input.value);
+        break;
+      }
       if (input.name === name) {
-        input.value = val;
+        input.value = target.value;
         break;
       }
     }
@@ -63,7 +69,7 @@ class StudyModal extends React.Component {
 		}
 		return <div key={ "select" + input.heading } className="inputs dialog-item">
 			<select defaultValue={input.value} onChange={event => {
-        this.updateInputs(input.name, event.target.value);
+        this.updateInputs(input.name, event.target);
       }}>
 				{ inputOptions }
 			</select>
@@ -73,11 +79,22 @@ class StudyModal extends React.Component {
 		</div>
 
 	}
+	createCheckboxInput(input){
+    return <div key={ "checkbox" + input.name } className="inputs dialog-item">
+      <input type="checkbox" checked={ input.value }
+             onChange={event => {
+               this.updateInputs(input.name, event.target);
+             }}></input>
+      <div>
+        { input.heading }
+      </div>
+    </div>
+  }
 	createOtherInput(input, type) {
 		return <div key={ type + input.name } className="inputs dialog-item">
 			<input type={ type } defaultValue={ input.value }
              onChange={event => {
-               this.updateInputs(input.name, event.target.value);
+               this.updateInputs(input.name, event.target);
              }}></input>
 			<div>
 				{ input.heading }
@@ -100,6 +117,7 @@ class StudyModal extends React.Component {
 		if (!this.state.open || !this.state.studyHelper) return <span></span>
 		var inputs = this.state.inputs.map(function(input, index) {
 			if (input.type === "select") return self.createSelectInput(input);
+			if(input.type === "checkbox") return self.createCheckboxInput(input);
 			return self.createOtherInput(input, input.type);
 		});
 
