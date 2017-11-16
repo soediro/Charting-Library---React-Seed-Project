@@ -34,7 +34,7 @@ class StudyModal extends React.Component {
 		var currentOutputs = {};
 		var currentParams = {};
 		for (var i = 0; i < this.state.inputs.length; i++) {
-			currentInputs[this.state.inputs[i].name] = this.state.inputs[i].value;
+        currentInputs[this.state.inputs[i].name]=this.state.inputs[i].value;
 		}
 		for (var x = 0; x < this.state.outputs.length; x++) {
 			currentOutputs[this.state.outputs[x].name] = this.state.outputs[x].color;
@@ -50,9 +50,7 @@ class StudyModal extends React.Component {
 	updateInputs = (name, target) => {
 		for (let input of this.state.inputs) {
 			if (input.type === "checkbox") {
-				console.log(input.value);
 				input.value = target.checked;
-				console.log(input.value);
 				break;
 			}
 			if (input.name === name) {
@@ -60,7 +58,7 @@ class StudyModal extends React.Component {
 				break;
 			}
 		}
-		this.forceUpdate()
+		this.forceUpdate();
 	};
 	createSelectInput(input) {
 		var inputOptions = [];
