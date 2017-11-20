@@ -4,10 +4,11 @@ module.exports = {
 	entry: {
 		"chartIQ": "./src/app.jsx"
 	},
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: "[name].js"
-  },
+	output: {
+		publicPath:'/dist/',
+		path: path.resolve(__dirname, './dist'),
+		filename: "[name].js"
+	},
 	module: {
 		loaders: [{
 			exclude: [/node_modules/, "/chartiq/"],
@@ -17,7 +18,13 @@ module.exports = {
 			}
 		}]
 	},
+	devServer: {
+		port: 3000,
+		compress: true,
+		inline: true,
+		stats: 'minimal'
+	},
 	resolve: {
 		extensions: ['.js', '.jsx']
-	},
+	}
 };

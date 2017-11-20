@@ -12,7 +12,9 @@ html, body, div, span {
 	text-align:left;
 	line-height: 1.6em;
 }
-
+html {
+	overflow: hidden;
+}
 * {
 	box-sizing: border-box;
 }
