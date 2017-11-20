@@ -1,5 +1,5 @@
 import { ChartStore, Actions } from "../stores/ChartStore";
-
+import DrawingToolbar from './DrawingToolbar';
 export default class DrawingToolbarWrapper extends React.Component {
 	constructor(props) {
 		super(props);
