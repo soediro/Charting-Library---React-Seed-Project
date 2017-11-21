@@ -2,9 +2,12 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700,500,100,300,400italic|Roboto+Condensed:400,700,300');
 
-html, body, div, span {
+html, body {
 	margin:0;
 	padding:0;
+}
+
+#chartHere > div, #chartHere > span {
 	border:0;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
@@ -13,6 +16,9 @@ html, body, div, span {
 	line-height: 1.6em;
 }
 
+html {
+	overflow: hidden;
+}
 * {
 	box-sizing: border-box;
 }
