@@ -185,6 +185,7 @@ class DrawingToolbarButton extends React.Component {
 class ChartSymbol extends React.Component {
 	constructor(props) {
 		super(props);
+		this.ciq = props.ciq;
 		this.state = {
 			symbol: "AAPL"
 		};
@@ -194,16 +195,7 @@ class ChartSymbol extends React.Component {
 	}
 	onOptionClick() {
 		if (!this.ciq || !this.state.symbol) { return; }
-		Actions.showLoader();
-		this.ciq.newChart(this.state.symbol);
-		this.setState({
-			symbol: null
-		});
-		this.refs["symbolInput"].value = "";
-		var that = this;
-		window.setTimeout(function () {
-			that.props.hideLoader();
-		}, 1000);
+		Actions.setSymbol(this.state.symbol);
 	}
 	onChange(event) {
 		this.setState({
