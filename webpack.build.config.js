@@ -6,6 +6,7 @@ module.exports = {
 		"chartIQ": "./src/app.jsx"
 	},
 	output: {
+		publicPath:'/dist/',
 		path: path.resolve(__dirname, './dist'),
 		filename: "[name].js"
 	},
@@ -18,7 +19,13 @@ module.exports = {
 			}
 		}]
 	},
+	devServer: {
+		port: 3000,
+		compress: true,
+		inline: true,
+		stats: 'minimal'
+	},
 	resolve: {
 		extensions: ['.js', '.jsx']
-	},
+	}
 };
