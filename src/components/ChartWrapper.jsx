@@ -4,7 +4,7 @@ import FeedService from "../feeds/template";
 import { ChartStore, Actions } from "../stores/ChartStore";
 import RangeSelector from "./RangeSelector";
 import Legend from './Legend';
-import DrawingToolbarWrapper from './DrawingToolbarWrapper';
+import DrawingToolbar from './DrawingToolbar';
 export default class ChartWrapper extends React.Component {
 	constructor(props) {
 		super(props);
@@ -83,7 +83,7 @@ export default class ChartWrapper extends React.Component {
 			}
 			<div className="ciq-chart-area">
 				{this.ciq &&
-					<DrawingToolbarWrapper ciq={this.ciq} />
+					<DrawingToolbar ciq={this.ciq} />
 				}
 				<div id="chartContainer" className="chartContainer">
 					<div className={this.state.loader ? 'loader' : ''}></div>
