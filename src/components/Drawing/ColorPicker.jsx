@@ -12,51 +12,34 @@ var colorPickerColors = [
 class ColorPicker extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			open: false,
-			onColorPick: null,
-			top: 0,
-			left: 0
+	}
+	componentDidMount(){
+		this.bindCorrectContext();
+	}
+	bindCorrectContext(){
+		this.setColor = this.setColor.bind(this);
+	}
+	setColor(e) {
+		if (this.props.onColorPick) {
+			this.props.onColorPick(e.target)
 		}
-	}
-	setColor(color) {
-		if (this.state.onColorPick) {
-			this.state.onColorPick(color)
-		}
-		this.closeDialog();
-
-	}
-	openDialog(top, left, callback) {
-		this.setState({
-			open: true,
-			top: top,
-			left: left,
-			onColorPick: callback
-		});
-	}
-	closeDialog() {
-		this.setState({
-			open: false
-		});
 	}
 	render() {
 		var self = this;
-		var colorEls = colorPickerColors.map(function(color, index) {
-			return <li key={"color" + index}><a href="#" title={color} onClick={function() {
-				self.setColor(color);
-			}}style={{
-				background: "#" + color
-			}}>{color}</a></li>
-
+		var colors = colorPickerColors.map((color, i) => {
+			return (
+				<li key={"color"+i}><a href="#" title={color} onClick={this.setColor} style={{background: "#"+color}}>{color}</a></li>
+			);
 		});
+
 		return (
 			<div id="colorPicker">
 				<div className="color-picker-options"
 						 style={ {
-							 'top': this.state.top,
-							 'left': this.state.left,
-							 'display': this.state.open ? 'block' : 'none'
-						 }}><ul>{colorEls}</ul></div>
+							 'top': this.props.top,
+							 'left': this.props.left,
+							 'display': this.props.open ? 'block' : 'none'
+						 }}><ul>{colors}</ul></div>
 			</div>
 		)
 	}
