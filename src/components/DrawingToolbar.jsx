@@ -25,7 +25,7 @@ class DrawingToolbar extends React.Component {
 			arrOfTools: toolsArray.sort(),
 			toolParams: false,
 			selectedTool: false,
-			fill: null,
+			fill: "auto",
 			line: "auto",
 			lineWidth: null,
 			parameters: null,
@@ -39,11 +39,10 @@ class DrawingToolbar extends React.Component {
 			colorPickerTop: 0,
 			colorPickerContext: ""
 		};
-		this.ciq = props.ciq;
 	}
 	componentDidMount(){
 		this.bindCorrectContext();
-		ChartStore.addListener(['drawingToolbarChange'], this.onChartChange);
+		ChartStore.addListener(['drawingToolbarChange'], this.onDrawChange);
 	}
 	bindCorrectContext(){
 		this.updateLineParams = this.updateLineParams.bind(this);
@@ -58,13 +57,13 @@ class DrawingToolbar extends React.Component {
 		this.updateFontSize = this.updateFontSize.bind(this);
 		this.toggleBold = this.toggleBold.bind(this);
 		this.toggleItalic = this.toggleItalic.bind(this);
-		this.onChartChange = this.onChartChange.bind(this);
+		this.onDrawChange = this.onDrawChange.bind(this);
 	}
 	componentWillUnmount(){
-		ChartStore.removeListener(['drawingToolbarChange'], this.onChartChange);
+		ChartStore.removeListener(['drawingToolbarChange'], this.onDrawChange);
 		this.ciq.destory();
 	}
-	onChartChange(){
+	onDrawChange(){
 		if (this.state.active !== ChartStore.getToolbarStatus()){
 			var callback=function(){
 				var elem = document.getElementById('chartContainer');
@@ -72,9 +71,9 @@ class DrawingToolbar extends React.Component {
 					elem.className += " toolbarOn";
 				}else{
 					elem.classList.remove('toolbarOn');
-					this.ciq.changeVectorType('');
+					this.props.ciq.changeVectorType('');
 				}
-				this.ciq.draw();
+				this.props.ciq.draw();
 			}.bind(this);
 
 			this.setState({
@@ -90,18 +89,20 @@ class DrawingToolbar extends React.Component {
 			// Sync the defaults for font tool
 			var style = this.props.ciq.canvasStyle("stx_annotation");
 
-      this.props.ciq.currentVectorParameters.annotation.font.size=style.fontSize;
-      this.props.ciq.currentVectorParameters.annotation.font.family=style.fontFamily;
-      this.props.ciq.currentVectorParameters.annotation.font.style=style.fontStyle;
-      this.props.ciq.currentVectorParameters.annotation.font.weight=style.fontWeight;
+		var vectorStyles = {
+			size: style.fontSize,
+			family: style.fontFamily,
+			style: style.fontStyle,
+			weight: style.fontWeight,
+			tool: tool
+		};
+
 		}
 		// Set all the info for the toolbar
 		this.setState({
 			selectedTool:this.toTitleCase(tool),
 			toolParams:CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
-		});
-		// Activate the tool
-		this.props.ciq.changeVectorType(tool);
+		}, this.props.setVectorParams(vectorStyles));
 	}
 	toggleDrawingToolbar(){
 		this.setState({
