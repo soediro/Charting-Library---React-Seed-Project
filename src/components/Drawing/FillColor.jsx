@@ -9,7 +9,9 @@ class FillColor extends React.Component {
 	}
 	render() {
 		if(!this.props.color) return <span></span>;
-		var activeColor={background: this.props.color};
+		var activeColor=null;
+		if(this.props.color=="auto") activeColor={background:"white"};
+		else activeColor={background: this.props.color};
 		return(
 			<span><div style={activeColor} className="color-picker-swatch fill" onClick={this.onClick}></div></span>
 		)

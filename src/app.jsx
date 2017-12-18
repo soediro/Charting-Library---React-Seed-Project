@@ -1,4 +1,4 @@
-import ChartWrapper from "./components/ChartWrapper"
+import Chart from "./components/Chart"
 ReactDOM.render(
-  <ChartWrapper/>
+  <Chart/>
   , document.getElementById('chartHere'));
