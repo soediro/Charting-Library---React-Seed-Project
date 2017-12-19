@@ -9,7 +9,7 @@ import FontSize from "./Text/FontSize"
 import FontFamily from "./Text/FontFamily"
 
 //data sources
-import { ChartStore, Actions } from '../stores/ChartStore'
+import { ChartStore, Actions } from '../stores/ChartStores'
 
 class DrawingToolbar extends React.Component {
 	constructor(props) {

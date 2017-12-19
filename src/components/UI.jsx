@@ -2,7 +2,7 @@ import configs from "../../configs/ui.js";
 import TimeZone from "./TimezoneModal";
 import ThemeModal from "./ThemeModal";
 import StudyModal from "./StudyModal";
-import { Actions } from "../stores/ChartStore";
+import { Actions } from "../stores/ChartStores";
 
 class UI extends React.Component {
 	constructor(props) {

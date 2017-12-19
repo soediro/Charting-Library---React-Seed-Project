@@ -1,4 +1,4 @@
-import { ChartStore, Actions } from "../stores/ChartStore";
+import { ChartStore, Actions } from "../stores/ChartStores";
 
 export default class Legend extends React.Component {
 	constructor(props) {
