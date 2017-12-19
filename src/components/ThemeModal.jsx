@@ -4,135 +4,130 @@ class ThemeModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			open: false,
 			themeHelper: null,
-			themeName: null
+			themeName: null,
+			currentSwatch: null,
+			showColorPicker: false,
+			colorPickerTop: '',
+			colorPickerLeft: ''
 		}
-		this.saveSettings = this.saveSettings.bind(this);
-		this.updateThemeName = this.updateThemeName.bind(this);
-		this.closeDialog = this.closeDialog.bind(this);
+		this.bindCorrectContext()
 	}
-	setThemeHelper(ciq) {
-		if (!ciq) return;
-		var themeHelper = new CIQ.ThemeHelper({
-			'stx': ciq
-		});
-		var self = this;
-		this.setState({
-			ciq: ciq,
-			themeHelper: themeHelper,
-		}, function() {
-			self.loadDefaultColors();
-			self.forceUpdate();
-		});
-	}
-	loadDefaultColors() {
-		var self = this;
-		options.map(function(section, index) {
-			var swatches = section.swatches.map(function(swatch, index) {
-				self.updateTheme(null, swatch.item, swatch);
-			})
-		})
-	}
-	openDialog(callback) {
-		this.setState({
-			open: true,
-			callback: callback
-		});
-	}
-	closeDialog() {
-		this.setState({
-			open: false
-		});
+	bindCorrectContext(){
+		this.saveSettings = this.saveSettings.bind(this)
+		this.updateThemeName = this.updateThemeName.bind(this)
+		this.updateTheme = this.updateTheme.bind(this)
 	}
 	componentWillReceiveProps(nextProps) {
 		var self = this;
-		if (nextProps.themeHelper) {
+		if (nextProps.themeHelper && this.state.themeHelper === null) {
 			this.setState({
 				themeHelper: nextProps.themeHelper
 			}, function() {
 				self.loadDefaultColors();
-				self.forceUpdate();
 			});
 		}
 	}
+	loadDefaultColors() {
+		options.map((section) => {
+			section.swatches.map((swatch) => {
+				this.updateTheme(null, swatch.item, swatch)
+			})
+		})
+	}
 	openColorPicker(swatch, target) {
-		var self = this;
 		var targetBounds = target.getBoundingClientRect();
-		this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function(color) {
-			self.updateTheme(color, swatch.item, swatch)
-			self.forceUpdate();
+		this.setState({
+			showColorPicker: true,
+			colorPickerLeft: targetBounds.left,
+			colorPickerTop: targetBounds.top,
+			currentSwatch: swatch
 		})
 	}
 	saveSettings() {
 		if (!this.state.themeName) return;
-		this.closeDialog();
-		if (this.state.callback) this.state.callback(this.state.themeHelper.settings, this.state.themeName)
+		this.props.toggle(this.state.themeHelper.settings, this.state.themeName);
 	}
-	updateTheme(color, item, swatch) {
+	updateTheme(colorEl, item, swatch) {
+		let color = colorEl ? colorEl.title : null,
+		rgbaColor = color ? CIQ.hexToRgba('#' + color) : null;
+		
+		if (!item && this.state.currentSwatch) {
+			item = this.state.currentSwatch.item
+		}
+
+		if(!swatch && this.state.currentSwatch){
+			swatch = this.state.currentSwatch
+		}
+
 		switch (item) {
 		case 'candleUp':
 
 			if (color) {
-				this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.color = rgbaColor;
 			}
 			swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.color;
 			break;
 		case 'candleDown':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.color ;
 			break;
 		case 'wickUp':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.wick = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.wick = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.wick ;
 			break;
 		case 'wickDown':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.wick = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.wick = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.wick;
 			break;
 		case 'borderUp':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.border = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.border = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].up.border;
 			break;
 		case 'borderDown':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.border = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.border = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Candle/Bar"].down.border;
 			break;
 		case 'lineBar':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Line"].color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Line"].color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Line"].color;
 			break;
 		case 'mountain':
 			if (color)
-				this.state.themeHelper.settings.chartTypes["Mountain"].color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chartTypes["Mountain"].color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chartTypes["Mountain"].color;
 			break;
 		case 'chartBackground':
 			if (color)
-				this.state.themeHelper.settings.chart["Background"].color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chart["Background"].color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chart["Background"].color;
 			break;
 		case 'dividers':
 			if (color)
-				this.state.themeHelper.settings.chart["Grid Dividers"].color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chart["Grid Dividers"].color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chart["Grid Dividers"].color;
 			break;
 		case 'lines':
 			if (color)
-				this.state.themeHelper.settings.chart["Grid Lines"].color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chart["Grid Lines"].color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chart["Grid Lines"].color;
 			break;
 		case 'axis': if (color)
-				this.state.themeHelper.settings.chart["Axis Text"].color = CIQ.hexToRgba('#' + color);
+				this.state.themeHelper.settings.chart["Axis Text"].color = rgbaColor;
 			swatch.color = this.state.themeHelper.settings.chart["Axis Text"].color ;
 			break;
 		}
+
+		this.setState({
+			showColorPicker: false,
+			currentSwatch: null
+		})
 	}
 	updateThemeName(event) {
 		this.setState({
@@ -141,7 +136,7 @@ class ThemeModal extends React.Component {
 	}
 	render() {
 		var self = this;
-		if (!this.state.open) return <span></span>
+		if (!this.props.open) return <span></span>
 		var sections = options.map(function(section, sectionindex) {
 
 			var swatches = section.swatches.map(function(swatch, index) {
@@ -161,13 +156,13 @@ class ThemeModal extends React.Component {
 		});
 		return (
 			<span className = "ciq dialog-overlay" >
-			<ColorPicker ref="colorPicker"/>
+			<ColorPicker open={this.state.showColorPicker} top={this.state.colorPickerTop} left={this.state.colorPickerLeft} onColorPick={this.updateTheme} />
 			 <div className="ciq dialog">
 			<div className="cq-close" onClick={ this.closeDialog }></div>
 				<div className="heading">Custom Theme</div>
 				{ sections }
 				<div className="dialog-item theme-save">
-				 <input className="ciq" ref ="themeName" type="text" placeholder="Name Your Theme" onChange={this.updateThemeName}></input>
+				 <input className="ciq" type="text" placeholder="Name Your Theme" onChange={this.updateThemeName}></input>
 				 <button className="pull-right ciq" onClick={this.saveSettings}>Save</button>
 				</div>
 			 </div>

@@ -1,9 +1,10 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
 	devtool: 'source-map',
 	entry: {
-		"chartIQ": "./src/app.jsx"
+		"chartIQ": "./src/index.js"
 	},
 	output: {
 		publicPath:'/dist/',
@@ -15,10 +16,17 @@ module.exports = {
 			exclude: [/node_modules/, "/chartiq/"],
 			loader: 'babel-loader',
 			query: {
-				presets: ['react', 'es2015', 'stage-1']
+				presets: ['react', 'es2015', 'stage-2']
 			}
 		}]
 	},
+	plugins: [
+		new webpack.DefinePlugin({
+			"process.env": {
+				NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')
+			}
+		})
+	],
 	devServer: {
 		port: 3000,
 		compress: true,

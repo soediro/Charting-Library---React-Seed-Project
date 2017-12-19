@@ -2,9 +2,10 @@ class ChartSymbol extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			symbol: "AAPL"
-        };
-        this.bindCorrectContext();
+			text: '',
+			placeholder: 'Enter Symbol'
+        }
+        this.bindCorrectContext()
     }
     bindCorrectContext(){
         this.onOptionClick = this.onOptionClick.bind(this);
@@ -12,39 +13,26 @@ class ChartSymbol extends React.Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 	onOptionClick() {
-		if (!this.ciq || !this.state.symbol) { return; }
-		Actions.setSymbol(this.state.symbol);
+		if (!this.props.ciq || !this.props.symbol) { return; }
+		this.props.setSymbol(this.state.text)
 	}
 	onChange(event) {
 		this.setState({
-			symbol: event.target.value
+			text: event.target.value
 		});
 	}
-	handleKeyPress(key) {
+	handleKeyPress(event) {
+		let key = event.key;
 		if (key == 'Enter') {
 			this.onOptionClick();
 		}
 	}
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.ciq) {
-			return this.setState({
-                ciq: nextProps.ciq, 
-                showLoader: nextProps.showLoader, 
-                hideLoader: nextProps.hideLoader
-			});
-		}
-	}
 	render() {
-		var self = this;
 		return (
 			<span className="symbol-frame">
-				<input ref="symbolInput" id="symbolInput" type="text" placeholder="Enter Symbol"
-					onChange={function (event) {
-						self.onChange(event.nativeEvent);
-					}}
-					onKeyPress={function (event) {
-						self.handleKeyPress(event.key);
-					}}></input><div className="symbol-btn" onClick={this.onOptionClick}></div>
+				<input id="symbolInput" type="text" placeholder={this.state.placeholder}
+					onChange={this.onChange} onKeyPress={this.handleKeyPress}>
+				</input><div className="symbol-btn" onClick={this.onOptionClick}></div>
 			</span>
 		);
 	}
