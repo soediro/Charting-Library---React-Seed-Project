@@ -110,7 +110,6 @@ class DrawingToolbar extends React.Component {
 		});
 	}
 	toggleColorPicker(target){
-		console.log("inside toggleColorPicker target is: ", target);
 		var colorPicker=this.state.showColorPicker,
 		targetBounds = target.getBoundingClientRect(),
 		context="";

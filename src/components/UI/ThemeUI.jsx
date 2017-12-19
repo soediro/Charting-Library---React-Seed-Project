@@ -3,7 +3,7 @@ import ThemeModal from '../ThemeModal';
 
 class ThemeUI extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			themeList: [{
 				"name": "Default",
@@ -27,28 +27,31 @@ class ThemeUI extends React.Component {
 			}, {
 				"name": "+ New Theme"
 			}],
-			themeHelper: null
-		};
-		this.addTheme = this.addTheme.bind(this);
+			showThemeModal: false,
+			themeHelper: new CIQ.ThemeHelper({
+				'stx': this.props.ciq
+			})
+		}
+		this.bindCorrectContext()
 	}
-	setThemeHelper(ciq) {
-		if (!ciq) { return; }
-		var themeHelper = new CIQ.ThemeHelper({
-			'stx': ciq
-		});
-		this.setState({
-			ciq: ciq,
-			themeHelper: themeHelper,
-		});
+	bindCorrectContext(){
+		this.addTheme = this.addTheme.bind(this)
+		this.toggleThemeModal = this.toggleThemeModal.bind(this)
 	}
 	themeSelect(theme) {
 		if (theme.name === "+ New Theme") {
-			return this.openThemeModal();
+			return this.toggleThemeModal()
 		}
 		this.updateTheme(theme.settings);
 	}
-	openThemeModal() {
-		this.refs.themeModal.openDialog(this.addTheme);
+	toggleThemeModal(theme, name){
+		this.setState({
+			showThemeModal: !this.state.showThemeModal
+		}, () => {
+			if (theme && name){
+				this.addTheme(theme, name)
+			}
+		})
 	}
 	addTheme(theme, themeName) {
 		var item = {
@@ -58,29 +61,23 @@ class ThemeUI extends React.Component {
 		this.state.themeList.splice((this.state.themeList.length - 1), 0, item);
 		this.setState({
 			themeList: this.state.themeList
+		}, () => {
+			this.updateTheme(theme);
 		});
-		this.updateTheme(theme);
 	}
 	updateTheme(theme) {
 		var c = CIQ.clone(theme);
 		this.state.themeHelper.settings = c;
 		this.state.themeHelper.update();
 	}
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.ciq) {
-			this.setThemeHelper(nextProps.ciq);
-		}
-	}
 	render() {
-		var self = this;
-		var options = this.state.themeList.map(function (theme, index) {
-			return (<menu-option key={"theme" + index} className="option" onClick={function () {
-				self.themeSelect(theme);
-			}}>{theme.name}</menu-option>);
-		});
+		let options = this.state.themeList.map((theme, i) => {
+			return (<menu-option key={"theme"+i} className="option" onClick={this.themeSelect.bind(this, theme)}>{theme.name}</menu-option>)
+		})
+
 		return (
 			<span>
-				<ThemeModal ref="themeModal" themeHelper={this.state.themeHelper ? this.state.themeHelper : null} />
+				<ThemeModal themeHelper={this.state.themeHelper} open={this.state.showThemeModal} toggle={this.toggleThemeModal} />
 				<menu-select id="themeSelect">
 					<span className="title">Select Theme</span>
 					<menu-select-options>

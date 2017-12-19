@@ -1,12 +1,7 @@
-class DrawingToolbarButton extends React.Component {
-	onClick() {
-		Actions.toggleDrawingToolbar();
-	}
-	render() {
-		return (
-			<span><button className="drawing-toolbar-btn" onClick={this.onClick}></button></span>
-		);
-	}
+const DrawingToolbarButton = (props) => {
+	return (
+		<span><button className='drawing-toolbar-btn' onClick={props.toggleDrawingToolbar} /></span>
+	)
 }
 
-module.exports = DrawingToolbarButton;
+export default DrawingToolbarButton

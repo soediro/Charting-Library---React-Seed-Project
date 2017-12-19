@@ -1,18 +1,27 @@
-require.config({
-	baseUrl: 'chartiq/js/'
-});
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { applyMiddleware, createStore } from 'redux'
+import thunk from 'redux-thunk'
+import { logger } from 'redux-logger'
+import reducer from './reducers'
+import App from './components/App'
 
-// Define the AMD module for the library
-// ['chartiq'] refers to chartiq.js in the ChartIQ library. Requiring this file kicks off require.js and grabs everything that is needed from the library.
-define('chartIQ', ['chartiq'], function(chartiq) {
-	for (var key in chartiq) {
-		window[key] = chartiq[key];
-	}
-	return chartiq;
-});
+const middlewares = [thunk];
+if(process.env.NODE_ENV === 'development'){
 
+  middlewares.push(logger);
+}
 
-require(['chartIQ'], function() {
-	require(["./dist/chartIQ.js"], function() {})
-});
+let store = createStore(
+  reducer,
+  applyMiddleware(...middlewares)
+);
+let chartEl = document.getElementById('chartHere');
+
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+  , chartEl
+)
 

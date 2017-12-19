@@ -4,30 +4,26 @@ class StudyModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			open: false,
 			studyHelper: {},
 			outputs: {},
 			inputs: {},
 			parameters: {}
 		};
+		this.bindCorrectContext()
+	}
+	bindCorrectContext(){
 		this.updateStudy = this.updateStudy.bind(this);
 		this.updateInputs = this.updateInputs.bind(this);
-		this.close = this.close.bind(this);
 	}
-	open(params) {
-		var studyHelper = new CIQ.Studies.DialogHelper(params);
-		this.setState({
-			open: true,
-			studyHelper: studyHelper,
-			outputs: studyHelper.outputs,
-			inputs: studyHelper.inputs,
-			params: studyHelper.parameters
-		});
-	}
-	close() {
-		this.setState({
-			open: false
-		});
+	componentWillReceiveProps(nextProps){
+		if(this.props.params !== nextProps.params && this.props.params){
+			this.setState({
+				studyHelper: new CIQ.Studies.DialogHelper(nextProps.params),
+				outputs: studyHelper.outputs,
+				inputs: studyHelper.inputs,
+				parameters: studyHelper.parameters
+			})
+		}
 	}
 	updateStudy() {
 		var currentInputs = {};
@@ -106,15 +102,15 @@ class StudyModal extends React.Component {
 
 		var targetBounds = target.getBoundingClientRect();
 
-		this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function (color) {
-			output.color = CIQ.hexToRgba('#' + color);
-			self.forceUpdate();
-		})
+		// this.refs.colorPicker.openDialog(targetBounds.top, targetBounds.left, function (color) {
+		// 	output.color = CIQ.hexToRgba('#' + color);
+		// 	self.forceUpdate();
+		// })
 	}
 	render() {
 		var self = this;
 
-		if (!this.state.open || !this.state.studyHelper) return <span></span>
+		if (!this.props.open || !this.state.studyHelper) return <span></span>
 		var inputs = this.state.inputs.map(function (input, index) {
 			if (input.type === "select") return self.createSelectInput(input);
 			if (input.type === "checkbox") return self.createCheckboxInput(input);
@@ -145,7 +141,7 @@ class StudyModal extends React.Component {
 
 		return (
 			<div className="dialog-overlay" id="studyDialog">
-				<ColorPicker ref="colorPicker" />
+				<ColorPicker />
 				<div className="dialog">
 					<div className="cq-close" onClick={this.close}></div>
 					<h3>

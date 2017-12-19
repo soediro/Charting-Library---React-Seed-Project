@@ -42,13 +42,13 @@ class TimeZone extends React.Component {
 		});
 	}
 	setTimeZone(zone) {
-		this.state.ciq.setTimeZone(this.state.ciq.dataZone, "America/Costa_Rica");
+		this.props.ciq.setTimeZone(this.props.ciq.dataZone, "America/Costa_Rica");
 		this.getMyZoneObj();
-		if (this.state.ciq.chart.symbol) this.state.ciq.draw();
+		if (this.props.ciq.chart.symbol) this.props.ciq.draw();
 		this.toggle();
 	}
 	myTimeZone() {
-		this.state.ciq.defaultDisplayTimeZone = null;
+		this.props.ciq.defaultDisplayTimeZone = null;
 		for (var i = 0; i < CIQ.ChartEngine.registeredContainers.length; i++) {
 			var stx = CIQ.ChartEngine.registeredContainers[i].stx;
 			stx.displayZone = null;
@@ -57,18 +57,11 @@ class TimeZone extends React.Component {
 			if (stx.displayInitialized) stx.draw();
 		}
 		this.getMyZoneObj();
-		if (this.state.ciq.chart.symbol) this.state.ciq.draw();
+		if (this.props.ciq.chart.symbol) this.props.ciq.draw();
 		this.toggle();
 	}
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.ciq) {
-			return this.setState({
-				ciq: nextProps.ciq
-			});
-		}
-	}
 	getMyZoneObj() {
-		if (this.state.ciq.displayZone) {
+		if (this.props.ciq.displayZone) {
 			this.state.myZone = (
 				<button className="current-location-btn" onClick={ this.myTimeZone }>Use my current location</button>);
 		} else {
@@ -76,11 +69,11 @@ class TimeZone extends React.Component {
 		}
 	}
 	render() {
-		if (!this.state.open) return <span></span>
+		if (!this.props.showTimezoneModal) return <span></span>
 		return (
 			<div className="ciq dialog-overlay">
 				<div className="ciq dialog timezone">
-					<div className="cq-close" onClick={ this.toggle }></div>
+					<div className="cq-close" onClick={ this.props.toggleTimezoneModal }></div>
 					<h3 className="center">Select Timezone</h3>
 					{ this.state.myZone }
 					<ul className="timezoneList">

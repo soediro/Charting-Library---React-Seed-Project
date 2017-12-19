@@ -2,24 +2,24 @@ class Comparison extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			symbol: null
-		};
+			text: '',
+			placeholder: 'Add Comparison'
+		}
 		this.bindCorrectContext();
 	}
 	bindCorrectContext(){
-		this.compareChange = this.compareChange.bind(this);
+		this.onChange = this.onChange.bind(this);
 		this.onOptionClick = this.onOptionClick.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
-		this.updateComparisonSeries = this.updateComparisonSeries.bind(this);
 	}
-	compareChange(event) {
+	onChange(event) {
 		this.setState({
-			symbol: event.target.value
+			text: event.target.value
 		});
 	}
 	onOptionClick() {
-		if (!this.ciq) { return; }
-		if (!this.ciq.callbacks.symbolChange) { this.ciq.callbacks.symbolChange = this.updateComparisonSeries; }
+		if (!this.props.ciq) { return; }
+		if (!this.props.ciq.callbacks.symbolChange) { this.props.ciq.callbacks.symbolChange = this.updateComparisonSeries.bind(this) }
 		function getRandomColor() {
 			var letters = '0123456789ABCDEF';
 			var color = '#';
@@ -28,46 +28,37 @@ class Comparison extends React.Component {
 			}
 			return color;
 		}
-		var newSeries = this.ciq.addSeries(this.state.symbol, {
+
+		let seriesParams = {
 			isComparison: true,
 			color: getRandomColor(),
 			data: {
 				useDefaultQuoteFeed: true
 			}
-		});
+		}
+
+		this.props.addComparison(this.state.text, seriesParams)
+
 		this.setState({
-			symbol: null
+			text: ''
 		});
-		this.refs["compareInput"].value = "";
-		Actions.addComparisonSeries(newSeries);
 	}
-	handleKeyPress(key) {
+	handleKeyPress(event) {
+		let key = event.key;
 		if (key == 'Enter') {
 			this.onOptionClick();
 		}
 	}
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.ciq) {
-			return this.setState({
-				ciq: nextProps.ciq
-			});
-		}
-	}
 	updateComparisonSeries() {
 		if (arguments[0].action == 'remove-series') {
-			Actions.removeComparisonSeries(arguments[0].stx.chart.series[arguments[0].symbol]);
-			this.ciq.removeSeries(arguments[0].symbol, this.ciq.chart);
+			let thing = arguments[0];
+			this.props.removeComparison(arguments[0].stx.chart.series[arguments[0].symbol])
 		}
 	}
 	render() {
-		var self = this;
 		return (
 			<span className="symbol-frame">
-				<input ref="compareInput" onChange={function (event) {
-					self.compareChange(event.nativeEvent);
-				}}
-					onKeyPress={function (event) { self.handleKeyPress(event.key); }} id="symbolCompareInput" placeholder="Add Comparison" type="text" >
-				</input>
+				<input onChange={this.onChange} onKeyPress={this.handleKeyPress} id="symbolCompareInput" placeholder={this.state.placeholder} type="text" value={this.state.text} />
 				<div className="comparison-btn" onClick={this.onOptionClick}></div>
 			</span>
 		);

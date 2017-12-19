@@ -4,23 +4,43 @@ import StudyModal from '../StudyModal';
 
 class StudyUI extends React.Component {
 	constructor(props) {
-        super(props);
+		super(props);
         this.state = {
-            studyDialogOpen: false,
-            overlayDialogOpen: false,
-            studies: CIQ.Studies.studyLibrary
-        };
+            showStudyDialog: false,
+			showOverlayDialog: false,
+			currentStudyParams: null,
+			overlayTop: '',
+			overlayLeft: '',
+			studies: CIQ.Studies.studyLibrary
+		};
+		this.props.ciq.callbacks.studyOverlayEdit = this.toggleOverlayModal.bind(this)
+		this.props.ciq.callbacks.studyPanelEdit = this.toggleStudyModal.bind(this)
         this.bindCorrectContext();
     }
     bindCorrectContext(){
-        this.clickHandler = this.clickHandler.bind(this);
-    }
+		this.toggleStudyModal = this.toggleStudyModal.bind(this)
+		this.toggleOverlayModal = this.toggleOverlayModal.bind(this)
+	}
+	toggleStudyModal(){
+		this.setState({
+			showStudyDialog: !this.state.showStudyDialog
+		})
+	}
+	toggleOverlayModal(params){
+		let flipOverlay = !this.state.showOverlayDialog;
+		this.setState({
+			showOverlayDialog: flipOverlay,
+			overlayTop: flipOverlay ? this.props.ciq.cy + 'px' : '',
+			overlayLeft: flipOverlay ? this.props.ciq.cx + 'px' : '',
+			currentStudyParams: flipOverlay ? params : null
+		})
+	}
 	addStudy(study) {
 		var studyLookup = {};
 		for (var libraryEntry in this.state.studies) {
-			studyLookup[studies[libraryEntry].name] = libraryEntry;
+			studyLookup[this.state.studies[libraryEntry].name] = libraryEntry;
 		}
-		CIQ.Studies.addStudy(this.props.ciq, studyLookup[study]);
+		this.props.addStudy(studyLookup[study])
 	}
 	removeStudy(params) {
 		CIQ.Studies.removeStudy(params.stx, params.sd);
@@ -35,32 +55,26 @@ class StudyUI extends React.Component {
 		return tempStudies.sort();
 	}
 	openModal(params) {
-		this.refs.studyModal.open(params);
-	}
-	openDialog(params) {
-		this.refs.overlayMenu.open(params);
-	}
-
-	clickHandler(event, params) {
-		if (event === 'edit') {
-			this.openModal(params);
-		} else if (event === 'delete') {
-			this.removeStudy(params);
-		}
-		this.refs.overlayMenu.close();
+		// this.refs.studyModal.open(params);
 	}
 	render() {
-		var self = this;
-		var studies = this.getStudyList().map(function (study, index) {
-			return (<menu-option key={"study" + index} onClick={function () {
-                    this.addStudy(study);
-                }}><span>{study}</span></menu-option>
-            );
-		});
+		let studies = this.getStudyList().map((study, index) => {
+			return (<menu-option key={"study" + index} onClick={this.addStudy.bind(this, study)}><span>{study}</span></menu-option>);
+		})
+
 		return (
 			<span>
-				<OverlayMenu ref="overlayMenu" onClick={this.clickHandler} />
-				<StudyModal ref="studyModal" />
+				<OverlayMenu onClick={this.toggleOverlayModal}
+							 params={this.state.studyParams} 
+							 open={this.state.showOverlayDialog} 
+							 top={this.state.overlayTop}
+							 left={this.state.overlayLeft} 
+							 edit={this.toggleStudyModal}
+							 delete={this.removeStudy} />
+
+				<StudyModal open={this.state.showStudyDialog} 
+							params={this.state.currentStudyParams} />
+							
 				<menu-select id="studySelect">
 					<span className="title">Studies</span>
 					<menu-select-options className="ps-container">
@@ -68,8 +82,8 @@ class StudyUI extends React.Component {
 					</menu-select-options>
 				</menu-select>
 			</span>
-		);
+		)
 	}
 }
 
-module.exports = StudyUI;
+export default StudyUI
