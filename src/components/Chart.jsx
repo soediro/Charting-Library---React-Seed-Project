@@ -1,7 +1,7 @@
 import UI from "./UI";
 //This just loads the feed into the CIQ engine
 import FeedService from "../feeds/template";
-import { ChartStore, Actions } from "../stores/ChartStore";
+import { ChartStore, Actions } from "../stores/ChartStores";
 import RangeSelector from "./RangeSelector";
 import Legend from './Legend';
 import DrawingToolbar from './DrawingToolbar';

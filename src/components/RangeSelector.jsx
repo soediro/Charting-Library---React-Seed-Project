@@ -1,6 +1,6 @@
 
 
-import { ChartStore, Actions } from "../stores/ChartStore";
+import { ChartStore, Actions } from "../stores/ChartStores";
 const rangeConfig = [
 	{
 		"display": "All",
