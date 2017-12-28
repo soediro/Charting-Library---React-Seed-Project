@@ -1,7 +1,3 @@
-import configs from "../../configs/ui.js"
-import TimeZone from "./TimezoneModal"
-import ThemeModal from "./ThemeModal"
-import StudyModal from "./StudyModal"
 import ChartSymbol from './UI/ChartSymbol'
 import Comparison from './UI/Comparison'
 import Periodicity from './UI/Periodicity'

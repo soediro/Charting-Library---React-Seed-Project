@@ -5,6 +5,7 @@ import createTypes from 'redux-create-action-types'
  */
 const Types = createTypes(
     'CHANGE_CHART_DATA',
+    'DRAW',
     'SET_CHART_TYPE',
     'SET_CONTAINER',
     'SET_SYMBOL',
@@ -15,8 +16,9 @@ const Types = createTypes(
     'REMOVE_STUDY',
     'SET_SPAN',
     'CHANGE_CONTAINER_SIZE',
+    'CHANGE_VECTOR_PARAMS',
+    'CHANGE_VECTOR_STYLE',
     'SET_PERIODICITY',
-    'TOGGLE_DRAWING',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL'
 );
@@ -37,10 +39,6 @@ export function addComparison(symbol, params){
 
 export function removeComparison(comparison){
     return { type: 'REMOVE_COMPARISON', comparison:comparison }
-}
-
-export function toggleDrawing(visibility){
-    return { type: 'TOGGLE_DRAWING', isVisible:visibility }
 }
 
 export function toggleCrosshairs(){
@@ -64,7 +62,15 @@ export function changeContainerSize(size){
 }
 
 export function changingChartData(isChanging){
-    return {type: 'CHANGE_CHART_DATA', changing: isChanging }
+    return { type: 'CHANGE_CHART_DATA', changing: isChanging }
+}
+
+export function changeVectorParams(tool){
+    return { type: 'CHANGE_VECTOR_PARAMS', tool: tool }
+}
+
+export function changeVectorStyle(type, style){
+    return { type: 'CHANGE_VECTOR_STYLE', styleType: type, style: style }
 }
 
 export function setPeriodicityWithLoader(periodicity){
@@ -115,4 +121,8 @@ export function addStudy(study){
 
 export function removeStudy(params){
     return { type: 'REMOVE_STUDY', params: params }
+}
+
+export function draw(){
+    return { type: 'DRAW' }
 }

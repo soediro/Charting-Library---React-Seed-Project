@@ -1,4 +1,4 @@
-import ColorPicker from "./Drawing/ColorPicker"
+import ColorPicker from "../Drawing/ColorPicker"
 
 class StudyModal extends React.Component {
 	constructor(props) {

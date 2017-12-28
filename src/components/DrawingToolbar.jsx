@@ -2,11 +2,11 @@
 import ColorPicker from "./Drawing/ColorPicker"
 import FillColor from "./Drawing/FillColor"
 import LineColor from "./Drawing/LineColor"
+// import Color from "./Drawing/Color"
 import LineStyle from "./Drawing/LineStyle"
-import Bold from "./Text/Bold"
-import Italic from "./Text/Italic"
 import FontSize from "./Text/FontSize"
 import FontFamily from "./Text/FontFamily"
+import FontStyle from "./Text/FontStyle"
 
 //data sources
 import { ChartStore, Actions } from '../stores/ChartStores'
@@ -14,26 +14,9 @@ import { ChartStore, Actions } from '../stores/ChartStores'
 class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
-		var tools = CIQ.Drawing.getDrawingToolList({});
-		var toolsArray=Object.keys(tools).map(function (key) {
-			return tools[key];
-		});
-
 		this.state = {
-			active: false,
-			launchToolbar: false,
-			arrOfTools: toolsArray.sort(),
-			toolParams: false,
-			selectedTool: false,
-			fill: "auto",
-			line: "auto",
-			lineWidth: null,
-			parameters: null,
-			fontOptions: null,
-			fontFamily: null,
-			fontSize: null,
-			fontStyle: null,
-			color: null,
+			toolParams: null,
+			isBold: false,
 			showColorPicker: false,
 			colorPickerLeft: 0,
 			colorPickerTop: 0,
@@ -42,72 +25,42 @@ class DrawingToolbar extends React.Component {
 	}
 	componentDidMount(){
 		this.bindCorrectContext();
-		ChartStore.addListener(['drawingToolbarChange'], this.onDrawChange);
 	}
 	bindCorrectContext(){
+		this.changeFontStyle = this.changeFontStyle.bind(this);
+
 		this.updateLineParams = this.updateLineParams.bind(this);
 		this.updateFontFamily = this.updateFontFamily.bind(this);
 		this.updateFontSize = this.updateFontSize.bind(this);
-		this.toggleBold = this.toggleBold.bind(this);
-		this.toggleItalic = this.toggleItalic.bind(this);
 		this.toggleColorPicker = this.toggleColorPicker.bind(this);
 		this.setColor = this.setColor.bind(this);
 		this.updateLineParams = this.updateLineParams.bind(this);
 		this.updateFontFamily = this.updateFontFamily.bind(this);
 		this.updateFontSize = this.updateFontSize.bind(this);
-		this.toggleBold = this.toggleBold.bind(this);
-		this.toggleItalic = this.toggleItalic.bind(this);
-		this.onDrawChange = this.onDrawChange.bind(this);
 	}
-	componentWillUnmount(){
-		ChartStore.removeListener(['drawingToolbarChange'], this.onDrawChange);
-		this.ciq.destory();
-	}
-	onDrawChange(){
-		if (this.state.active !== ChartStore.getToolbarStatus()){
-			var callback=function(){
-				var elem = document.getElementById('chartContainer');
-				if(this.state.active){
-					elem.className += " toolbarOn";
-				}else{
-					elem.classList.remove('toolbarOn');
-					this.props.ciq.changeVectorType('');
-				}
-				this.props.ciq.draw();
-			}.bind(this);
-
-			this.setState({
-				active: !this.state.active
-			}, callback);
+	componentWillReceiveProps(nextProps){
+		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
+			this.props.draw()
 		}
 	}
 	toTitleCase(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 	setTool(tool){
-		if(tool=='annotation' || tool=='callout'){ // no need to do this every time
-			// Sync the defaults for font tool
-			var style = this.props.ciq.canvasStyle("stx_annotation");
-
-		var vectorStyles = {
-			size: style.fontSize,
-			family: style.fontFamily,
-			style: style.fontStyle,
-			weight: style.fontWeight,
-			tool: tool
-		};
-
+		if (this.props.ciq === null) return
+		else {
+			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
+			this.props.changeVectorParams(tool)
+			this.props.changeTool(tool, toolParams)
 		}
-		// Set all the info for the toolbar
-		this.setState({
-			selectedTool:this.toTitleCase(tool),
-			toolParams:CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
-		}, this.props.setVectorParams(vectorStyles));
 	}
-	toggleDrawingToolbar(){
-		this.setState({
-			active: !this.state.active
-		});
+	changeFontStyle(type){
+		this.props.setFontStyle(type)
+		this.props.changeVectorStyle(type, { bold: this.props.fontStyle.bold, italic: this.props.fontStyle.italic })
+	}
+	changeFontFamily(family){
+		this.props.setFontFamily(family)
+		this.props.changeVectorStyle('family', { family: this.props.fontFamily })
 	}
 	toggleColorPicker(target){
 		var colorPicker=this.state.showColorPicker,
@@ -129,7 +82,7 @@ class DrawingToolbar extends React.Component {
 	}
 	setColor(colorEl){
 		var color=colorEl.title,
-		fill=this.state.fill, line=this.state.line;
+		fill=this.props.fill, line=this.props.line;
 
 		if(this.state.colorPickerContext==="line"){
 			line=CIQ.hexToRgba('#'+color);
@@ -145,12 +98,9 @@ class DrawingToolbar extends React.Component {
 		});
 	}
 	updateLineParams(weight, pattern){
-		this.ciq.currentVectorParameters.lineWidth=width;
-		this.ciq.currentVectorParameters.pattern=pattern;
-		this.setState({
-			lineWidth: width,
-			pattern: pattern
-		});
+		this.props.ciq.currentVectorParameters.lineWidth=weight
+		this.props.ciq.currentVectorParameters.pattern=pattern
+		this.props.setLineParams(weight, pattern)
 	}
 	updateFontFamily(newFamily){
 		this.ciq.changeVectorParameter('fontFamily', newFamily);
@@ -164,33 +114,18 @@ class DrawingToolbar extends React.Component {
 			fontSize: newSize
 		});
 	}
-	toggleBold(bold){
-		var weightType=bold?"bold":"normal";
-		this.ciq.changeVectorParameter('fontWeight', weightType);
-		this.setState({
-			fontStyle: weightType
-		});
-	}
-	toggleItalic(italic){
-		var italicType=italic?"italic":"normal";
-		this.ciq.changeVectorParameter('fontStyle', italicType);
-		this.setState({
-			fontStyle: italicType
-		});
-	}
 	render() {
-		var self = this;
-		var options = this.state.arrOfTools.map(function (item, index) {
-			return <menu-option key={"tool" + index} className="option" onClick={function () {
-				self.setTool(item);
-			}}>{self.toTitleCase(item)}</menu-option>
-		});
+		let options = this.props.tools.map((tool, i) => {
+			return (
+				<menu-option key={"tool"+i} className="option" onClick={this.setTool.bind(this, tool)}>{this.toTitleCase(tool)}</menu-option>
+			)
+		})
 
-		if(this.state.active){
+		if(this.props.showDrawingToolbar){
 			return (
 				<div className="toolbar">
 					<menu-select id="toolSelect">
-						<span className="title">{this.state.selectedTool || "Select Tool"}</span>
+						<span className="title">{this.props.selectedTool || "Select Tool"}</span>
 						<menu-select-options className="menu-hover">
 							{options}
 						</menu-select-options>
@@ -198,13 +133,12 @@ class DrawingToolbar extends React.Component {
 					<span>
 						<div className="drawingParameters">
 							<ColorPicker open={this.state.showColorPicker} top={this.state.colorPickerTop} left={this.state.colorPickerLeft} onColorPick={this.setColor} />
-							<FillColor color={this.state.fill} openColorPicker={this.toggleColorPicker} />
-							<LineColor color={this.state.line} openColorPicker={this.toggleColorPicker} />
-							<LineStyle width={this.state.lineWidth} pattern={this.state.linePattern} updateLineParams={this.updateLineParams} />
-							<Bold fontOptions={this.state.fontOptions} toggleBold={this.toggleBold} />
-							<Italic fontOptions={this.state.fontOptions} toggleItalic={this.toggleItalic} />
-							<FontSize fontOptions={this.state.fontOptions} size={this.state.fontSize} updateFontSize={this.updateFontSize} />
-							<FontFamily fontOptions={this.state.fontOptions} family={this.state.fontFamily} updateFontFamily={this.updateFontFamily} />
+							<FillColor color={this.props.fill} openColorPicker={this.toggleColorPicker} />
+							<LineColor color={this.props.line} openColorPicker={this.toggleColorPicker} />
+							<LineStyle {...this.props} onClick={this.updateLineParams} />
+							<FontStyle {...this.props} onClick={this.changeFontStyle} />
+							<FontSize fontOptions={this.props.fontOptions} size={this.props.fontSize} updateFontSize={this.updateFontSize} />
+							<FontFamily fontOptions={this.props.fontOptions} family={this.props.fontFamily} updateFontFamily={this.updateFontFamily} />
 						</div>
 					</span>
 				</div>
