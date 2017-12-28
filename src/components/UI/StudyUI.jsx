@@ -1,6 +1,6 @@
 //components
 import OverlayMenu from './OverlayMenu';
-import StudyModal from '../StudyModal';
+import StudyModal from '../Modals/StudyModal';
 
 class StudyUI extends React.Component {
 	constructor(props) {

@@ -1,5 +1,5 @@
 //components
-import TimeZone from '../TimezoneModal';
+import TimeZone from '../Modals/TimezoneModal';
 
 const TimeZoneButton = (props) => {
 	return (

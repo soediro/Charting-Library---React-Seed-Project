@@ -7,10 +7,10 @@ import { setChartContainer,
         addStudy,
         removeComparison,
         removeStudy,
-        toggleDrawing,
         toggleCrosshairs,
         setSpan,
         changeContainerSize,
+        changeVectorParams,
         setPeriodicity,
         setChartType,
         toggleLoader,
@@ -18,7 +18,10 @@ import { setChartContainer,
         setSymbol, 
         changingChartData,
         setPeriodicityWithLoader,
-        toggleTimezoneModal} from '../actions/chartActions'
+        toggleTimezoneModal,
+        changeVectorStyle} from '../actions/chartActions'
+
+import { toggleDrawing } from '../actions/drawActions'
 
 //components
 import Chart from '../components/Chart'
@@ -33,7 +36,6 @@ const mapStateToProps = (state, props) => {
         service: state.chart.service,
         symbol: state.chart.symbol,
         refreshInterval: state.chart.refreshInterval,
-        showDrawingToolbar: state.chart.showDrawingToolbar,
         showCrosshairs: state.chart.showCrosshairs,
         showTimezoneModal: state.chart.showTimezoneModal,
         chartSeries: state.chart.chartSeries
@@ -44,6 +46,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         setChartContainer: (container) => {
             dispatch(setChartContainer(container))
+        },
+        changeVectorParams: (tool) => {
+            dispatch(changeVectorParams(tool))
+        },
+        changeVectorStyle: (styleType, style) => {
+            dispatch(changeVectorStyle(styleType, style))
         },
         addComparison: (comparison, color) => {
             dispatch(addComparison(comparison, color))
@@ -66,8 +74,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         setSymbol: (symbol) => {
             dispatch(setSymbol(symbol))
         },
-        setDrawingToolbarVisibility: () => {
-            dispatch(setDrawingToolbarVisibility(ownProps.drawingToolbarVisible))
+        toggleDrawingToolbar: () => {
+            dispatch(toggleDrawing())
         },
         setPeriodicity: (period, interval) => {
             dispatch(setPeriodicity(period, interval))

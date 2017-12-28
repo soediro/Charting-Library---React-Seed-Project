@@ -1,8 +1,10 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux'
 import chart from './chartReducer'
+import draw from './drawingReducer'
 
 const reducer = combineReducers({
-    chart
+    chart,
+    draw
 });
 
-export default reducer;
+export default reducer

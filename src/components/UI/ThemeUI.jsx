@@ -1,5 +1,5 @@
 //components
-import ThemeModal from '../ThemeModal';
+import ThemeModal from '../Modals/ThemeModal';
 
 class ThemeUI extends React.Component {
 	constructor(props) {

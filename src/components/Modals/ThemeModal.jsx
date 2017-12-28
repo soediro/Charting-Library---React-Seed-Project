@@ -1,4 +1,4 @@
-import ColorPicker from "./Drawing/ColorPicker"
+import ColorPicker from "../Drawing/ColorPicker"
 
 class ThemeModal extends React.Component {
 	constructor(props) {
