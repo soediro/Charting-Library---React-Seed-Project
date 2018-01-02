@@ -36,7 +36,7 @@ class ColorPicker extends React.Component {
 			<div id="colorPicker">
 				<div className="color-picker-options"
 						 style={ {
-							 'top': this.props.top,
+							 'top': this.props.top ? this.props.top : 0,
 							 'left': this.props.left,
 							 'display': this.props.open ? 'block' : 'none'
 						 }}><ul>{colors}</ul></div>

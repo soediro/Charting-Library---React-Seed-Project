@@ -15,8 +15,8 @@ const initialState = {
     lineWidth: null,
     linePattern: null,
     fontOptions: null,
-    fontFamily: null,
-    fontSize: null,
+    fontFamily: 'Helvetica',
+    fontSize: 13,
     fontStyle: {
         bold: false,
         italic: false
@@ -64,28 +64,24 @@ const draw = (state = initialState, action) => {
                     }
                 })
             }else return state
-        case Types.SET_FONT_COLOR:
-            return Object.assign({}, state, {
-                color: action.color
-            })
-        case Types.SET_LINE_WIDTH:
-            return Object.assign({}, state, {
-                lineWidth: action.width
-            })
-        case Types.SET_LINE_STYLE:
-            return Object.assign({}, state, {
-                line: action.style
-            })
         case Types.SET_FILL_STYLE:
             return Object.assign({}, state, {
                 fill: action.style
+            })
+        case Types.SET_FILL_COLOR:
+            return Object.assign({}, state, {
+                fill: CIQ.hexToRgba('#' + action.color)
+            })
+        case Types.SET_LINE_COLOR:
+            return Object.assign({}, state, {
+                line: CIQ.hexToRgba('#' + action.color)
             })
         case Types.CHANGE_TOOL:
             return Object.assign({}, state, {
                 selectedTool: action.tool.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}),
                 fontOptions: action.params.font ? action.params.font : null,
-                fontSize: action.params.font ? action.params.font.size : null,
-                fontFamily: action.params.font ? action.params.font.family : null,
+                fontSize: action.params.font.size ? action.params.font.size : state.fontSize,
+                fontFamily: action.params.font.family ? action.params.font.family : state.fontFamily,
                 fill: action.params ? action.params.fillColor : null,
                 line: action.params ? action.params.color : null,
                 lineWidth: action.params ? action.params.lineWidth : null,

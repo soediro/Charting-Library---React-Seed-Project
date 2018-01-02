@@ -6,10 +6,11 @@ import { toggleDrawing,
          setFontFamily,
          setFontStyle,
          setFontSize,
-         setFontColor,
          setLineWidth,
          setLineStyle,
          setFillStyle,
+         setFillColor,
+         setLineColor,
          setLineParams,
          changeTool} from '../actions/drawActions'
 
@@ -49,14 +50,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         setFontSize: (size) => {
             dispatch(setFontSize(size))
         },
-        setFontColor: (color) => {
-            dispatch(setFontColor(color))
+        setFillColor: (color) => {
+            dispatch(setFillColor(color))
         },
-        setLineWidth: (width) => {
-            dispatch(setLineWidth(width))
-        },
-        setLineStyle: (style) =>{
-            dispatch(setLineStyle(style))
+        setLineColor: (color) => {
+            dispatch(setLineColor(color))
         },
         setFillStyle: (style) => {
             dispatch(setLineStyle(style))
