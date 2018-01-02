@@ -18,6 +18,7 @@ const Types = createTypes(
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
+    'CHANGE_VECTOR_LINE_PARAMS',
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL'
@@ -50,11 +51,7 @@ export function toggleTimezoneModal(){
 }
 
 export function setSpan(span, multiplier){
-    let params = {
-        span: span,
-        multiplier: multiplier
-    }
-    return { type:'SET_SPAN', params }
+    return { type:'SET_SPAN', span: span, multiplier: multiplier }
 }
 
 export function changeContainerSize(size){
@@ -67,6 +64,10 @@ export function changingChartData(isChanging){
 
 export function changeVectorParams(tool){
     return { type: 'CHANGE_VECTOR_PARAMS', tool: tool }
+}
+
+export function changeVectorLineParams(weight, pattern){
+    return { type: 'CHANGE_VECTOR_LINE_PARAMS', weight: weight, pattern: pattern }
 }
 
 export function changeVectorStyle(type, style){

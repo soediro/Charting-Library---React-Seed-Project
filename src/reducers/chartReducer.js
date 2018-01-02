@@ -81,23 +81,23 @@ const chart = (state = initialState, action) => {
             }
             state.ciq.changeVectorType(action.tool)
             return state
+        case Types.CHANGE_VECTOR_LINE_PARAMS:
+            state.ciq.currentVectorParameters.lineWidth = action.params.weight
+            state.ciq.currentVectorParameters.pattern = action.params.pattern
+            return state
         case Types.CHANGE_VECTOR_STYLE:
-            let type = action.styleType,
-            styleClass = 'normal'
+            let type = action.styleType
 
             if (type==="bold"){
-                type = 'fontWeight'
-                if(!action.style.bold) styleClass = 'bold'
+                state.ciq.currentVectorParameters.annotation.font.weight = !action.style.bold ? "bold" : "normal"
             }else if (type==="italic"){
-                type = "fontStyle"
-                if(!action.style.italic) styleClass = 'italic'
+                state.ciq.currentVectorParameters.annotation.font.style = !action.style.italic ? "italic" : "normal"
             }else if(type==="family"){
-                type = "fontFamily"
-                if(action.style.family) styleClass = action.family
-            }
-            else return state
+                state.ciq.currentVectorParameters.annotation.font.family = action.style.family
+            }else if(type==="size"){
+                state.ciq.currentVectorParameters.annotation.font.size = action.style.size + 'px'
+            }else return state
 
-            state.ciq.changeVectorParameter(type, styleClass)
             return state
         case Types.SET_PERIODICITY:
             state.ciq.setPeriodicityV2(action.periodicity.period, action.periodicity.interval);
@@ -115,6 +115,9 @@ const chart = (state = initialState, action) => {
             return Object.assign({}, state, {
                 interval: refreshInterval
             })
+        case Types.SET_SPAN:
+            state.ciq.setSpan({span: action.span, multiplier: action.multiplier })
+            return state
         case Types.ADD_STUDY:
             CIQ.Studies.addStudy(state.ciq, action.study)
             return state

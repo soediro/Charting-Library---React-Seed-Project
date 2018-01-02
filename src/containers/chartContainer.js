@@ -11,6 +11,8 @@ import { setChartContainer,
         setSpan,
         changeContainerSize,
         changeVectorParams,
+        changeVectorLineParams,
+        changeVectorStyle,
         setPeriodicity,
         setChartType,
         toggleLoader,
@@ -18,8 +20,7 @@ import { setChartContainer,
         setSymbol, 
         changingChartData,
         setPeriodicityWithLoader,
-        toggleTimezoneModal,
-        changeVectorStyle} from '../actions/chartActions'
+        toggleTimezoneModal} from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -49,6 +50,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         changeVectorParams: (tool) => {
             dispatch(changeVectorParams(tool))
+        },
+        changeVectorLineParams: (weight, pattern) => {
+            dispatch(changeVectorLineParams(weight, pattern))
         },
         changeVectorStyle: (styleType, style) => {
             dispatch(changeVectorStyle(styleType, style))
@@ -85,6 +89,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         setChartType: (type) => {
             dispatch(setChartType(type))
+        },
+        setSpan: (span, multiplier) => {
+            dispatch(setSpan(span, multiplier))
         }
     }
 }

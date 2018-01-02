@@ -1,6 +1,4 @@
 
-
-import { ChartStore, Actions } from "../stores/ChartStores";
 const rangeConfig = [
 	{
 		"display": "All",
@@ -44,42 +42,17 @@ const rangeConfig = [
 	}
 ];
 
-export default class RangeSelector extends React.Component {
-	constructor(props) {
-		super(props);
-		this.ciq = props.ciq;
-	}
-	componentWillMount() {
-		this.addStoreListeners();
-	}
-	componentWillUnmount() {
-		this.removeStoreListeners();
-	}
-	addStoreListeners() {
-		ChartStore.addListener('showLoader', Actions.showLoader);
-		ChartStore.addListener('hideLoader', Actions.hideLoader);
-	}
-	removeStoreListeners() {
-		ChartStore.removeListener('showLoader', Actions.showLoader);
-		ChartStore.removeListener('hideLoader', Actions.hideLoader);
-	}
-	setSpan(span, multiplier) {
-		ChartStore.Actions.setSpan({
-			data: { span, multiplier }
-		});
-	}
-	render() {
-		var self = this;
-		var ranges = rangeConfig.map(function (range, i) {
-			return (<div className="quick-link" key={i} onClick={function () {
-				self.setSpan(range.span, range.multiplier);
-			}}>{range.display}</div>);
-		});
-		return (
-			<div>
-				{ranges}
-			</div>
-		);
-	}
+const RangeSelector = (props) => {
+	let ranges = rangeConfig.map((range, i) => {
+		return (<div className="quick-link" key={'range' + i} onClick={props.setSpan.bind(this, range.span, range.multiplier)}>{range.display}</div>)
+	})
+
+	return (
+		<div>
+			{ranges}
+		</div>
+	)
 }
+
+export default RangeSelector
 

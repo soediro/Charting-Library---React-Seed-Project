@@ -4,9 +4,8 @@ import FillColor from "./Drawing/FillColor"
 import LineColor from "./Drawing/LineColor"
 // import Color from "./Drawing/Color"
 import LineStyle from "./Drawing/LineStyle"
-import FontSize from "./Text/FontSize"
-import FontFamily from "./Text/FontFamily"
 import FontStyle from "./Text/FontStyle"
+import Font from './Text/Font'
 
 //data sources
 import { ChartStore, Actions } from '../stores/ChartStores'
@@ -15,11 +14,8 @@ class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			toolParams: null,
-			isBold: false,
 			showColorPicker: false,
 			colorPickerLeft: 0,
-			colorPickerTop: 0,
 			colorPickerContext: ""
 		};
 	}
@@ -27,16 +23,14 @@ class DrawingToolbar extends React.Component {
 		this.bindCorrectContext();
 	}
 	bindCorrectContext(){
-		this.changeFontStyle = this.changeFontStyle.bind(this);
+		this.changeFontStyle = this.changeFontStyle.bind(this)
+		this.changeFontFamily = this.changeFontFamily.bind(this)
+		this.changeFontSize = this.changeFontSize.bind(this)
+		this.changeLineStyle = this.changeLineStyle.bind(this)
 
-		this.updateLineParams = this.updateLineParams.bind(this);
-		this.updateFontFamily = this.updateFontFamily.bind(this);
-		this.updateFontSize = this.updateFontSize.bind(this);
+		
 		this.toggleColorPicker = this.toggleColorPicker.bind(this);
 		this.setColor = this.setColor.bind(this);
-		this.updateLineParams = this.updateLineParams.bind(this);
-		this.updateFontFamily = this.updateFontFamily.bind(this);
-		this.updateFontSize = this.updateFontSize.bind(this);
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -50,8 +44,8 @@ class DrawingToolbar extends React.Component {
 		if (this.props.ciq === null) return
 		else {
 			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
-			this.props.changeVectorParams(tool)
 			this.props.changeTool(tool, toolParams)
+			this.props.changeVectorParams(tool)
 		}
 	}
 	changeFontStyle(type){
@@ -60,12 +54,24 @@ class DrawingToolbar extends React.Component {
 	}
 	changeFontFamily(family){
 		this.props.setFontFamily(family)
-		this.props.changeVectorStyle('family', { family: this.props.fontFamily })
+		this.props.changeVectorStyle('family', { family: family })
+	}
+	changeFontSize(size){
+		this.props.setFontSize(size)
+		this.props.changeVectorStyle('size', { size: size })
+	}
+	changeLineStyle(weight, pattern){
+		this.props.setLineParams(weight, pattern)
+		this.props.changeVectorLineParams(weight, pattern)
 	}
 	toggleColorPicker(target){
-		var colorPicker=this.state.showColorPicker,
-		targetBounds = target.getBoundingClientRect(),
-		context="";
+		let togglePicker = !this.state.showDrawingToolbar,
+		targetBounds, left=0, context=''
+
+		if (togglePicker){
+			targetBounds = target.getBoundingClientRect().left
+			left = targetBounds-120
+		}
 
 		if(target.classList.contains('line')){
 			context="line";
@@ -74,44 +80,22 @@ class DrawingToolbar extends React.Component {
 		}
 
 		this.setState({
-			showColorPicker: !this.state.showColorPicker,
-			colorPickerLeft: this.state.showColorPicker?targetBounds.left-120:0,
-			colorPickerTop: 0,
+			showColorPicker: togglePicker,
+			colorPickerLeft: left,
 			colorPickerContext: context
 		});
 	}
 	setColor(colorEl){
-		var color=colorEl.title,
-		fill=this.props.fill, line=this.props.line;
+		var color=colorEl.title
 
 		if(this.state.colorPickerContext==="line"){
-			line=CIQ.hexToRgba('#'+color);
+			this.props.setLineColor(color)
 		}else if(this.state.colorPickerContext==="fill"){
-			fill=CIQ.hexToRgba('#'+color);
+			this.props.setFillColor(color)
 		}
 
 		this.setState({
-			showColorPicker: false,
-			color: color,
-			line: line,
-			fill: fill
-		});
-	}
-	updateLineParams(weight, pattern){
-		this.props.ciq.currentVectorParameters.lineWidth=weight
-		this.props.ciq.currentVectorParameters.pattern=pattern
-		this.props.setLineParams(weight, pattern)
-	}
-	updateFontFamily(newFamily){
-		this.ciq.changeVectorParameter('fontFamily', newFamily);
-		this.setState({
-			fontFamily: newFamily
-		});
-	}
-	updateFontSize(newSize){
-		this.ciq.changeVectorParameter('fontSize', newSize+'px');
-		this.setState({
-			fontSize: newSize
+			showColorPicker: false
 		});
 	}
 	render() {
@@ -132,13 +116,12 @@ class DrawingToolbar extends React.Component {
 					</menu-select>
 					<span>
 						<div className="drawingParameters">
-							<ColorPicker open={this.state.showColorPicker} top={this.state.colorPickerTop} left={this.state.colorPickerLeft} onColorPick={this.setColor} />
+							<ColorPicker open={this.state.showColorPicker} left={this.state.colorPickerLeft} onColorPick={this.setColor} />
 							<FillColor color={this.props.fill} openColorPicker={this.toggleColorPicker} />
 							<LineColor color={this.props.line} openColorPicker={this.toggleColorPicker} />
-							<LineStyle {...this.props} onClick={this.updateLineParams} />
+							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
-							<FontSize fontOptions={this.props.fontOptions} size={this.props.fontSize} updateFontSize={this.updateFontSize} />
-							<FontFamily fontOptions={this.props.fontOptions} family={this.props.fontFamily} updateFontFamily={this.updateFontFamily} />
+							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
 						</div>
 					</span>
 				</div>

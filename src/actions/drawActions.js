@@ -9,10 +9,9 @@ const Types = createTypes(
     'SET_FONT_FAMILY',
     'SET_FONT_SIZE',
     'SET_FONT_STYLE',
-    'SET_FONT_COLOR',
-    'SET_LINE_WIDTH',
-    'SET_LINE_STYLE',
     'SET_FILL_STYLE',
+    'SET_LINE_COLOR',
+    'SET_FILL_COLOR',
     'CHANGE_LINE_PARAMS',
     'CHANGE_TOOL'
 )
@@ -39,16 +38,12 @@ export function setFontSize(size){
     return { type: 'SET_FONT_SIZE', size: size }
 }
 
-export function setFontColor(color){
-    return { type: 'SET_FONT_COLOR', color: color }
+export function setLineColor(color){
+    return { type: 'SET_LINE_COLOR', color: color }
 }
 
-export function setLineWidth(width){
-    return { type: 'SET_LINE_WIDTH', width: width }
-}
-
-export function setLineStyle(style){
-    return { type: 'SET_LINE_STYLE', style: style }
+export function setFillColor(color){
+    return { type: 'SET_FILL_COLOR', color: color }
 }
 
 export function setFillStyle(style){
