@@ -26,7 +26,7 @@ class ColorSwatch extends React.Component {
     }
     togglePicker(){
         this.setState({
-            pickingColor: true
+            pickingColor: !this.state.pickingColor
         })
     }
     setColor(color){
@@ -38,11 +38,11 @@ class ColorSwatch extends React.Component {
     }
     render(){
         let colors = this.state.colors.map((color, i) => {
-            <li key={"color"+i}><a href="#" title={color} onClick={this.setColor.bind(this, color)} style={{background: '#'+color}}>{color}</a></li>
+            return (<li key={"color"+i}><a href="#" title={color} onClick={this.setColor.bind(this, color)} style={{background: '#'+color}}>{color}</a></li>)
         }), pickerStyle = {
             display: this.state.pickingColor ? 'block' : 'none',
-            left: this.state.pickerLeft,
-            top: this.state.pickerTop
+            left: '120px',
+            top: 0
         },
         cName = 'color-picker-swatch ' + this.props.type,
         colorStyle = { background: '' }
@@ -56,7 +56,7 @@ class ColorSwatch extends React.Component {
             return (
                 <div>
                     <span><div style={colorStyle} className={cName} onClick={this.togglePicker}></div></span>
-                    <div id="colorPicker" style={{left: '-120px'}}>
+                    <div id="colorPicker">
                         <div className="color-picker-options" style={pickerStyle}>
                             <ul>
                                 {colors}
