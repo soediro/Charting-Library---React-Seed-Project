@@ -20,7 +20,7 @@ import { setChartContainer,
         setSymbol, 
         changingChartData,
         setPeriodicityWithLoader,
-        toggleTimezoneModal} from '../actions/chartActions'
+        toggleTimezoneModal } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 

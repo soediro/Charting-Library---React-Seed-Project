@@ -1,0 +1,48 @@
+//modules
+import { connect } from 'react-redux'
+
+//actions
+import { setThemeHelper,
+         changeTheme,
+         updateTheme,
+         saveTheme,
+         toggleThemeEditor } from '../actions/themeActions'
+
+//components
+import ThemeUI from '../components/UI/ThemeUI'
+
+const mapStateToProps = (state, props) => {
+    return {
+        themeHelper: state.theme.themeHelper,
+        themeList: state.theme.themeList,
+        showEditModal: state.theme.showEditModal,
+        currentThemeSettings: state.theme.currentThemeSettings
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        setThemeHelper: (ciq) => {
+            dispatch(setThemeHelper(ciq))
+        },
+        changeTheme: (theme) => {
+            dispatch(changeTheme(theme))
+        },
+        updateTheme: (swatch, color) => {
+            dispatch(updateTheme(swatch, color))
+        },
+        saveTheme: (name, theme) => {
+            dispatch(saveTheme(name, theme))
+        },
+        toggleThemeEditor: () => {
+            dispatch(toggleThemeEditor())
+        }
+    }
+}
+
+const ThemeUIContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ThemeUI)
+
+export default ThemeUIContainer
