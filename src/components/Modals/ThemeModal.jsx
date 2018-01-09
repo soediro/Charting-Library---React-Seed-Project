@@ -5,29 +5,23 @@ class ThemeModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			name: null,
+			name: '',
 			placeholder: 'Name Your Theme'
 		}
 		this.bindCorrectContext()
 	}
 	componentWillReceiveProps(nextProps){
-		if(this.props.themeHelper === null){
+		if(nextProps.themeHelper === null){
 			this.props.setThemeHelper(this.props.ciq)
 		}
 	}
 	bindCorrectContext(){
 		this.saveSettings = this.saveSettings.bind(this)
 		this.updateThemeName = this.updateThemeName.bind(this)
-		this.updateTheme = this.updateTheme.bind(this)
 	}
 	saveSettings() {
-		// if (!this.state.themeName) return;
-		// this.props.toggle(this.props.themeHelper.settings, this.state.name);
-	}
-	updateTheme(color, item, swatch) {
-		console.log("color: ", color)
-		console.log("item: ", item)
-		this.props.updateTheme(item, color);
+		if (!this.state.name || this.state.name==='') return;
+		this.props.saveTheme(this.state.name, this.props.themeHelper.settings);
 	}
 	updateThemeName(event) {
 		this.setState({
@@ -37,14 +31,12 @@ class ThemeModal extends React.Component {
 	render() {
 		let sections = this.props.currentThemeSettings.map((option, i) => {
 			let swatches = option.swatches.map((swatch, j) => {
-				return (<ColorSwatch key={'swatch'+j} setColor={this.updateTheme} type={swatch.class} color={swatch.color} />)
+				return (<ColorSwatch key={'swatch'+j} setColor={this.props.updateTheme} type={swatch.class} color={swatch.color} />)
 			})
 
 			return (
 				<div key={'section'+i} className={'dialog-item ' + option.class}>
-					<span>
-						{option.section}
-					</span>
+					{option.section}
 					{swatches}
 				</div>
 			)
@@ -54,11 +46,11 @@ class ThemeModal extends React.Component {
 			return (
 				<span className="ciq dialog-overlay">
 					<div className="ciq dialog">
-						<div className="cq-close" onClick={ this.props.toggleThemeEditor }></div>
+						<div className="cq-close" onClick={this.props.toggleThemeEditor} />
 						<div className="heading">Custom Theme</div>
 						{ sections }
 						<div className="dialog-item theme-save">
-							<input className="ciq" type="text" placeholder={this.state.placeholder} onChange={this.updateThemeName}></input>
+							<input className="ciq" type="text" placeholder={this.state.placeholder} onChange={this.updateThemeName} value={this.state.name} />
 							<button className="pull-right ciq" onClick={this.saveSettings}>Save</button>
 						</div>
 					</div>

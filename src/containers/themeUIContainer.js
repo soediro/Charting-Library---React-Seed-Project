@@ -28,8 +28,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         changeTheme: (theme) => {
             dispatch(changeTheme(theme))
         },
-        updateTheme: (swatch, color) => {
-            dispatch(updateTheme(swatch, color))
+        updateTheme: (color, swatch) => {
+            dispatch(updateTheme(color, swatch))
         },
         saveTheme: (name, theme) => {
             dispatch(saveTheme(name, theme))

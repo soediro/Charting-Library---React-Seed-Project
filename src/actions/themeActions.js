@@ -25,8 +25,8 @@ export function changeTheme(theme){
     return { type: 'CHANGE_THEME', theme: theme }
 }
 
-export function updateTheme(swatch, color){
-    return { type: 'UPDATE_THEME', swatch: swatch, color: color }
+export function updateTheme(color, swatch){
+    return { type: 'UPDATE_THEME', color: color, swatch: swatch }
 }
 
 export function saveTheme(name, theme){
