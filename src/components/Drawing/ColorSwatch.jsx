@@ -55,7 +55,7 @@ class ColorSwatch extends React.Component {
         if(colorStyle.background !== ''){
             return (
                 <div>
-                    <span><div style={colorStyle} className={cName} onClick={this.togglePicker}></div></span>
+                    <span style={colorStyle} className={cName} onClick={this.togglePicker} />
                     <div id="colorPicker">
                         <div className="color-picker-options" style={pickerStyle}>
                             <ul>

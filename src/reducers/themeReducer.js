@@ -70,10 +70,10 @@ let defaultSettings = [
 			chartType: "Candle/Bar",
 			item: "borderDown"
 		}, {
-			class: "borderDown",
+			class: "borderUp",
 			color: "",
 			chartType: "Candle/Bar",
-			item: "borderDown"
+			item: "borderUp"
 		}]
 	},
 	{
@@ -142,6 +142,7 @@ let defaultSettings = [
 const initialState = {
     themeList: [defaultTheme, { "name": "+ New Theme" }],
     currentThemeSettings: defaultSettings,
+    currentThemeName: 'Default',
     showEditModal: false,
     themeHelper: null
 }
@@ -170,7 +171,11 @@ const ThemeUI = (state = initialState, action) => {
             }
             return state
         case Types.UPDATE_THEME:
-            newThemeSettings = updateThemeSettings(state.themeHelper, state.currentThemeSettings)
+            newThemeSettings = updateThemeSettings(state.themeHelper, state.currentThemeSettings, {
+                color: action.color,
+                swatch: action.swatch
+            })
+
             return Object.assign({}, state, {
                 currentThemeSettings: newThemeSettings
             })
@@ -180,10 +185,17 @@ const ThemeUI = (state = initialState, action) => {
                 settings: action.theme
             },
             endIndex = state.themeList.length-1,
-            newThemeList = state.themeList.splice(endIndex, 0, item)
+            newThemeList = state.themeList.slice()
+
+            newThemeList.splice(endIndex, 0, item)
+
+            state.themeHelper.settings = CIQ.clone(action.theme)
+            state.themeHelper.update()
 
             return Object.assign({}, state, {
-                themeList: newThemeList
+                currentThemeName: action.name,
+                themeList: newThemeList,
+                showEditModal: false
             })
         case Types.TOGGLE_THEME_EDITOR:
             return Object.assign({}, state, {
@@ -198,9 +210,10 @@ export default ThemeUI
 
 function updateThemeSettings(themeHelper, currentSettings, newParams){
     let settings = currentSettings.slice(),
-    rgbaColor = newParams ? newParams.color : null
+    rgbaColor = newParams ? CIQ.hexToRgba('#'+newParams.color) : null
 
-    console.log("oldSettings: ", settings, ' and rgbaColor: ', rgbaColor, ' and themeHelper: ', themeHelper)
+    console.log(themeHelper.settings)
+
     let newSettings = settings.map((setting) => {
         let newSetting = {
             section: setting.section,
@@ -209,11 +222,15 @@ function updateThemeSettings(themeHelper, currentSettings, newParams){
             let newSwatch = {
                 class: swatch.class,
                 item: swatch.item
+            }, swatchNeedsNewColor = false
+
+            if(newParams && newParams.swatch && newParams.swatch === swatch.class){
+                swatchNeedsNewColor = true
             }
 
             if(swatch.hasOwnProperty('chart')){
                 newSwatch.chart = swatch.chart
-                if(rgbaColor) themeHelper.settings.chart[swatch.chart].color = rgbaColor
+                if(rgbaColor && swatchNeedsNewColor) themeHelper.settings.chart[swatch.chart].color = rgbaColor
                 newSwatch.color = themeHelper.settings.chart[swatch.chart].color
             }else if(swatch.hasOwnProperty('chartType')){
                 newSwatch.chartType = swatch.chartType
@@ -224,15 +241,15 @@ function updateThemeSettings(themeHelper, currentSettings, newParams){
                     item = swatch.item.substring(0, capitalLetter)
                     
                     if (item !== 'candle'){
-                        if(rgbaColor) themeHelper.settings.chartTypes[swatch.chartType][direction][item] = rgbaColor
-                        newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType][direction][item]
+                        if(rgbaColor && swatchNeedsNewColor) themeHelper.settings.chartTypes[swatch.chartType][direction][item] = rgbaColor
+                        newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType][direction][item] || undefined
                     }else{
-                        if(rgbaColor) themeHelper.settings.chartTypes[swatch.chartType][direction].color = rgbaColor
-                        newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType][direction].color
+                        if(rgbaColor && swatchNeedsNewColor) themeHelper.settings.chartTypes[swatch.chartType][direction].color = rgbaColor
+                        newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType][direction].color || undefined
                     }
                 }else{
-                    if(rgbaColor) themeHelper.settings.chartTypes[swatch.chartType].color = rgbaColor
-                    newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType].color
+                    if(rgbaColor && swatchNeedsNewColor) themeHelper.settings.chartTypes[swatch.chartType].color = rgbaColor
+                    newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType].color || undefined
                 }
             }else{
                 newSwatch.color = undefined
@@ -243,6 +260,5 @@ function updateThemeSettings(themeHelper, currentSettings, newParams){
         return newSetting
     })
 
-    console.log("newSettings: ", newSettings)
     return newSettings
 }
