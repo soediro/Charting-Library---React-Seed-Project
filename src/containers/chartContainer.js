@@ -9,6 +9,7 @@ import { setChartContainer,
         removeStudy,
         toggleCrosshairs,
         setSpan,
+        shareChart,
         changeContainerSize,
         changeVectorParams,
         changeVectorLineParams,
@@ -17,7 +18,7 @@ import { setChartContainer,
         setChartType,
         toggleLoader,
         setRefreshInterval,
-        setSymbol, 
+        setSymbol,
         changingChartData,
         setPeriodicityWithLoader,
         toggleTimezoneModal} from '../actions/chartActions'
@@ -92,6 +93,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         setSpan: (span, multiplier) => {
             dispatch(setSpan(span, multiplier))
+        },
+        shareChart: () => {
+            dispatch(shareChart())
         }
     }
 }

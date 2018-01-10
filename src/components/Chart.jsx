@@ -1,5 +1,6 @@
 import UI from "./UI";
 import RangeSelector from "./RangeSelector";
+import ShareButton from "./ShareButton";
 import Legend from './Legend';
 import DrawingContainer from '../containers/drawingContainer'
 
@@ -22,6 +23,7 @@ class Chart extends React.Component {
 					</div>
 				</div>
 				<div className="ciq-footer">
+          <ShareButton {...this.props} />
 					<RangeSelector {...this.props} />
 				</div>
 			</div>

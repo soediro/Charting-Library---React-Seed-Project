@@ -118,6 +118,9 @@ const chart = (state = initialState, action) => {
         case Types.SET_SPAN:
             state.ciq.setSpan({span: action.span, multiplier: action.multiplier })
             return state
+        case Types.SHARE_CHART:
+            state.ciq.shareChart();
+            return state;
         case Types.ADD_STUDY:
             CIQ.Studies.addStudy(state.ciq, action.study)
             return state
@@ -129,7 +132,7 @@ const chart = (state = initialState, action) => {
             return state
         default:
             return state
-    }       
+    }
 }
 
 export default chart;

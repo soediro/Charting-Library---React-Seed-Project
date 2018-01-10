@@ -15,6 +15,7 @@ const Types = createTypes(
     'REMOVE_COMPARISON',
     'REMOVE_STUDY',
     'SET_SPAN',
+    "SHARE_CHART",
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
@@ -52,6 +53,10 @@ export function toggleTimezoneModal(){
 
 export function setSpan(span, multiplier){
     return { type:'SET_SPAN', span: span, multiplier: multiplier }
+}
+
+export function shareChart(){
+  return { type:'SHARE_CHART'}
 }
 
 export function changeContainerSize(size){
@@ -101,7 +106,7 @@ export function setChartTypeWithLoader(type){
         setTimeout(() => {
             dispatch(changingChartData(false))
         }, 1000)
-    ])   
+    ])
 }
 
 export function setChartType(type){
