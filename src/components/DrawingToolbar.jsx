@@ -1,7 +1,6 @@
 //components
 import ColorPicker from "./Drawing/ColorPicker"
-import FillColor from "./Drawing/FillColor"
-import LineColor from "./Drawing/LineColor"
+import ColorSwatch from './Drawing/ColorSwatch'
 // import Color from "./Drawing/Color"
 import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
@@ -27,10 +26,7 @@ class DrawingToolbar extends React.Component {
 		this.changeFontFamily = this.changeFontFamily.bind(this)
 		this.changeFontSize = this.changeFontSize.bind(this)
 		this.changeLineStyle = this.changeLineStyle.bind(this)
-
-		
-		this.toggleColorPicker = this.toggleColorPicker.bind(this);
-		this.setColor = this.setColor.bind(this);
+		this.setColor = this.setColor.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -64,39 +60,15 @@ class DrawingToolbar extends React.Component {
 		this.props.setLineParams(weight, pattern)
 		this.props.changeVectorLineParams(weight, pattern)
 	}
-	toggleColorPicker(target){
-		let togglePicker = !this.state.showDrawingToolbar,
-		targetBounds, left=0, context=''
-
-		if (togglePicker){
-			targetBounds = target.getBoundingClientRect().left
-			left = targetBounds-120
-		}
-
-		if(target.classList.contains('line')){
-			context="line";
-		}else if(target.classList.contains('fill')){
-			context="fill";
-		}
-
-		this.setState({
-			showColorPicker: togglePicker,
-			colorPickerLeft: left,
-			colorPickerContext: context
-		});
-	}
-	setColor(colorEl){
-		var color=colorEl.title
-
-		if(this.state.colorPickerContext==="line"){
+	setColor(color, type){
+		if(type==="line"){
 			this.props.setLineColor(color)
-		}else if(this.state.colorPickerContext==="fill"){
-			this.props.setFillColor(color)
+			this.props.changeVectorStyle('lineColor', { color: color })
 		}
-
-		this.setState({
-			showColorPicker: false
-		});
+		else if(type==="fill"){
+			this.props.setFillColor(color)
+			this.props.changeVectorStyle('fillColor', { color: color })
+		}else return
 	}
 	render() {
 		let options = this.props.tools.map((tool, i) => {
@@ -116,9 +88,8 @@ class DrawingToolbar extends React.Component {
 					</menu-select>
 					<span>
 						<div className="drawingParameters">
-							<ColorPicker open={this.state.showColorPicker} left={this.state.colorPickerLeft} onColorPick={this.setColor} />
-							<FillColor color={this.props.fill} openColorPicker={this.toggleColorPicker} />
-							<LineColor color={this.props.line} openColorPicker={this.toggleColorPicker} />
+							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} />
+							<ColorSwatch name="Fill" type="fill" setColor={this.setColor} color={this.props.fill} />
 							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
