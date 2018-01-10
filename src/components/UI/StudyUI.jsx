@@ -20,10 +20,12 @@ class StudyUI extends React.Component {
     bindCorrectContext(){
 		this.toggleStudyModal = this.toggleStudyModal.bind(this)
 		this.toggleOverlayModal = this.toggleOverlayModal.bind(this)
+		this.removeStudy = this.removeStudy.bind(this)
 	}
 	toggleStudyModal(){
 		this.setState({
-			showStudyDialog: !this.state.showStudyDialog
+			showStudyDialog: !this.state.showStudyDialog,
+			showOverlayDialog: !this.state.showStudyDialog
 		})
 	}
 	toggleOverlayModal(params){
@@ -43,7 +45,11 @@ class StudyUI extends React.Component {
 		this.props.addStudy(studyLookup[study])
 	}
 	removeStudy(params) {
-		CIQ.Studies.removeStudy(params.stx, params.sd);
+		CIQ.Studies.removeStudy(this.state.currentStudyParams.stx, this.state.currentStudyParams.sd);
+		this.setState({
+			currentStudyParams: null,
+			showOverlayDialog: false
+		})
 	}
 	getStudyList() {
 		var tempStudies = [];
@@ -54,9 +60,6 @@ class StudyUI extends React.Component {
 		}
 		return tempStudies.sort();
 	}
-	openModal(params) {
-		// this.refs.studyModal.open(params);
-	}
 	render() {
 		let studies = this.getStudyList().map((study, index) => {
 			return (<menu-option key={"study" + index} onClick={this.addStudy.bind(this, study)}><span>{study}</span></menu-option>);
@@ -64,15 +67,14 @@ class StudyUI extends React.Component {
 
 		return (
 			<span>
-				<OverlayMenu onClick={this.toggleOverlayModal}
-							 params={this.state.studyParams} 
-							 open={this.state.showOverlayDialog} 
+				<OverlayMenu open={this.state.showOverlayDialog} 
 							 top={this.state.overlayTop}
 							 left={this.state.overlayLeft} 
 							 edit={this.toggleStudyModal}
 							 delete={this.removeStudy} />
 
-				<StudyModal open={this.state.showStudyDialog} 
+				<StudyModal open={this.state.showStudyDialog}
+							closeModal={this.toggleStudyModal} 
 							params={this.state.currentStudyParams} />
 							
 				<menu-select id="studySelect">

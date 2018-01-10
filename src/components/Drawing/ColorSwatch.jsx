@@ -33,16 +33,21 @@ class ColorSwatch extends React.Component {
         this.setState({
             pickingColor: false
         }, () => {
-            this.props.setColor(color, this.props.type)
+            this.props.setColor(color, this.props.type, this.props.name)
         })
     }
     render(){
+        let elementBounds = document.getElementById('swatch' + this.props.name)
+        if(elementBounds){
+            elementBounds = elementBounds.getBoundingClientRect().left
+        }
+
         let colors = this.state.colors.map((color, i) => {
             <li key={"color"+i}><a href="#" title={color} onClick={this.setColor.bind(this, color)} style={{background: '#'+color}}>{color}</a></li>
         }), pickerStyle = {
             display: this.state.pickingColor ? 'block' : 'none',
-            left: this.state.pickerLeft,
-            top: this.state.pickerTop
+            left: this.props.isModal ? '120px' : elementBounds-120 + 'px',
+            top: this.props.top ? this.props.top : 0
         },
         cName = 'color-picker-swatch ' + this.props.type,
         colorStyle = { background: '' }
@@ -55,8 +60,8 @@ class ColorSwatch extends React.Component {
         if(colorStyle.background !== ''){
             return (
                 <div>
-                    <span><div style={colorStyle} className={cName} onClick={this.togglePicker}></div></span>
-                    <div id="colorPicker" style={{left: '-120px'}}>
+                    <span><div id={"swatch" + this.props.name} style={colorStyle} className={cName} onClick={this.togglePicker}></div></span>
+                    <div id="colorPicker">
                         <div className="color-picker-options" style={pickerStyle}>
                             <ul>
                                 {colors}
@@ -73,10 +78,16 @@ class ColorSwatch extends React.Component {
     }
 }
 
+ColorSwatch.defaultProps = {
+    name: ''
+}
+
 ColorSwatch.propTypes = {
     type: PropTypes.string.isRequired,
     setColor: PropTypes.func.isRequired,
-    color: PropTypes.string
+    color: PropTypes.string,
+    top: PropTypes.string,
+    isModal: PropTypes.bool
 }
 
 export default ColorSwatch
