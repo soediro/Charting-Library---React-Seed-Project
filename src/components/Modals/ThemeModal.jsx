@@ -31,7 +31,7 @@ class ThemeModal extends React.Component {
 	render() {
 		let sections = this.props.currentThemeSettings.map((option, i) => {
 			let swatches = option.swatches.map((swatch, j) => {
-				return (<ColorSwatch key={'swatch'+j} setColor={this.props.updateTheme} type={swatch.class} color={swatch.color} />)
+				return (<ColorSwatch isModal={true} key={'swatch'+j} setColor={this.props.updateTheme} type={swatch.class} color={swatch.color} />)
 			})
 
 			return (
