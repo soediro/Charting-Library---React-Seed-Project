@@ -16,6 +16,7 @@ const Types = createTypes(
     'REMOVE_STUDY',
     'SET_SPAN',
     "SHARE_CHART",
+    "SET_SHARE_STATUS",
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
@@ -57,6 +58,10 @@ export function setSpan(span, multiplier){
 
 export function shareChart(){
   return { type:'SHARE_CHART'}
+}
+
+export function setShareStatus(status){
+  return { type:'SET_SHARE_STATUS', status: status}
 }
 
 export function changeContainerSize(size){

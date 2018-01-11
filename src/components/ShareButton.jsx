@@ -1,6 +1,7 @@
 const ShareButton = (props) => {
+
 	return (
-		<div className="ciq-share-button" onClick={props.shareChart.bind(this)}>Share</div>
+		<div className="ciq-share-button" onClick={()=>props.setShareStatus("SHOW")}>Share {props.shareStatus}</div>
 	)
 }
 

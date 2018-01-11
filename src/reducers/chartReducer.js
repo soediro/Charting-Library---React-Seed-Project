@@ -21,7 +21,8 @@ const initialState = {
         period: 1,
         interval: "day"
     },
-    showPeriodicityLoader: false
+    showPeriodicityLoader: false,
+    shareStatus: "HIDDEN"
 }
 
 const chart = (state = initialState, action) => {
@@ -119,8 +120,13 @@ const chart = (state = initialState, action) => {
             state.ciq.setSpan({span: action.span, multiplier: action.multiplier })
             return state
         case Types.SHARE_CHART:
-            state.ciq.shareChart();
+
             return state;
+        case Types.SET_SHARE_STATUS:
+          console.log(action);
+          return Object.assign({}, state, {
+              shareStatus: action.status
+            })
         case Types.ADD_STUDY:
             CIQ.Studies.addStudy(state.ciq, action.study)
             return state
