@@ -42,7 +42,8 @@ const mapStateToProps = (state, props) => {
         showCrosshairs: state.chart.showCrosshairs,
         showTimezoneModal: state.chart.showTimezoneModal,
         chartSeries: state.chart.chartSeries,
-        shareStatus: state.chart.shareStatus
+        shareStatus: state.chart.shareStatus,
+        shareStatusMsg : state.chart.shareStatusMsg
     }
 }
 
@@ -99,8 +100,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     shareChart: () => {
       dispatch(shareChart())
     },
-    setShareStatus: (status) => {
-      dispatch(setShareStatus(status))
+    setShareStatus: (status, msg) => {
+      dispatch(setShareStatus(status, msg))
     }
   }
 }

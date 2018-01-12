@@ -22,7 +22,8 @@ const initialState = {
         interval: "day"
     },
     showPeriodicityLoader: false,
-    shareStatus: "HIDDEN"
+    shareStatus: "HIDDEN",
+    shareStatusMsg: null
 }
 
 const chart = (state = initialState, action) => {
@@ -125,7 +126,8 @@ const chart = (state = initialState, action) => {
         case Types.SET_SHARE_STATUS:
           console.log(action);
           return Object.assign({}, state, {
-              shareStatus: action.status
+              shareStatus: action.status,
+              shareStatusMsg: action.msg
             })
         case Types.ADD_STUDY:
             CIQ.Studies.addStudy(state.ciq, action.study)

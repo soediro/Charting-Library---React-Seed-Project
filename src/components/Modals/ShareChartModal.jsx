@@ -10,7 +10,46 @@ class ShareChartModal extends React.Component {
   }
 
     shareChart() {
-      props.shareChart();
+
+      if(!this.props.ciq) return;
+
+      var stx = this.props.ciq;
+
+      console.log("sharing chart!");
+
+      this.props.setShareStatus("GENERATING");
+
+      var props = this.props;
+
+      CIQ.Share.createImage(stx, {}, function(data){
+        // CIQ.UI.bypassBindings=false;
+        var id=CIQ.uniqueID();
+        var host="https://share.chartiq.com";
+        var startOffset=stx.getStartDateOffset();
+        var metaData={
+          "layout":stx.exportLayout(),
+          "drawings":stx.exportDrawings(),
+          "xOffset":startOffset,
+          "startDate":stx.chart.dataSegment[startOffset].Date,
+          "endDate":stx.chart.dataSegment[stx.chart.dataSegment.length-1].Date,
+          "id":id,
+          "symbol":stx.chart.symbol
+        };
+        var url= host + "/upload/" + id;
+        var payload={"id":id,"image":data,"config":metaData};
+        props.setShareStatus("UPLOADING");
+        CIQ.Share.uploadImage(data, url, payload, function(err, response){
+          if(err!==null){
+            props.setShareStatus("ERROR", err);
+            // CIQ.alert("error: "+err);
+          }
+          else {
+            props.setShareStatus("COMPLETE", host+response);
+            // $("cq-share-dialog .share-link-div").html(host+response);
+          }
+        });
+      });
+
     }
 
     DivShareStatus() {
@@ -31,15 +70,20 @@ class ShareChartModal extends React.Component {
           break;
         case "COMPLETE":
           return(
-            <div className="ciq-dialog-cntrls" >
-              {self.state.shareUrl}
+            <div className="ciq-dialog-cntrls share-link-div" >
+              {this.props.shareStatusMsg}
             </div>
+          );
+          break;
+        case "ERROR":
+          return(
+            <script>alert({this.props.shareStatusMsg})</script>
           );
           break;
         default:
           return(
             <div className="ciq-dialog-cntrls">
-              <div className="ciq-btn" onClick={ () => {this.props.shareChart()}}>Create Image</div>
+              <div className="ciq-btn" onClick={ () => {console.log(this.shareChart); this.shareChart()}}>Create Image</div>
             </div>
           );
           break;
@@ -51,11 +95,10 @@ class ShareChartModal extends React.Component {
 	  if (!this.props.shareStatus || this.props.shareStatus == "HIDDEN") return <span></span>
 	  return (
       <div className="ciq dialog-overlay">
-        <div className="ciq dialog timezone">
+        <div className="ciq dialog share">
           <div className="cq-close" onClick={ () => {this.props.setShareStatus("HIDDEN")}}></div>
           <h3 className="center">Share Your Chart</h3>
           {this.DivShareStatus()}
-          <div className="share-link-div"></div> 
           <div className="ciq-dialog-cntrls">
             <div className="ciq-btn" onClick={ () => {this.props.setShareStatus("HIDDEN")}}>Done</div>
           </div>

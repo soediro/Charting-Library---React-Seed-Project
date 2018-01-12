@@ -60,8 +60,8 @@ export function shareChart(){
   return { type:'SHARE_CHART'}
 }
 
-export function setShareStatus(status){
-  return { type:'SET_SHARE_STATUS', status: status}
+export function setShareStatus(status, msg){
+  return { type:'SET_SHARE_STATUS', status: status, shareStatusMsg: msg}
 }
 
 export function changeContainerSize(size){
