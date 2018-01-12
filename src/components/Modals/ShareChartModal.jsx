@@ -17,29 +17,29 @@ class ShareChartModal extends React.Component {
       switch(this.props.shareStatus){
         case "GENERATING":
           return(
-            <div className="cq-share-generating" >
+            <div className="ciq-dialog-cntrls" >
               Generating Image
             </div>
           );
           break;
         case "UPLOADING":
           return(
-            <div className="cq-share-uploading" >
+            <div className="ciq-dialog-cntrls" >
               Uploading Image
             </div>
           );
           break;
         case "COMPLETE":
           return(
-            <div className="cq-share-link-div" >
+            <div className="ciq-dialog-cntrls" >
               {self.state.shareUrl}
             </div>
           );
           break;
         default:
           return(
-            <div className="cq-share-create" onClick={()=>this.props.shareChart()}>
-              Create Image
+            <div className="ciq-dialog-cntrls">
+              <div className="ciq-btn" onClick={ () => {this.props.shareChart()}}>Create Image</div>
             </div>
           );
           break;
@@ -48,13 +48,14 @@ class ShareChartModal extends React.Component {
 
 
 	render() {
-	  if (!this.props.shareStatus || this.props.shareStatus == "HIDDEN") return <span>{console.log(this.props)}</span>
+	  if (!this.props.shareStatus || this.props.shareStatus == "HIDDEN") return <span></span>
 	  return (
       <div className="ciq dialog-overlay">
         <div className="ciq dialog timezone">
           <div className="cq-close" onClick={ () => {this.props.setShareStatus("HIDDEN")}}></div>
           <h3 className="center">Share Your Chart</h3>
           {this.DivShareStatus()}
+          <div className="share-link-div"></div> 
           <div className="ciq-dialog-cntrls">
             <div className="ciq-btn" onClick={ () => {this.props.setShareStatus("HIDDEN")}}>Done</div>
           </div>
