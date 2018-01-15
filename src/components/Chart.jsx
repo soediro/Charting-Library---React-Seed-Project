@@ -23,7 +23,7 @@ class Chart extends React.Component {
 					</div>
 				</div>
 				<div className="ciq-footer">
-          <ShareButton {...this.props} />
+          			<ShareButton {...this.props} />
 					<RangeSelector {...this.props} />
 				</div>
 			</div>

@@ -1,109 +1,102 @@
+const ShareStatus = Object.freeze({
+	HIDDEN: "HIDDEN",
+	SHOW: "SHOW",
+	GENERATING: "GENERATING",
+	UPLOADING: "UPLOADING",
+	COMPLETE: "COMPLETE",
+	ERROR: "ERROR"
+});
+
 class ShareChartModal extends React.Component {
 	constructor(props) {
-    super(props);
-    var self = this;
+		super(props);
+		var self = this;
+	}
 
-    // this.state = {
-    //   shareStatus : props.shareStatus,
-    //   propnames : Object.keys(props)
-    // }
-  }
+	shareChart() {
 
-    shareChart() {
+		if (!this.props.ciq) return;
 
-      if(!this.props.ciq) return;
+		var stx = this.props.ciq;
+		var props = this.props;
 
-      var stx = this.props.ciq;
+		this.props.setShareStatus(ShareStatus.GENERATING);
 
-      console.log("sharing chart!");
+		CIQ.Share.createImage(stx, {}, function (data) {
 
-      this.props.setShareStatus("GENERATING");
+			var id = CIQ.uniqueID();
+			var host = "https://share.chartiq.com";
+			var startOffset = stx.getStartDateOffset();
 
-      var props = this.props;
+			var metaData = {
+				"layout": stx.exportLayout(),
+				"drawings": stx.exportDrawings(),
+				"xOffset": startOffset,
+				"startDate": stx.chart.dataSegment[startOffset].Date,
+				"endDate": stx.chart.dataSegment[stx.chart.dataSegment.length - 1].Date,
+				"id": id,
+				"symbol": stx.chart.symbol
+			};
 
-      CIQ.Share.createImage(stx, {}, function(data){
-        // CIQ.UI.bypassBindings=false;
-        var id=CIQ.uniqueID();
-        var host="https://share.chartiq.com";
-        var startOffset=stx.getStartDateOffset();
-        var metaData={
-          "layout":stx.exportLayout(),
-          "drawings":stx.exportDrawings(),
-          "xOffset":startOffset,
-          "startDate":stx.chart.dataSegment[startOffset].Date,
-          "endDate":stx.chart.dataSegment[stx.chart.dataSegment.length-1].Date,
-          "id":id,
-          "symbol":stx.chart.symbol
-        };
-        var url= host + "/upload/" + id;
-        var payload={"id":id,"image":data,"config":metaData};
-        props.setShareStatus("UPLOADING");
-        CIQ.Share.uploadImage(data, url, payload, function(err, response){
-          if(err!==null){
-            props.setShareStatus("ERROR", err);
-            // CIQ.alert("error: "+err);
-          }
-          else {
-            props.setShareStatus("COMPLETE", host+response);
-            // $("cq-share-dialog .share-link-div").html(host+response);
-          }
-        });
-      });
+			var url = host + "/upload/" + id;
+			var payload = { "id": id, "image": data, "config": metaData };
 
-    }
+			props.setShareStatus(ShareStatus.UPLOADING);
+			CIQ.Share.uploadImage(data, url, payload, function (err, response) {
+				if (err !== null) {
+					props.setShareStatus(ShareStatus.ERROR, err);
+				}
+				else {
+					props.setShareStatus(ShareStatus.COMPLETE, host + response);
+				}
+			});
+		});
 
-    DivShareStatus() {
-      switch(this.props.shareStatus){
-        case "GENERATING":
-          return(
-            <div className="ciq-dialog-cntrls" >
-              Generating Image
-            </div>
-          );
-          break;
-        case "UPLOADING":
-          return(
-            <div className="ciq-dialog-cntrls" >
-              Uploading Image
-            </div>
-          );
-          break;
-        case "COMPLETE":
-          return(
-            <div className="ciq-dialog-cntrls share-link-div" >
-              {this.props.shareStatusMsg}
-            </div>
-          );
-          break;
-        case "ERROR":
-          return(
-            <script>alert({this.props.shareStatusMsg})</script>
-          );
-          break;
-        default:
-          return(
-            <div className="ciq-dialog-cntrls">
-              <div className="ciq-btn" onClick={ () => {console.log(this.shareChart); this.shareChart()}}>Create Image</div>
-            </div>
-          );
-          break;
-      }
-    }
+	}
 
+	getShareStatus() {
+		switch (this.props.shareStatus) {
+			case ShareStatus.GENERATING:
+				return "Generating Image";
+				break;
+			case ShareStatus.UPLOADING:
+				return "Uploading Image";
+				break;
+			case ShareStatus.COMPLETE:
+				return "Image available below:";
+				break;
+			case ShareStatus.ERROR:
+				return "Error occurred:";
+				break;
+			default:
+				return null;
+				break;
+		}
+	}
 
 	render() {
-	  if (!this.props.shareStatus || this.props.shareStatus == "HIDDEN") return <span></span>
-	  return (
-      <div className="ciq dialog-overlay">
-        <div className="ciq dialog share">
-          <div className="cq-close" onClick={ () => {this.props.setShareStatus("HIDDEN")}}></div>
-          <h3 className="center">Share Your Chart</h3>
-          {this.DivShareStatus()}
-          <div className="ciq-dialog-cntrls">
-            <div className="ciq-btn" onClick={ () => {this.props.setShareStatus("HIDDEN")}}>Done</div>
-          </div>
-        </div>
-      </div>
+		if (!this.props.shareStatus || this.props.shareStatus == ShareStatus.HIDDEN) return (<span></span>)
+		return (
+			<div className="ciq dialog-overlay">
+				<div className="ciq dialog share">
+					<div className="cq-close" onClick={() => { this.props.setShareStatus(ShareStatus.HIDDEN) }}></div>
+					<hr className="ciq-separator" />
+					<h3 className="center">Share Your Chart</h3>
+					<div className="ciq-dialog-cntrls">
+						<div className="ciq-btn" onClick={() => { this.shareChart() }}>Create Image</div>
+					</div>
+					<div className="ciq-dialog-cntrls">
+						{this.getShareStatus()}
+					</div>
+					<div className="ciq-dialog-cntrls share-link-div">
+						{([ShareStatus.COMPLETE, ShareStatus.ERROR].indexOf(this.props.shareStatus) >= 0) ? this.props.shareStatusMsg : null}
+					</div>
+					<hr className="ciq-separator" />
+					<div className="ciq-dialog-cntrls">
+						<div className="ciq-btn" onClick={() => { this.props.setShareStatus(ShareStatus.HIDDEN) }}>Done</div>
+					</div>
+				</div>
+			</div>
 		)
 	}
 }

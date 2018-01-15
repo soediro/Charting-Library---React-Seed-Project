@@ -47,6 +47,22 @@ h3 {
 	color: #000;
 	margin-top: 0px;
 }
+
+.ciq-share-button {
+	float:left;
+	cursor: pointer;
+}
+
+hr.cq-separator {
+    border-top: 1px solid #ccc;
+    margin: 10px 0 10px 0;
+    display: block;
+}
+
+.share {
+	color: #000;
+}
+
 .timezone h3{
 	display: flex;
 	justify-content: center;
@@ -353,7 +369,6 @@ cq-plus {
 	min-height: 400px;
 	max-height: 430px;
 	overflow: auto;
-	cursor: pointer;
 	font-weight: 300;
 	font-size: 9pt;
 	line-height: 16pt;
