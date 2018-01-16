@@ -1,8 +1,5 @@
 //components
-import ColorPicker from "./Drawing/ColorPicker"
-import FillColor from "./Drawing/FillColor"
-import LineColor from "./Drawing/LineColor"
-// import Color from "./Drawing/Color"
+import ColorSwatch from './Drawing/ColorSwatch'
 import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
@@ -28,9 +25,7 @@ class DrawingToolbar extends React.Component {
 		this.changeFontSize = this.changeFontSize.bind(this)
 		this.changeLineStyle = this.changeLineStyle.bind(this)
 
-		
-		this.toggleColorPicker = this.toggleColorPicker.bind(this);
-		this.setColor = this.setColor.bind(this);
+		this.setColor = this.setColor.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -43,9 +38,17 @@ class DrawingToolbar extends React.Component {
 	setTool(tool){
 		if (this.props.ciq === null) return
 		else {
+      if(tool=='callout' || tool=='annotation') { // no need to do this every time
+        // Sync the defaults for font tool
+        var style=this.props.ciq.canvasStyle("stx_annotation");
+        this.props.ciq.currentVectorParameters.annotation.font.size=style.fontSize
+        this.props.ciq.currentVectorParameters.annotation.font.family=style.fontFamily
+        this.props.ciq.currentVectorParameters.annotation.font.style=style.fontStyle
+        this.props.ciq.currentVectorParameters.annotation.font.weight=style.fontWeight
+      }
 			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
 			this.props.changeTool(tool, toolParams)
-			this.props.changeVectorParams(tool)
+      this.props.changeVectorParams(tool)
 		}
 	}
 	changeFontStyle(type){
@@ -64,35 +67,14 @@ class DrawingToolbar extends React.Component {
 		this.props.setLineParams(weight, pattern)
 		this.props.changeVectorLineParams(weight, pattern)
 	}
-	toggleColorPicker(target){
-		let togglePicker = !this.state.showDrawingToolbar,
-		targetBounds, left=0, context=''
-
-		if (togglePicker){
-			targetBounds = target.getBoundingClientRect().left
-			left = targetBounds-120
-		}
-
-		if(target.classList.contains('line')){
-			context="line";
-		}else if(target.classList.contains('fill')){
-			context="fill";
-		}
-
-		this.setState({
-			showColorPicker: togglePicker,
-			colorPickerLeft: left,
-			colorPickerContext: context
-		});
-	}
-	setColor(colorEl){
-		var color=colorEl.title
-
-		if(this.state.colorPickerContext==="line"){
+	setColor(color, type){
+		if(type==="line"){
 			this.props.setLineColor(color)
-		}else if(this.state.colorPickerContext==="fill"){
-			this.props.setFillColor(color)
-		}
+      this.props.changeVectorStyle('lineColor', { color: color })
+		}else if(type==="fill"){
+      this.props.setFillColor(color)
+      this.props.changeVectorStyle('fillColor', { color: color })
+    }else return
 
 		this.setState({
 			showColorPicker: false
@@ -116,9 +98,8 @@ class DrawingToolbar extends React.Component {
 					</menu-select>
 					<span>
 						<div className="drawingParameters">
-							<ColorPicker open={this.state.showColorPicker} left={this.state.colorPickerLeft} onColorPick={this.setColor} />
-							<FillColor color={this.props.fill} openColorPicker={this.toggleColorPicker} />
-							<LineColor color={this.props.line} openColorPicker={this.toggleColorPicker} />
+							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} />
+ 							<ColorSwatch name="Fill" type="fill" setColor={this.setColor} color={this.props.fill} />
 							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
