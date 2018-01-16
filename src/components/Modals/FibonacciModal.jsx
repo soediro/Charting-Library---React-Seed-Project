@@ -16,7 +16,7 @@ class FibonacciModal extends React.Component {
     this.updateThemeName = this.updateThemeName.bind(this)*/
   }
   render() {
-    
+
   }
 }
 
