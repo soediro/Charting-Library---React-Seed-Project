@@ -72,7 +72,7 @@ class ColorSwatch extends React.Component {
             )
         } else {
             return (
-                <span></span>
+                <div></div>
             )
         }
     }

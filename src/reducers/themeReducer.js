@@ -1,9 +1,10 @@
 //action types
 import Types from '../actions/themeActions'
+import themeActions from '../actions/themeActions';
 
 //create the default theme
-let defaultTheme = {
-    "name": "Default",
+let night = {
+    "name": "Night",
     "settings": {
         "chart": {
             "Axis Text": { "color": "rgba(197,199,201,1)" },
@@ -23,9 +24,39 @@ let defaultTheme = {
                     "color": "rgba(140,193,118,1)",
                     "wick": "rgba(0,0,0,1)"
                 },
-                "Line": { "color": "rgba(0,0,0,1)" },
-                "Mountain": { "color":"rgba(102,202,196,0.498039)" }
-            }
+                "even": { "wick": "rgba(0,0,0,1)" }
+            },
+            "Line": { "color": "rgba(0,0,0,1)" },
+            "Mountain": { "color":"rgba(102,202,196,0.498039)" }
+        }
+    }
+}
+
+let day = {
+    "name": "Day",
+    "settings": {
+        "chart": {
+            "Axis Text": { "color": "rgba(102,102,102,1)" },
+            "Background": { "color": "rgba(255,255,255,1)" },
+            "Grid Dividers": { "color": "rgba(204,204,204,1)" },
+            "Grid Lines": { "color": "rgba(239,239,239,1)" }
+        },
+        "chartTypes": {
+            "Candle/Bar": {
+                "down": {
+                    "border": "rgba(0,0,0,1)",
+                    "color": "rgba(182,46,25,1)",
+                    "wick": "rgba(0,0,0,1)"
+                },
+                "up": {
+                    "border": "rgba(0,0,0,1)",
+                    "color": "rgba(141,192,121,1)",
+                    "wick": "rgba(0,0,0,1)"
+                },
+                "even": { "wick": "rgba(0,0,0,1)" }
+            },
+            "Line": { "color": "rgba(0,0,0,1)" },
+            "Mountain": { "color": "rgba(136,181,253,1)" }
         }
     }
 }
@@ -140,7 +171,7 @@ let defaultSettings = [
 ]
 
 const initialState = {
-    themeList: [defaultTheme, { "name": "+ New Theme" }],
+    themeList: [night, day, { "name": "+ New Theme" }],
     currentThemeSettings: defaultSettings,
     currentThemeName: 'Default',
     showEditModal: false,
@@ -166,7 +197,7 @@ const ThemeUI = (state = initialState, action) => {
                     showEditModal: true
                 })
             } else {
-                state.themeHelper.settings = CIQ.clone(action.theme)
+                state.themeHelper.settings = CIQ.clone(action.theme.settings)
                 state.themeHelper.update()
             }
             return state
@@ -210,9 +241,7 @@ export default ThemeUI
 
 function updateThemeSettings(themeHelper, currentSettings, newParams){
     let settings = currentSettings.slice(),
-    rgbaColor = newParams ? CIQ.hexToRgba('#'+newParams.color) : null
-
-    console.log(themeHelper.settings)
+    rgbaColor = (newParams && newParams.color) ? CIQ.hexToRgba('#'+newParams.color) : null
 
     let newSettings = settings.map((setting) => {
         let newSetting = {

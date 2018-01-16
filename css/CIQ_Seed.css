@@ -85,6 +85,12 @@ nav {
 	height: 27px;
 }
 
+.dialog-heading {
+	color: black;
+	margin: 0 0 5px 0;
+	text-align: center;
+}
+
 .overlayMenu{
 	width:130px;
 	display:inline-block;
