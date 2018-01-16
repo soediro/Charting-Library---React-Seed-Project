@@ -393,6 +393,9 @@ cq-plus {
 	border-right: 1px solid #e4e4e4;
 	float: left;
 }
+.dialog .dialog-item > div {
+	float:right;
+}
 #inputs .dialog-item input,
 #inputs .dialog-item select,
 #outputs .dialog-item .output,
