@@ -112,6 +112,7 @@ const chart = (state = initialState, action) => {
                 }
             })
         case Types.SET_SYMBOL:
+            state.ciq.newChart(action.symbol);
             return Object.assign({}, state, {
                 symbol: action.symbol
             })
@@ -133,7 +134,7 @@ const chart = (state = initialState, action) => {
             return state
         default:
             return state
-    }       
+    }
 }
 
 export default chart;
