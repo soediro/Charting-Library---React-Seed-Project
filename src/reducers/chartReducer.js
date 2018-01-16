@@ -21,7 +21,13 @@ const initialState = {
         period: 1,
         interval: "day"
     },
-    showPeriodicityLoader: false
+    showPeriodicityLoader: false,
+    studyOverlay: {
+        show: false,
+        top: 0,
+        left: 0,
+        params: null
+    }
 }
 
 const chart = (state = initialState, action) => {
@@ -122,18 +128,9 @@ const chart = (state = initialState, action) => {
         case Types.SET_SPAN:
             state.ciq.setSpan({span: action.span, multiplier: action.multiplier })
             return state
-        case Types.ADD_STUDY:
-            CIQ.Studies.addStudy(state.ciq, action.study)
-            return state
-        case Types.REMOVE_STUDY:
-            CIQ.Studies.removeStudy(params.stx, params.sd)
-            return state
-        case Types.DRAW:
-            state.ciq.draw()
-            return state
         default:
             return state
     }       
 }
 
-export default chart;
+export default chart

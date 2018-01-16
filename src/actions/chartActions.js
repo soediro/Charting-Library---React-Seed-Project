@@ -5,15 +5,12 @@ import createTypes from 'redux-create-action-types'
  */
 const Types = createTypes(
     'CHANGE_CHART_DATA',
-    'DRAW',
     'SET_CHART_TYPE',
     'SET_CONTAINER',
     'SET_SYMBOL',
     'SET_REFRESH_INTERVAL',
     'ADD_COMPARISON',
-    'ADD_STUDY',
     'REMOVE_COMPARISON',
-    'REMOVE_STUDY',
     'SET_SPAN',
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
@@ -114,16 +111,4 @@ export function setRefreshInterval(interval){
 
 export function setSymbol(symbol){
     return { type: 'SET_SYMBOL', symbol: symbol }
-}
-
-export function addStudy(study){
-    return { type: 'ADD_STUDY', study: study }
-}
-
-export function removeStudy(params){
-    return { type: 'REMOVE_STUDY', params: params }
-}
-
-export function draw(){
-    return { type: 'DRAW' }
 }

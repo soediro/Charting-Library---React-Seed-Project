@@ -2,7 +2,7 @@ import ChartSymbol from './UI/ChartSymbol'
 import Comparison from './UI/Comparison'
 import Periodicity from './UI/Periodicity'
 import ChartTypes from './UI/ChartTypes'
-import StudyUI from './UI/StudyUI'
+import StudyUI from '../containers/studyContainer'
 import ThemeUI from './UI/ThemeUI'
 import Crosshairs from './UI/Crosshairs'
 import TimeZoneButton from './UI/TimeZoneButton'
@@ -23,7 +23,7 @@ const UI = (props) => {
 					<div className="right">
 						<Periodicity {...props} />
 						<ChartTypes {...props} />
-						<StudyUI {...props} />
+						<StudyUI ciq={props.ciq} {...props} />
 						<ThemeUI {...props} />
 						<Crosshairs {...props} />
 						<TimeZoneButton {...props} />

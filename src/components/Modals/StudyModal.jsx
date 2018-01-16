@@ -1,11 +1,9 @@
-import ColorPicker from "../Drawing/ColorPicker"
 import ColorSwatch from '../Drawing/ColorSwatch'
 
 class StudyModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			studyHelper: {},
 			outputs: {},
 			inputs: {},
 			parameters: {}
@@ -18,13 +16,11 @@ class StudyModal extends React.Component {
 		this.setColor = this.setColor.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
-		if(this.props.params !== nextProps.params && nextProps.params){
-			let studyHelper = new CIQ.Studies.DialogHelper(nextProps.params)
+		if(this.props.studyHelper !== nextProps.studyHelper){
 			this.setState({
-				studyHelper: studyHelper,
-				outputs: studyHelper.outputs,
-				inputs: studyHelper.inputs,
-				parameters: studyHelper.parameters
+				outputs: nextProps.studyHelper.outputs,
+				inputs: nextProps.studyHelper.inputs,
+				parameters: nextProps.studyHelper.parameters
 			})
 		}
 	}
@@ -126,8 +122,7 @@ class StudyModal extends React.Component {
 		</div>
 	}
 	render() {
-
-		if (!this.props.open || !this.state.studyHelper) return <span></span>
+		if (!this.props.showStudyModal || !this.props.studyHelper) return <span></span>
 
 		let inputs = this.state.inputs.map((input, i) => {
 			if (input.type === 'select') return this.createSelectInput(input)

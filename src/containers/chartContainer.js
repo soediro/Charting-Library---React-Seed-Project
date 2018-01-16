@@ -4,9 +4,7 @@ import { connect } from 'react-redux'
 //actions
 import { setChartContainer,
         addComparison,
-        addStudy,
         removeComparison,
-        removeStudy,
         toggleCrosshairs,
         setSpan,
         changeContainerSize,
@@ -60,14 +58,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         addComparison: (comparison, color) => {
             dispatch(addComparison(comparison, color))
         },
-        addStudy: (study) => {
-            dispatch(addStudy(study))
-        },
         removeComparison: (comparison) => {
             dispatch(removeComparison(comparison))
-        },
-        removeStudy: (params) => {
-            dispatch(removeStudy(params))
         },
         toggleCrosshairs: () => {
             dispatch(toggleCrosshairs())
