@@ -1,6 +1,6 @@
 //components
 import OverlayMenu from './OverlayMenu';
-import StudyModal from '../Modals/StudyModal';
+import StudyModal from '../Modals/StudyModal/StudyModal';
 
 const StudyUI = (props) => {
 	let tempStudies = [];

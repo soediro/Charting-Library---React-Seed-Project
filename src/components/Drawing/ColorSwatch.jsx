@@ -43,7 +43,7 @@ class ColorSwatch extends React.Component {
         }
 
         let colors = this.state.colors.map((color, i) => {
-            <li key={"color"+i}><a href="#" title={color} onClick={this.setColor.bind(this, color)} style={{background: '#'+color}}>{color}</a></li>
+            return (<li key={"color"+i}><a href="#" title={color} onClick={this.setColor.bind(this, color)} style={{background: '#'+color}}>{color}</a></li>)
         }), pickerStyle = {
             display: this.state.pickingColor ? 'block' : 'none',
             left: this.props.isModal ? '120px' : elementBounds-120 + 'px',

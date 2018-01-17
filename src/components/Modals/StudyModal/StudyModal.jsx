@@ -1,4 +1,6 @@
-import ColorSwatch from '../Drawing/ColorSwatch'
+import StudyModalInput from './StudyModalInput'
+import StudyModalOutput from './StudyModalOutput'
+import StudyModalParameter from './StudyModalParameter'
 
 class StudyModal extends React.Component {
 	constructor(props) {
@@ -16,7 +18,7 @@ class StudyModal extends React.Component {
 		this.setColor = this.setColor.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
-		if(this.props.studyHelper !== nextProps.studyHelper){
+		if(this.props.studyHelper !== nextProps.studyHelper && nextProps.studyHelper !== null){
 			this.setState({
 				outputs: nextProps.studyHelper.outputs,
 				inputs: nextProps.studyHelper.inputs,
@@ -63,9 +65,7 @@ class StudyModal extends React.Component {
 			currentParams[this.state.parameters[y].name + 'Value'] = this.state.params[y].value;
 			currentParams[this.state.parameters[y].name + 'Color'] = this.state.params[y].color;
 		}
-
-		this.state.studyHelper.updateStudy({ inputs: currentInputs, outputs: currentOutputs, parameters: currentParams });
-		this.props.closeModal()
+		this.props.updateStudy(currentInputs, currentOutputs, currentParams)
 	}
 	updateInputs = (name, target) => {
 		for (let input of this.state.inputs) {
@@ -79,76 +79,20 @@ class StudyModal extends React.Component {
 			}
 		}
 		this.forceUpdate();
-	};
-	createSelectInput(input) {
-		var inputOptions = [];
-		for (var option in input.options) {
-			inputOptions.push(<option key={"option" + option}>
-				{option}
-			</option>)
-		}
-		return <div key={"select" + input.heading} className="inputs dialog-item">
-			<select defaultValue={input.value} onChange={event => {
-				this.updateInputs(input.name, event.target);
-			}}>
-				{inputOptions}
-			</select>
-			<div>
-				{input.heading}
-			</div>
-		</div>
-
-	}
-	createCheckboxInput(input) {
-		return <div key={"checkbox" + input.name} className="inputs dialog-item">
-			<input type="checkbox" checked={input.value}
-				onChange={event => {
-					this.updateInputs(input.name, event.target);
-				}}></input>
-			<div>
-				{input.heading}
-			</div>
-		</div>
-	}
-	createOtherInput(input, type) {
-		return <div key={type + input.name} className="inputs dialog-item">
-			<input type={type} defaultValue={input.value}
-				onChange={event => {
-					this.updateInputs(input.name, event.target);
-				}}></input>
-			<div>
-				{input.heading}
-			</div>
-		</div>
 	}
 	render() {
 		if (!this.props.showStudyModal || !this.props.studyHelper) return <span></span>
 
 		let inputs = this.state.inputs.map((input, i) => {
-			if (input.type === 'select') return this.createSelectInput(input)
-			else if (input.type === 'checkbox') return this.createCheckboxInput(input)
-			else return this.createOtherInput(input, input.type)
+			return <StudyModalInput key={'input'+i} input={input} updateInputs={this.updateInputs} />
 		})
 
 		let outputs = this.state.outputs.map((output, i) => {
-			return (
-				<div key={"output"+i} className="outputs dialog-item">
-					{output && output.color ? <ColorSwatch isModal={true} name={output.heading} type="output" setColor={this.setColor} color={output.color} /> : <div></div> }
-					<div>
-						{output.heading}
-					</div>
-				</div>
-			)
+			return <StudyModalOutput key={'output'+i} setColor={this.setColor} output={output} />
 		})
 
 		let params = this.state.parameters.map((param, i) => {
-			return (
-				<div>
-					{param.color ? <ColorSwatch isModal={true} name={param.heading} type='param' setColor={this.setColor} color={param.color} /> : <div></div>}
-					<input type={param.name === 'studyOverZones' ? 'checkbox' : 'number'} />
-					<div>{param.heading}</div>
-				</div>
-			)
+			return <StudyModalParameter key={'param'+i} param={param} />
 		})
 
 		return (

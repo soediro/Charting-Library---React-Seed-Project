@@ -1,7 +1,7 @@
 const OverlayMenu = (props) => {
-    if (props.showStudyOverlay){
+    if (props.studyOverlay.show){
         return (
-            <span className="overlayMenu" style={{ top: props.overlayTop, left: props.overlayLeft }}>
+            <span className="overlayMenu" style={{ top: props.studyOverlay.top, left: props.studyOverlay.left }}>
                 <div className="edit" onClick={props.toggleStudyModal}>
                     Edit settings...
                 </div>

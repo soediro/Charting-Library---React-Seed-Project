@@ -8,6 +8,7 @@ const Types = createTypes(
     'TOGGLE_STUDY_MODAL',
     'TOGGLE_STUDY_OVERLAY',
     'ADD_STUDY',
+    'UPDATE_STUDY',
     'REMOVE_STUDY'
 )
 
@@ -31,6 +32,10 @@ export function toggleStudyModal(params){
 
 export function addStudy(ciq, study){
     return { type: 'ADD_STUDY', ciq: ciq, study: study }
+}
+
+export function updateStudy(inputs, outputs, parameters){
+    return { type: 'UPDATE_STUDY', inputs: inputs, outputs: outputs, parameters: parameters }
 }
 
 export function removeStudy(study){

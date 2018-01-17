@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { toggleStudyModal,
          toggleOverlay,
          addStudy,
+         updateStudy,
          removeStudy } from '../actions/studyActions'
 
 //components
@@ -12,12 +13,10 @@ import StudyUI from '../components/UI/StudyUI'
 
 const mapStateToProps = (state, props) => {
     return {
-        showStudyOverlay: state.study.showStudyOverlay,
+        studyOverlay: state.study.studyOverlay,
         showStudyModal: state.study.showStudyModal,
         studyHelper: state.study.studyHelper,
-        studyList: state.study.studyList,
-        overlayTop: state.study.overlayTop,
-        overlayLeft: state.study.overlayLeft
+        studyList: state.study.studyList
     }
 }
 
@@ -31,6 +30,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         addStudy: (ciq, study) => {
             dispatch(addStudy(ciq, study))
+        },
+        updateStudy: (inputs, outputs, parameters) => {
+            dispatch(updateStudy(inputs, outputs, parameters))
         },
         removeStudy: (params) => {
             dispatch(removeStudy(params))
