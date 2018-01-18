@@ -24,14 +24,26 @@ const study = (state = initialState, action) => {
                 },
                 studyHelper: flipOverlay ? new CIQ.Studies.DialogHelper(action.params) : null
             })
-        case Types.TOGGLE_STUDY_MODAL:
+        case Types.OPEN_STUDY_MODAL:
+            let needsStudyHelper = action.params.hasOwnProperty('stx')
             return Object.assign({}, state, {
-                showStudyModal: !state.showStudyModal,
+                showStudyModal: true,
+                studyHelper: needsStudyHelper ? new CIQ.Studies.DialogHelper(action.params) : state.studyHelper,
                 studyOverlay: {
-                    show: state.showStudyModal,
-                    top: state.showStudyModal ? 0 : state.studyOverlay.top,
-                    left: state.showStudyModal ? 0 : state.studyOverlay.left
+                    show: false,
+                    top: 0,
+                    left: 0
                 }
+            })
+        case Types.CLOSE_STUDY_MODAL:
+            return Object.assign({}, state, {
+                showStudyModal: false,
+                studyOverlay: {
+                    show: false,
+                    top: 0,
+                    left: 0
+                },
+                studyHelper: null
             })
         case Types.ADD_STUDY:
             let studyLookup = {}
@@ -41,9 +53,15 @@ const study = (state = initialState, action) => {
             CIQ.Studies.addStudy(action.ciq, studyLookup[action.study.name])
             return state
         case Types.UPDATE_STUDY:
-            state.studyHelper.updateStudy({ inputs: action.inputs, outputs: action.ouputs, parameters: action.parameters });
+            state.studyHelper.updateStudy({ inputs: action.inputs, outputs: action.outputs, parameters: action.parameters });
             return Object.assign({}, state, {
-                showStudyModal: false
+                showStudyModal: false,
+                studyOverlay: {
+                    show: false,
+                    top: 0,
+                    left: 0
+                },
+                studyHelper: null
             })
         case Types.REMOVE_STUDY:
             if(state.studyHelper !== null) CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd)

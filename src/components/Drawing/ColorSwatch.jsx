@@ -26,7 +26,7 @@ class ColorSwatch extends React.Component {
     }
     togglePicker(){
         this.setState({
-            pickingColor: true
+            pickingColor: !this.state.pickingColor
         })
     }
     setColor(color){

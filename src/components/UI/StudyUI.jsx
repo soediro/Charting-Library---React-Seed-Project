@@ -20,7 +20,7 @@ const StudyUI = (props) => {
 	})
 
 	props.ciq.callbacks.studyOverlayEdit = props.toggleOverlay
-	props.ciq.callbacks.studyPanelEdit = props.toggleStudyModal.bind(this, props.currentModalStudy)
+	props.ciq.callbacks.studyPanelEdit = props.openStudyModal
 
 	return (
 		<span>

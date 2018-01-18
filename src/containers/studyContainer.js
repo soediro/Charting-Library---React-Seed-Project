@@ -2,11 +2,12 @@
 import { connect } from 'react-redux'
 
 //actions
-import { toggleStudyModal,
-         toggleOverlay,
+import { toggleOverlay,
          addStudy,
          updateStudy,
-         removeStudy } from '../actions/studyActions'
+         removeStudy, 
+         openStudyModal,
+         closeStudyModal} from '../actions/studyActions'
 
 //components
 import StudyUI from '../components/UI/StudyUI'
@@ -22,8 +23,11 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        toggleStudyModal: (params) => {
-            dispatch(toggleStudyModal(params))
+        openStudyModal: (params) => {
+            dispatch(openStudyModal(params))
+        },
+        closeStudyModal: () => {
+            dispatch(closeStudyModal())
         },
         toggleOverlay: (params) => {
             dispatch(toggleOverlay(params))

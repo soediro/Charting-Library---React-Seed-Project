@@ -5,7 +5,8 @@ import createTypes from 'redux-create-action-types'
  */
 const Types = createTypes(
     'SET_STUDY_HELPER',
-    'TOGGLE_STUDY_MODAL',
+    'OPEN_STUDY_MODAL',
+    'CLOSE_STUDY_MODAL',
     'TOGGLE_STUDY_OVERLAY',
     'ADD_STUDY',
     'UPDATE_STUDY',
@@ -26,8 +27,12 @@ export function toggleOverlay(params){
     return { type: 'TOGGLE_STUDY_OVERLAY', params: params }
 }
 
-export function toggleStudyModal(params){
-    return { type: 'TOGGLE_STUDY_MODAL', params: params }
+export function openStudyModal(params){
+    return { type: 'OPEN_STUDY_MODAL', params: params }
+}
+
+export function closeStudyModal(){
+    return { type: 'CLOSE_STUDY_MODAL' }
 }
 
 export function addStudy(ciq, study){

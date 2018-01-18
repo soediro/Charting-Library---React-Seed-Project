@@ -1,6 +1,7 @@
 import StudyModalInput from './StudyModalInput'
 import StudyModalOutput from './StudyModalOutput'
 import StudyModalParameter from './StudyModalParameter'
+import ColorSwatch from '../../Drawing/ColorSwatch'
 
 class StudyModal extends React.Component {
 	constructor(props) {
@@ -27,6 +28,9 @@ class StudyModal extends React.Component {
 		}
 	}
 	setColor(color, type, name) {
+		console.log('color: ', color)
+		console.log('type: ', type)
+		console.log('name: ', name)
 		let newOutputs = this.state.outputs,
 		newInputs = this.state.inputs
 
@@ -65,9 +69,11 @@ class StudyModal extends React.Component {
 			currentParams[this.state.parameters[y].name + 'Value'] = this.state.params[y].value;
 			currentParams[this.state.parameters[y].name + 'Color'] = this.state.params[y].color;
 		}
+		console.log('currentOutputs: ', currentOutputs)
 		this.props.updateStudy(currentInputs, currentOutputs, currentParams)
 	}
-	updateInputs = (name, target) => {
+	updateInputs = (name, event) => {
+		let target = event.target
 		for (let input of this.state.inputs) {
 			if (input.type === "checkbox") {
 				input.value = target.checked;
@@ -80,25 +86,78 @@ class StudyModal extends React.Component {
 		}
 		this.forceUpdate();
 	}
+	createSelectInput(input) {
+		var inputOptions = [];
+		for (var option in input.options) {
+			inputOptions.push(<option key={"option" + option}>
+				{option}
+			</option>)
+		}
+		return <div key={"select" + input.heading} className="inputs dialog-item">
+			<select defaultValue={input.value} onChange={this.updateInputs.bind(this, input.name)}>
+				{inputOptions}
+			</select>
+			<div>
+				{input.heading}
+			</div>
+		</div>
+
+	}
+	createCheckboxInput(input) {
+		return <div key={"checkbox" + input.name} className="inputs dialog-item">
+			<input type="checkbox" checked={input.value}
+				onChange={this.updateInputs.bind(this, input.name)}></input>
+			<div>
+				{input.heading}
+			</div>
+		</div>
+	}
+	createOtherInput(input, type) {
+		return <div key={type + input.name} className="inputs dialog-item">
+			<input type={type} defaultValue={input.value}
+				onChange={this.updateInputs.bind(this, input.name)}></input>
+			<div>
+				{input.heading}
+			</div>
+		</div>
+	}
 	render() {
 		if (!this.props.showStudyModal || !this.props.studyHelper) return <span></span>
 
-		let inputs = this.state.inputs.map((input, i) => {
-			return <StudyModalInput key={'input'+i} input={input} updateInputs={this.updateInputs} />
+		let inputs = this.state.inputs.map((input) => {
+			if(input.type === 'select') return this.createSelectInput(input)
+			else if(input.type === 'checkbox') return this.createCheckboxInput(input)
+			else return this.createOtherInput(input, input.type)
 		})
 
 		let outputs = this.state.outputs.map((output, i) => {
-			return <StudyModalOutput key={'output'+i} setColor={this.setColor} output={output} />
+			return (
+				<div key={'ouput'+i} className='outputs dialog-item'>
+					{output.color ? <ColorSwatch isModal={true} name={output.heading} type='output' setColor={this.setColor} color={output.color} /> : <div></div>}
+					<div>
+						{output.heading}
+					</div>
+				</div>
+			)
 		})
 
 		let params = this.state.parameters.map((param, i) => {
-			return <StudyModalParameter key={'param'+i} param={param} />
+			let type = param.name === 'studyOverZones' ? 'checkbox' : 'number';
+			return (
+				<div>
+					{param.color ? <ColorSwatch isModal={true} name={param.heading} type='param' setColor={this.setColor} color={param.color} /> : <div></div>}
+					<input type={type} />
+					<div>
+						{param.heading}
+					</div>
+				</div>
+			)
 		})
 
 		return (
 			<div className="dialog-overlay" id="studyDialog">
 				<div className="dialog">
-					<div className="cq-close" onClick={this.close}></div>
+					<div className="cq-close" onClick={this.props.closeStudyModal}></div>
 					<h3>
 						{this.state.studyHelper ? this.state.studyHelper.title : ""}
 					</h3>
@@ -120,4 +179,4 @@ class StudyModal extends React.Component {
 	}
 }
 
-module.exports = StudyModal;
+export default StudyModal
