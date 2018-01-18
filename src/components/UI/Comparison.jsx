@@ -51,8 +51,10 @@ class Comparison extends React.Component {
 	}
 	updateComparisonSeries() {
 		if (arguments[0].action == 'remove-series') {
-			let thing = arguments[0];
-			this.props.removeComparison(arguments[0].stx.chart.series[arguments[0].symbol])
+      let stx = arguments[0];
+      console.log("updateComp")
+      console.log(stx)
+			this.props.removeComparison(stx.symbol)
 		}
 	}
 	render() {
