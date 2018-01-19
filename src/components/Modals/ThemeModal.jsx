@@ -51,7 +51,7 @@ class ThemeModal extends React.Component {
 	updateTheme(colorEl, item, swatch) {
 		let color = colorEl ? colorEl.title : null,
 		rgbaColor = color ? CIQ.hexToRgba('#' + color) : null;
-		
+
 		if (!item && this.state.currentSwatch) {
 			item = this.state.currentSwatch.item
 		}

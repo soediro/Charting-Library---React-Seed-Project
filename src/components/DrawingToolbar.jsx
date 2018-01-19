@@ -3,6 +3,7 @@ import ColorSwatch from './Drawing/ColorSwatch'
 import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
+import FibonacciUI from './UI/FibonacciUI'
 
 //data sources
 import { ChartStore, Actions } from '../stores/ChartStores'
@@ -103,6 +104,7 @@ class DrawingToolbar extends React.Component {
 							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
+              <FibonacciUI {...this.props} />
 						</div>
 					</span>
 				</div>
