@@ -28,9 +28,6 @@ class StudyModal extends React.Component {
 		}
 	}
 	setColor(color, type, name) {
-		console.log('color: ', color)
-		console.log('type: ', type)
-		console.log('name: ', name)
 		let newOutputs = this.state.outputs,
 		newInputs = this.state.inputs
 
@@ -69,7 +66,7 @@ class StudyModal extends React.Component {
 			currentParams[this.state.parameters[y].name + 'Value'] = this.state.params[y].value;
 			currentParams[this.state.parameters[y].name + 'Color'] = this.state.params[y].color;
 		}
-		console.log('currentOutputs: ', currentOutputs)
+
 		this.props.updateStudy(currentInputs, currentOutputs, currentParams)
 	}
 	updateInputs = (name, event) => {
@@ -124,34 +121,16 @@ class StudyModal extends React.Component {
 	render() {
 		if (!this.props.showStudyModal || !this.props.studyHelper) return <span></span>
 
-		let inputs = this.state.inputs.map((input) => {
-			if(input.type === 'select') return this.createSelectInput(input)
-			else if(input.type === 'checkbox') return this.createCheckboxInput(input)
-			else return this.createOtherInput(input, input.type)
+		let inputs = this.state.inputs.map((input, i) => {
+			return (<StudyModalInput key={'input'+i} input={input} updateInputs={this.updateInputs} />)
 		})
 
 		let outputs = this.state.outputs.map((output, i) => {
-			return (
-				<div key={'ouput'+i} className='outputs dialog-item'>
-					{output.color ? <ColorSwatch isModal={true} name={output.heading} type='output' setColor={this.setColor} color={output.color} /> : <div></div>}
-					<div>
-						{output.heading}
-					</div>
-				</div>
-			)
+			return (<StudyModalOutput key={'output'+i} output={output} setColor={this.setColor} />)
 		})
 
 		let params = this.state.parameters.map((param, i) => {
-			let type = param.name === 'studyOverZones' ? 'checkbox' : 'number';
-			return (
-				<div>
-					{param.color ? <ColorSwatch isModal={true} name={param.heading} type='param' setColor={this.setColor} color={param.color} /> : <div></div>}
-					<input type={type} />
-					<div>
-						{param.heading}
-					</div>
-				</div>
-			)
+			return (<StudyModalParameter key={'param'+i} param={param} />)
 		})
 
 		return (

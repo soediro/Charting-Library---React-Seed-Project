@@ -8,7 +8,7 @@ const StudyModalInput = (props) => {
 
         return (
             <div className='inputs dialog-item'>
-                <select defaultValue={props.input.value} onChange={props.updateInputs}>
+                <select defaultValue={props.input.value} onChange={props.updateInputs.bind(this, props.input.name)}>
                     {inputOptions}
                 </select>
                 <div>
@@ -20,7 +20,7 @@ const StudyModalInput = (props) => {
     else if (props.input.type === 'checkbox'){
         return (
             <div className='inputs dialog-item'>
-                <input type='checkbox' checked={props.input.value} onChange={props.updateInputs} />
+                <input type='checkbox' checked={props.input.value} onChange={props.updateInputs.bind(this, props.input.name)} />
                 <div>
                     {props.input.heading}
                 </div>
@@ -30,7 +30,7 @@ const StudyModalInput = (props) => {
     else{
         return (
             <div className='inputs dialog-item'>
-                <input type={props.input.type} defaultValue={props.input.value} onChange={props.updateInputs} />
+                <input type={props.input.type} defaultValue={props.input.value} onChange={props.updateInputs.bind(this, props.input.name)} />
                 <div>
                     {props.input.heading}
                 </div>
