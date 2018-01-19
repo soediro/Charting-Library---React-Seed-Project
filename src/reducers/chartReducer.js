@@ -2,15 +2,14 @@
 import Types from '../actions/chartActions';
 
 //create a demo date feed
-import FeedService from '../feeds/template'
-let service = new FeedService().makeFeed()
+import ChartService from '../feeds/ChartService'
+let service = new ChartService().makeFeed()
 
 //initial state
 const initialState = {
     ciq: null,
     service:service,
     chartType: null,
-    refreshInterval: 1,
     symbol: 'AAPL',
     showDrawingToolbar: false,
     showCrosshairs: false,
@@ -30,7 +29,7 @@ const chart = (state = initialState, action) => {
             let ciq = new CIQ.ChartEngine({
                 container: action.container
             })
-            ciq.attachQuoteFeed(state.service, state.refreshInterval)
+            ciq.attachQuoteFeed(state.service)
             ciq.newChart(state.symbol)
             return Object.assign({}, state, {
                 ciq: ciq
@@ -133,7 +132,7 @@ const chart = (state = initialState, action) => {
             return state
         default:
             return state
-    }       
+    }
 }
 
 export default chart;

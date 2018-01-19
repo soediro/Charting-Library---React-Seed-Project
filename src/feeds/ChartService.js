@@ -1,5 +1,3 @@
-
-
 export default class ChartService {
 
 	quotefeedSimulator = {}; // the quotefeed object
