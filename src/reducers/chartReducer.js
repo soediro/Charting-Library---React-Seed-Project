@@ -18,7 +18,8 @@ const initialState = {
     comparisons: [],
     periodicity:{
         period: 1,
-        interval: "day"
+        interval: 1,
+        timeUnit: 'day'
     },
     showPeriodicityLoader: false
 }
@@ -30,6 +31,9 @@ const chart = (state = initialState, action) => {
                 container: action.container
             })
             ciq.attachQuoteFeed(state.service)
+            ciq.attachQuoteFeed(state.service);
+            ciq.setMarketFactory(CIQ.Market.Symbology.factory);
+            // new CIQ.ExtendedHours({stx:stxx, filter:true});
             ciq.newChart(state.symbol)
             return Object.assign({}, state, {
                 ciq: ciq
@@ -103,11 +107,13 @@ const chart = (state = initialState, action) => {
 
             return state
         case Types.SET_PERIODICITY:
-            state.ciq.setPeriodicityV2(action.periodicity.period, action.periodicity.interval);
+            state.ciq.setPeriodicity(action.periodicity, ()=>{});
+            console.log(action.periodicity)
             return Object.assign({}, state, {
                 periodicity:{
                     period: action.periodicity.period,
-                    interval: action.periodicity.interval
+                    interval: action.periodicity.interval,
+                    timeUnit: action.periodicity.timeUnit
                 }
             })
         case Types.SET_SYMBOL:
