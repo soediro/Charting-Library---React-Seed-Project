@@ -31,7 +31,6 @@ const chart = (state = initialState, action) => {
                 container: action.container
             })
             ciq.attachQuoteFeed(state.service)
-            ciq.attachQuoteFeed(state.service);
             ciq.setMarketFactory(CIQ.Market.Symbology.factory);
             // new CIQ.ExtendedHours({stx:stxx, filter:true});
             ciq.newChart(state.symbol)
