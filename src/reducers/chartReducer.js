@@ -2,8 +2,8 @@
 import Types from '../actions/chartActions';
 
 //create a demo date feed
-import FeedService from '../feeds/template'
-let service = new FeedService().makeFeed()
+import ChartService from '../feeds/ChartService'
+let service = new ChartService().makeFeed()
 
 //initial state
 const initialState = {
@@ -19,7 +19,8 @@ const initialState = {
     comparisons: [],
     periodicity:{
         period: 1,
-        interval: "day"
+        interval: 1,
+        timeUnit: 'day'
     },
     showPeriodicityLoader: false
 }
@@ -30,7 +31,9 @@ const chart = (state = initialState, action) => {
             let ciq = new CIQ.ChartEngine({
                 container: action.container
             })
-            ciq.attachQuoteFeed(state.service, state.refreshInterval)
+            ciq.attachQuoteFeed(state.service)
+            ciq.setMarketFactory(CIQ.Market.Symbology.factory);
+            // new CIQ.ExtendedHours({stx:stxx, filter:true});
             ciq.newChart(state.symbol)
             return Object.assign({}, state, {
                 ciq: ciq
@@ -114,11 +117,12 @@ const chart = (state = initialState, action) => {
 
             return state
         case Types.SET_PERIODICITY:
-            state.ciq.setPeriodicityV2(action.periodicity.period, action.periodicity.interval);
+            state.ciq.setPeriodicity(action.periodicity, ()=>{});
             return Object.assign({}, state, {
                 periodicity:{
                     period: action.periodicity.period,
-                    interval: action.periodicity.interval
+                    interval: action.periodicity.interval,
+                    timeUnit: action.periodicity.timeUnit
                 }
             })
         case Types.SET_SYMBOL:
@@ -143,7 +147,7 @@ const chart = (state = initialState, action) => {
             return state
         default:
             return state
-    }       
+    }
 }
 
 export default chart;
