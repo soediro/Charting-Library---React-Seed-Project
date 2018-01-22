@@ -10,6 +10,7 @@ const initialState = {
     ciq: null,
     service:service,
     chartType: null,
+    refreshInterval: 1,
     symbol: 'AAPL',
     showDrawingToolbar: false,
     showCrosshairs: false,
@@ -107,7 +108,6 @@ const chart = (state = initialState, action) => {
             return state
         case Types.SET_PERIODICITY:
             state.ciq.setPeriodicity(action.periodicity, ()=>{});
-            console.log(action.periodicity)
             return Object.assign({}, state, {
                 periodicity:{
                     period: action.periodicity.period,
