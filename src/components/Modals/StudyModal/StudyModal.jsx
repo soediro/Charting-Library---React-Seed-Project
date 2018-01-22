@@ -83,41 +83,6 @@ class StudyModal extends React.Component {
 		}
 		this.forceUpdate();
 	}
-	createSelectInput(input) {
-		var inputOptions = [];
-		for (var option in input.options) {
-			inputOptions.push(<option key={"option" + option}>
-				{option}
-			</option>)
-		}
-		return <div key={"select" + input.heading} className="inputs dialog-item">
-			<select defaultValue={input.value} onChange={this.updateInputs.bind(this, input.name)}>
-				{inputOptions}
-			</select>
-			<div>
-				{input.heading}
-			</div>
-		</div>
-
-	}
-	createCheckboxInput(input) {
-		return <div key={"checkbox" + input.name} className="inputs dialog-item">
-			<input type="checkbox" checked={input.value}
-				onChange={this.updateInputs.bind(this, input.name)}></input>
-			<div>
-				{input.heading}
-			</div>
-		</div>
-	}
-	createOtherInput(input, type) {
-		return <div key={type + input.name} className="inputs dialog-item">
-			<input type={type} defaultValue={input.value}
-				onChange={this.updateInputs.bind(this, input.name)}></input>
-			<div>
-				{input.heading}
-			</div>
-		</div>
-	}
 	render() {
 		if (!this.props.showStudyModal || !this.props.studyHelper) return <span></span>
 

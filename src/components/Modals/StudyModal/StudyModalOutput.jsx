@@ -1,7 +1,6 @@
 import ColorSwatch from '../../Drawing/ColorSwatch'
 
 const StudyModalOutput = (props) => {
-    console.log('props: ', props)
     if (!props.output) return (<div></div>)
     return (
         <div className='outputs dialog-item'>
