@@ -36,13 +36,14 @@ const chart = (state = initialState, action) => {
                 ciq: ciq
             })
         case Types.SET_CHART_TYPE:
-            if ((action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) || action.chartType.type == 'heikinashi'){
+            if ((action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) || action.chartType.type === 'heikinashi'){
                 state.ciq.setChartType('candle')
-                state.ciq.setAggregationType(type)
+                state.ciq.setAggregationType(action.chartType.type)
             } else {
                 state.ciq.setAggregationType(null)
                 state.ciq.setChartType(action.chartType.type)
             }
+            state.ciq.draw()
             return Object.assign({}, state, {
                 chartType: action.chartType.type
             })
