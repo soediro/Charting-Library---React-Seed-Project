@@ -63,6 +63,15 @@ const chart = (state = initialState, action) => {
             return Object.assign({}, state, {
                 showTimezoneModal: !state.showTimezoneModal
             })
+        case Types.SET_TIME_ZONE:
+            if(action.zone){
+              state.ciq.setTimeZone(null, action.zone)
+            } else {
+              state.ciq.displayZone=null;
+              state.ciq.setTimeZone();
+            }
+            if(state.ciq.displayInitialized) state.ciq.draw();
+            return Object.assign({}, state);
         case Types.TOGGLE_CROSSHAIRS:
             state.ciq.layout.crosshair=!state.showCrosshairs
             return Object.assign({}, state, {

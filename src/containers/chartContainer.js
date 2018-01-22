@@ -17,10 +17,12 @@ import { setChartContainer,
         setChartType,
         toggleLoader,
         setRefreshInterval,
-        setSymbol, 
+        setSymbol,
         changingChartData,
         setPeriodicityWithLoader,
-        toggleTimezoneModal } from '../actions/chartActions'
+        toggleTimezoneModal,
+        setTimeZone
+       } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -39,6 +41,7 @@ const mapStateToProps = (state, props) => {
         refreshInterval: state.chart.refreshInterval,
         showCrosshairs: state.chart.showCrosshairs,
         showTimezoneModal: state.chart.showTimezoneModal,
+        setTimeZone: state.chart.setTimeZone,
         chartSeries: state.chart.chartSeries
     }
 }
@@ -74,6 +77,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         toggleTimezoneModal: () => {
             dispatch(toggleTimezoneModal())
+        },
+        setTimeZone: (zone) => {
+          dispatch(setTimeZone(zone))
         },
         setSymbol: (symbol) => {
             dispatch(setSymbol(symbol))
