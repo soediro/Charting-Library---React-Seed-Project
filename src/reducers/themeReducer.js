@@ -32,35 +32,6 @@ let night = {
     }
 }
 
-let day = {
-    "name": "Day",
-    "settings": {
-        "chart": {
-            "Axis Text": { "color": "rgba(102,102,102,1)" },
-            "Background": { "color": "rgba(255,255,255,1)" },
-            "Grid Dividers": { "color": "rgba(204,204,204,1)" },
-            "Grid Lines": { "color": "rgba(239,239,239,1)" }
-        },
-        "chartTypes": {
-            "Candle/Bar": {
-                "down": {
-                    "border": "rgba(0,0,0,1)",
-                    "color": "rgba(182,46,25,1)",
-                    "wick": "rgba(0,0,0,1)"
-                },
-                "up": {
-                    "border": "rgba(0,0,0,1)",
-                    "color": "rgba(141,192,121,1)",
-                    "wick": "rgba(0,0,0,1)"
-                },
-                "even": { "wick": "rgba(0,0,0,1)" }
-            },
-            "Line": { "color": "rgba(0,0,0,1)" },
-            "Mountain": { "color": "rgba(136,181,253,1)" }
-        }
-    }
-}
-
 let defaultSettings = [
 	{
 		section: "Candle Color",
@@ -171,7 +142,7 @@ let defaultSettings = [
 ]
 
 const initialState = {
-    themeList: [night, day, { "name": "+ New Theme" }],
+    themeList: [night, { "name": "+ New Theme" }],
     currentThemeSettings: defaultSettings,
     currentThemeName: 'Default',
     showEditModal: false,

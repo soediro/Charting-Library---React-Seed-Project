@@ -433,6 +433,9 @@ cq-plus {
 	overflow: scroll;
 	overflow-x: hidden;
 }
+.dialog .color-picker-options ul {
+	overflow: hidden;
+}
 .dialog ul, .dialog li {
 	list-style: none;
 	padding-left: 0px;
