@@ -442,6 +442,9 @@ cq-plus {
 	padding-left: 0px;
 	color:#666;
 }
+.dialog-item .color-picker-options div{
+	float: none !important;
+}
 div.cq-close:after{
 	background-position: -253px -25px;
 	position: absolute;
@@ -465,6 +468,7 @@ div.cq-close{
 }
 #colorPicker{
 	position:relative;
+	float: right;
 	z-index:32;
 	left:0;
 	top:0;
