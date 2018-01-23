@@ -21,7 +21,8 @@ const Types = createTypes(
     'CHANGE_VECTOR_LINE_PARAMS',
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
-    'TOGGLE_TIMEZONE_MODAL'
+    'TOGGLE_TIMEZONE_MODAL',
+    'SET_TIME_ZONE'
 );
 
 export default Types;
@@ -48,6 +49,10 @@ export function toggleCrosshairs(){
 
 export function toggleTimezoneModal(){
     return { type: 'TOGGLE_TIMEZONE_MODAL' }
+}
+
+export function setTimeZone(zone){
+  return { type: 'SET_TIME_ZONE', zone: zone }
 }
 
 export function setSpan(multiplier, base, interval, period, timeUnit){
