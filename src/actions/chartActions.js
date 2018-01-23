@@ -19,7 +19,8 @@ const Types = createTypes(
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL',
-    'SET_TIME_ZONE'
+    'SET_TIME_ZONE',
+    'DRAW'
 );
 
 export default Types;
@@ -136,4 +137,8 @@ export function setRefreshInterval(interval){
 
 export function setSymbol(symbol){
     return { type: 'SET_SYMBOL', symbol: symbol }
+}
+
+export function draw(){
+    return { type: 'DRAW' }
 }
