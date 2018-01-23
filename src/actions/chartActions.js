@@ -21,7 +21,8 @@ const Types = createTypes(
     'CHANGE_VECTOR_LINE_PARAMS',
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
-    'TOGGLE_TIMEZONE_MODAL'
+    'TOGGLE_TIMEZONE_MODAL',
+    'SET_TIME_ZONE'
 );
 
 export default Types;
@@ -50,8 +51,32 @@ export function toggleTimezoneModal(){
     return { type: 'TOGGLE_TIMEZONE_MODAL' }
 }
 
-export function setSpan(span, multiplier){
-    return { type:'SET_SPAN', span: span, multiplier: multiplier }
+export function setTimeZone(zone){
+  return { type: 'SET_TIME_ZONE', zone: zone }
+}
+
+export function setSpan(multiplier, base, interval, period, timeUnit){
+    return {
+      type: 'SET_SPAN',
+      multiplier: multiplier,
+      base: base,
+      interval: interval,
+      period: period,
+      timeUnit: timeUnit
+    }
+}
+
+export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
+  // Using redux-thunk to dispatch multiple actions with a timeout
+  // to emmulate an async call. This is to give the ChartEngine
+  // time to adjust the chart
+  return dispatch => Promise.all([
+    dispatch(changingChartData(true)),
+    dispatch(setSpan(multiplier, base, interval, period, timeUnit)),
+    setTimeout(() => {
+      dispatch(changingChartData(false))
+    }, 1000)
+  ])
 }
 
 export function changeContainerSize(size){
@@ -101,7 +126,7 @@ export function setChartTypeWithLoader(type){
         setTimeout(() => {
             dispatch(changingChartData(false))
         }, 1000)
-    ])   
+    ])
 }
 
 export function setChartType(type){
