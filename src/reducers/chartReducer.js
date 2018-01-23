@@ -52,15 +52,14 @@ const chart = (state = initialState, action) => {
             })
         case Types.ADD_COMPARISON:
             let newSeries = state.ciq.addSeries(action.symbol, action.params);
-            let oldComparisons = state.comparisons;
-            oldComparisons.push(newSeries);
+            let newComparisons = state.comparisons.concat([newSeries]);
             return Object.assign({}, state, {
-                comparisons: oldComparisons
+                comparisons: newComparisons
             })
         case Types.REMOVE_COMPARISON:
-            let index = state.comparisons.indexOf(action.comparison);
+            newComparisons = state.comparisons.filter(comp=>comp.id!==action.comparison)
             return Object.assign({}, state, {
-                comparisons: state.comparisons.splice(index, 1)
+                comparisons: newComparisons
             })
         case Types.TOGGLE_TIMEZONE_MODAL:
             return Object.assign({}, state, {
