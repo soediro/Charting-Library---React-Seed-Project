@@ -24,18 +24,19 @@ class ChartSymbol extends React.Component {
 	handleKeyPress(event) {
 		let key = event.key;
 		if (key == 'Enter') {
-			this.onOptionClick();
+      this.onOptionClick()
+      this.setState({text: ""})
 		}
 	}
 	render() {
 		return (
 			<span className="symbol-frame">
-				<input id="symbolInput" type="text" placeholder={this.state.placeholder}
-					onChange={this.onChange} onKeyPress={this.handleKeyPress}>
-				</input><div className="symbol-btn" onClick={this.onOptionClick}></div>
+        <input id="symbolInput" type="text" placeholder={this.state.placeholder}
+          onChange={this.onChange} onKeyPress={this.handleKeyPress} value={this.state.text} />
+				<div className="symbol-btn" onClick={this.onOptionClick}></div>
 			</span>
 		);
 	}
 }
 
-module.exports = ChartSymbol;
+export default ChartSymbol;
