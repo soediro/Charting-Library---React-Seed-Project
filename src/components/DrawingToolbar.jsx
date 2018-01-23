@@ -24,7 +24,6 @@ class DrawingToolbar extends React.Component {
 		this.changeFontFamily = this.changeFontFamily.bind(this)
 		this.changeFontSize = this.changeFontSize.bind(this)
 		this.changeLineStyle = this.changeLineStyle.bind(this)
-
 		this.setColor = this.setColor.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
@@ -48,7 +47,7 @@ class DrawingToolbar extends React.Component {
       }
 			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
 			this.props.changeTool(tool, toolParams)
-      this.props.changeVectorParams(tool)
+			this.props.changeVectorParams(tool)
 		}
 	}
 	changeFontStyle(type){

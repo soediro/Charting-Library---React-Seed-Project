@@ -97,6 +97,10 @@ const chart = (state = initialState, action) => {
                 state.ciq.currentVectorParameters.annotation.font.family = action.style.family
             }else if(type==="size"){
                 state.ciq.currentVectorParameters.annotation.font.size = action.style.size + 'px'
+            }else if(type==="lineColor"){
+                state.ciq.currentVectorParameters.currentColor = CIQ.hexToRgba('#' + action.style.color)
+            }else if(type==="fillColor"){
+                state.ciq.currentVectorParameters.fillColor = CIQ.hexToRgba('#' + action.style.color)
             }else return state
 
             return state
