@@ -19,8 +19,8 @@ import { setChartContainer,
         changingChartData,
         setPeriodicityWithLoader,
         toggleTimezoneModal,
-        setTimeZone
-       } from '../actions/chartActions'
+        setTimeZone,
+        draw } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -90,6 +90,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
             dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
+        },
+        draw: () => {
+            dispatch(draw())
         }
     }
 }

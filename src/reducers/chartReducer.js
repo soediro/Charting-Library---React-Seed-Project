@@ -153,7 +153,9 @@ const chart = (state = initialState, action) => {
       }
       state.ciq.setSpan(params, () => {})
       return state
-
+    case Types.DRAW:
+      state.ciq.draw()
+      return state
     default:
       return state
   }
