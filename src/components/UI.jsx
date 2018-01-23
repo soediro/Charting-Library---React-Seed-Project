@@ -2,8 +2,6 @@ import ChartSymbol from './UI/ChartSymbol'
 import Comparison from './UI/Comparison'
 import Periodicity from './UI/Periodicity'
 import ChartTypes from './UI/ChartTypes'
-import StudyUI from '../containers/studyContainer'
-import ThemeUI from './UI/ThemeUI'
 import Crosshairs from './UI/Crosshairs'
 import TimeZoneButton from './UI/TimeZoneButton'
 import DrawingToolbarButton from './UI/DrawingToolbarButton'
@@ -11,6 +9,7 @@ import { Actions } from "../stores/ChartStores"
 
 //redux components
 import ThemeUIContainer from '../containers/themeUIContainer'
+import StudyUIContainer from '../containers/studyContainer'
 
 const UI = (props) => {
 	return (
@@ -26,8 +25,8 @@ const UI = (props) => {
 					<div className="right">
 						<Periodicity {...props} />
 						<ChartTypes {...props} />
-						<StudyUI ciq={props.ciq} {...props} />
-						<ThemeUI {...props} />
+						<StudyUIContainer ciq={props.ciq} {...props} />
+						<ThemeUIContainer {...props} />
 						<Crosshairs {...props} />
 						<TimeZoneButton {...props} />
 						<DrawingToolbarButton {...props} />
