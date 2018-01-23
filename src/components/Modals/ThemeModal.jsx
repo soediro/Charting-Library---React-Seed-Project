@@ -45,9 +45,9 @@ class ThemeModal extends React.Component {
 		if(this.props.showEditModal){
 			return (
 				<span className="ciq dialog-overlay">
-					<div className="ciq dialog">
+					<div className="ciq dialog" style={{cursor: 'default'}}>
 						<div className="cq-close" onClick={this.props.toggleThemeEditor} />
-						<div className="heading">Custom Theme</div>
+						<div className="dialog-heading">Create Custom Theme</div>
 						{ sections }
 						<div className="dialog-item theme-save">
 							<input className="ciq" type="text" placeholder={this.state.placeholder} onChange={this.updateThemeName} value={this.state.name} />

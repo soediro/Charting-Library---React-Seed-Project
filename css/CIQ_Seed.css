@@ -85,6 +85,12 @@ nav {
 	height: 27px;
 }
 
+.dialog-heading {
+	color: black;
+	margin: 0 0 5px 0;
+	text-align: center;
+}
+
 .overlayMenu{
 	width:130px;
 	display:inline-block;
@@ -187,6 +193,7 @@ nav {
 	text-align: center;
 	margin: -6px auto 0;
 	color: #999;
+	padding-top: 5px;
 }
 
 .dialog button.current-location-btn {
@@ -351,7 +358,7 @@ cq-plus {
 	border-radius: 3px;
 	width:350px;
 	min-height: 400px;
-	max-height: 430px;
+	max-height: 550px;
 	overflow: auto;
 	cursor: pointer;
 	font-weight: 300;
@@ -387,6 +394,9 @@ cq-plus {
 	border-right: 1px solid #e4e4e4;
 	float: left;
 }
+.dialog .dialog-item > div {
+	float:right;
+}
 #inputs .dialog-item input,
 #inputs .dialog-item select,
 #outputs .dialog-item .output,
@@ -420,9 +430,12 @@ cq-plus {
 	margin-left: 5px;
 }
 .dialog ul {
-	max-height: 287px;
+	max-height: 225px;
 	overflow: scroll;
 	overflow-x: hidden;
+}
+.dialog .color-picker-options ul {
+	overflow: hidden;
 }
 .dialog ul, .dialog li {
 	list-style: none;
