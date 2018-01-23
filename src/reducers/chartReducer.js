@@ -7,28 +7,28 @@ let service = new ChartService().makeFeed()
 
 //initial state
 const initialState = {
-    ciq: null,
-    service:service,
-    chartType: null,
-    refreshInterval: 1,
-    symbol: 'AAPL',
-    showDrawingToolbar: false,
-    showCrosshairs: false,
-    showTimezoneModal: false,
-    chartSeries: [],
-    comparisons: [],
-    periodicity:{
-        period: 1,
-        interval: 1,
-        timeUnit: 'day'
-    },
-    showPeriodicityLoader: false,
-    studyOverlay: {
-        show: false,
-        top: 0,
-        left: 0,
-        params: null
-    }
+  ciq: null,
+  service: service,
+  chartType: null,
+  refreshInterval: 1,
+  symbol: 'AAPL',
+  showDrawingToolbar: false,
+  showCrosshairs: false,
+  showTimezoneModal: false,
+  chartSeries: [],
+  comparisons: [],
+  periodicity: {
+    period: 1,
+    interval: 1,
+    timeUnit: 'day'
+  },
+  showPeriodicityLoader: false,
+  studyOverlay: {
+    show: false,
+    top: 0,
+    left: 0,
+    params: null
+  }
 }
 
 const chart = (state = initialState, action) => {
@@ -37,51 +37,49 @@ const chart = (state = initialState, action) => {
       let ciq = new CIQ.ChartEngine({
         container: action.container
       })
-      ciq.attachQuoteFeed(state.service, {refreshInterval:state.refreshInterval})
-            ciq.setMarketFactory(CIQ.Market.Symbology.factory);
-            // new CIQ.ExtendedHours({stx:stxx, filter:true});
+      ciq.attachQuoteFeed(state.service, { refreshInterval: state.refreshInterval })
+      ciq.setMarketFactory(CIQ.Market.Symbology.factory);
+      // new CIQ.ExtendedHours({stx:stxx, filter:true});
       ciq.newChart(state.symbol)
       return Object.assign({}, state, {
         ciq: ciq
       })
     case Types.SET_CHART_TYPE:
-            if ((action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) || action.chartType.type === 'heikinashi'){
+      if ((action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) || action.chartType.type === 'heikinashi') {
         state.ciq.setChartType('candle')
-                state.ciq.setAggregationType(action.chartType.type)
+        state.ciq.setAggregationType(action.chartType.type)
       } else {
         state.ciq.setAggregationType(null)
         state.ciq.setChartType(action.chartType.type)
       }
-            state.ciq.draw()
+      state.ciq.draw()
       return Object.assign({}, state, {
         chartType: action.chartType.type
       })
     case Types.ADD_COMPARISON:
       let newSeries = state.ciq.addSeries(action.symbol, action.params);
-            let oldComparisons = state.comparisons;
-            oldComparisons.push(newSeries);
-            let newComparisons = state.comparisons.concat([newSeries]);
+      let newComparisons = state.comparisons.concat([newSeries]);
       return Object.assign({}, state, {
-                comparisons: newComparisons
+        comparisons: newComparisons
       })
     case Types.REMOVE_COMPARISON:
-            newComparisons = state.comparisons.filter(comp=>comp.id!==action.comparison)
+      newComparisons = state.comparisons.filter(comp => comp.id !== action.comparison)
       return Object.assign({}, state, {
-                comparisons: newComparisons
+        comparisons: newComparisons
       })
     case Types.TOGGLE_TIMEZONE_MODAL:
       return Object.assign({}, state, {
         showTimezoneModal: !state.showTimezoneModal
       })
-        case Types.SET_TIME_ZONE:
-            if(action.zone){
-              state.ciq.setTimeZone(null, action.zone)
-            } else {
-              state.ciq.displayZone=null;
-              state.ciq.setTimeZone();
-            }
-            if(state.ciq.displayInitialized) state.ciq.draw();
-            return Object.assign({}, state);
+    case Types.SET_TIME_ZONE:
+      if (action.zone) {
+        state.ciq.setTimeZone(null, action.zone)
+      } else {
+        state.ciq.displayZone = null;
+        state.ciq.setTimeZone();
+      }
+      if (state.ciq.displayInitialized) state.ciq.draw();
+      return Object.assign({}, state);
     case Types.TOGGLE_CROSSHAIRS:
       state.ciq.layout.crosshair = !state.showCrosshairs
       return Object.assign({}, state, {
@@ -124,29 +122,41 @@ const chart = (state = initialState, action) => {
 
       return state
     case Types.SET_PERIODICITY:
-            state.ciq.setPeriodicity(action.periodicity, ()=>{});
+      state.ciq.setPeriodicity(action.periodicity, () => { });
       return Object.assign({}, state, {
         periodicity: {
           period: action.periodicity.period,
-                    interval: action.periodicity.interval,
-                    timeUnit: action.periodicity.timeUnit
-                }
-            })
-        case Types.SET_SYMBOL:
-            state.ciq.newChart(action.symbol);
-            return Object.assign({}, state, {
-                symbol: action.symbol
-            })
-        case Types.SET_REFRESH_INTERVAL:
-            return Object.assign({}, state, {
-                interval: refreshInterval
-            })
-        case Types.SET_SPAN:
-            state.ciq.setSpan({span: action.span, multiplier: action.multiplier })
-            return state
-        default:
-            return state
-    }
+          interval: action.periodicity.interval,
+          timeUnit: action.periodicity.timeUnit
+        }
+      })
+    case Types.SET_SYMBOL:
+      state.ciq.newChart(action.symbol);
+      return Object.assign({}, state, {
+        symbol: action.symbol
+      })
+    case Types.SET_REFRESH_INTERVAL:
+      return Object.assign({}, state, {
+        interval: refreshInterval
+      })
+    case Types.SET_SPAN:
+      var params = {
+        multiplier: action.multiplier,
+        base: action.base
+      };
+      if (action.interval) {
+        params.periodicity = {
+          interval: action.interval,
+          period: action.period || 1,
+          timeUnit: action.timeUnit
+        }
+      }
+      state.ciq.setSpan(params, () => {})
+      return state
+
+    default:
+      return state
+  }
 }
 
 export default chart
