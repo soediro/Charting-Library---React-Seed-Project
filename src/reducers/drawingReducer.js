@@ -80,8 +80,8 @@ const draw = (state = initialState, action) => {
             return Object.assign({}, state, {
                 selectedTool: action.tool.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}),
                 fontOptions: action.params.font ? action.params.font : null,
-                fontSize: action.params.font.size ? action.params.font.size : state.fontSize,
-                fontFamily: action.params.font.family ? action.params.font.family : state.fontFamily,
+                fontSize: action.params.font ? action.params.font.size : state.fontSize,
+                fontFamily: action.params.font ? action.params.font.family : state.fontFamily,
                 fill: action.params ? action.params.fillColor : null,
                 line: action.params ? action.params.color : null,
                 lineWidth: action.params ? action.params.lineWidth : null,
