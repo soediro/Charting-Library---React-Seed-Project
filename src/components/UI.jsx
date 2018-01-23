@@ -26,7 +26,7 @@ const UI = (props) => {
 						<Periodicity {...props} />
 						<ChartTypes {...props} />
 						<StudyUIContainer ciq={props.ciq} {...props} />
-						<ThemeUIContainer {...props} />
+						<ThemeUIContainer ciq={props.ciq} {...props} />
 						<Crosshairs {...props} />
 						<TimeZoneButton {...props} />
 						<DrawingToolbarButton {...props} />

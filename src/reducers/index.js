@@ -2,11 +2,13 @@ import { combineReducers } from 'redux'
 import chart from './chartReducer'
 import draw from './drawingReducer'
 import study from './studyReducer'
+import theme from './themeReducer'
 
 const reducer = combineReducers({
     chart,
     draw,
-    study
+    study,
+    theme
 });
 
 export default reducer
