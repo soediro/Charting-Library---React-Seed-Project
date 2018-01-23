@@ -6,7 +6,7 @@ import { setChartContainer,
         addComparison,
         removeComparison,
         toggleCrosshairs,
-        setSpan,
+        setSpanWithLoader,
         changeContainerSize,
         changeVectorParams,
         changeVectorLineParams,
@@ -88,8 +88,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         setChartType: (type) => {
             dispatch(setChartType(type))
         },
-        setSpan: (span, multiplier) => {
-            dispatch(setSpan(span, multiplier))
+        setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
+            dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
         }
     }
 }
