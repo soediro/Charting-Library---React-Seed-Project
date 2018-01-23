@@ -77,7 +77,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(setSymbol(symbol))
         },
         toggleDrawingToolbar: () => {
-            dispatch(toggleDrawing())
+					Promise.all([
+						dispatch(toggleDrawing()),
+						dispatch(changeVectorParams())
+					])
         },
         setPeriodicity: (period, interval) => {
             dispatch(setPeriodicity(period, interval))
