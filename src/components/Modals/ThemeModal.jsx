@@ -45,7 +45,7 @@ class ThemeModal extends React.Component {
 		if(this.props.showEditModal){
 			return (
 				<span className="ciq dialog-overlay">
-					<div className="ciq dialog" style={{cursor: 'default'}}>
+					<div className="ciq dialog theme-dialog" style={{cursor: 'default'}}>
 						<div className="cq-close" onClick={this.props.toggleThemeEditor} />
 						<div className="dialog-heading">Create Custom Theme</div>
 						{ sections }
