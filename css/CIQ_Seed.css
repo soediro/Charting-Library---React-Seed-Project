@@ -187,6 +187,7 @@ nav {
 	text-align: center;
 	margin: -6px auto 0;
 	color: #999;
+	padding-top: 5px;
 }
 
 .dialog button.current-location-btn {
@@ -351,7 +352,7 @@ cq-plus {
 	border-radius: 3px;
 	width:350px;
 	min-height: 400px;
-	max-height: 430px;
+	max-height: 550px;
 	overflow: auto;
 	cursor: pointer;
 	font-weight: 300;
@@ -420,7 +421,7 @@ cq-plus {
 	margin-left: 5px;
 }
 .dialog ul {
-	max-height: 287px;
+	max-height: 225px;
 	overflow: scroll;
 	overflow-x: hidden;
 }

@@ -9,6 +9,9 @@ import TimeZoneButton from './UI/TimeZoneButton'
 import DrawingToolbarButton from './UI/DrawingToolbarButton'
 import { Actions } from "../stores/ChartStores"
 
+//redux components
+import ThemeUIContainer from '../containers/themeUIContainer'
+
 const UI = (props) => {
 	return (
 		<ciq-UI-Wrapper>
