@@ -12,6 +12,7 @@ import { setThemeHelper,
 import ThemeUI from '../components/UI/ThemeUI'
 
 const mapStateToProps = (state, props) => {
+    console.log('state: ', state)
     return {
         themeHelper: state.theme.themeHelper,
         themeList: state.theme.themeList,
