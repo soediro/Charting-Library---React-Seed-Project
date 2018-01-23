@@ -121,8 +121,6 @@ const chart = (state = initialState, action) => {
       })
     case Types.SET_SPAN:
 
-      console.log(action)
-
       var params = {
         multiplier: action.multiplier,
         base: action.base
@@ -136,7 +134,7 @@ const chart = (state = initialState, action) => {
         }
       }
 
-      state.ciq.setSpan(params, function () {
+      state.ciq.setSpan(params, () => {
       })
 
       return state
