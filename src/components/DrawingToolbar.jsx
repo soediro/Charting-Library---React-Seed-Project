@@ -1,7 +1,5 @@
 //components
-import ColorPicker from "./Drawing/ColorPicker"
 import ColorSwatch from './Drawing/ColorSwatch'
-// import Color from "./Drawing/Color"
 import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
@@ -39,6 +37,14 @@ class DrawingToolbar extends React.Component {
 	setTool(tool){
 		if (this.props.ciq === null) return
 		else {
+      if(tool=='callout' || tool=='annotation') { // no need to do this every time
+        // Sync the defaults for font tool
+        var style=this.props.ciq.canvasStyle("stx_annotation");
+        this.props.ciq.currentVectorParameters.annotation.font.size=style.fontSize
+        this.props.ciq.currentVectorParameters.annotation.font.family=style.fontFamily
+        this.props.ciq.currentVectorParameters.annotation.font.style=style.fontStyle
+        this.props.ciq.currentVectorParameters.annotation.font.weight=style.fontWeight
+      }
 			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
 			this.props.changeTool(tool, toolParams)
 			this.props.changeVectorParams(tool)
@@ -63,12 +69,15 @@ class DrawingToolbar extends React.Component {
 	setColor(color, type){
 		if(type==="line"){
 			this.props.setLineColor(color)
-			this.props.changeVectorStyle('lineColor', { color: color })
-		}
-		else if(type==="fill"){
-			this.props.setFillColor(color)
-			this.props.changeVectorStyle('fillColor', { color: color })
-		}else return
+      this.props.changeVectorStyle('lineColor', { color: color })
+		}else if(type==="fill"){
+      this.props.setFillColor(color)
+      this.props.changeVectorStyle('fillColor', { color: color })
+    }else return
+
+		this.setState({
+			showColorPicker: false
+		});
 	}
 	render() {
 		let options = this.props.tools.map((tool, i) => {
@@ -89,7 +98,7 @@ class DrawingToolbar extends React.Component {
 					<span>
 						<div className="drawingParameters">
 							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} />
-							<ColorSwatch name="Fill" type="fill" setColor={this.setColor} color={this.props.fill} />
+ 							<ColorSwatch name="Fill" type="fill" setColor={this.setColor} color={this.props.fill} />
 							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />

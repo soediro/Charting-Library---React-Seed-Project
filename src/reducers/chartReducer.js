@@ -102,8 +102,8 @@ const chart = (state = initialState, action) => {
       state.ciq.changeVectorType(action.tool)
       return state
     case Types.CHANGE_VECTOR_LINE_PARAMS:
-      state.ciq.currentVectorParameters.lineWidth = action.params.weight
-      state.ciq.currentVectorParameters.pattern = action.params.pattern
+      state.ciq.currentVectorParameters.lineWidth = action.weight
+      state.ciq.currentVectorParameters.pattern = action.pattern
       return state
     case Types.CHANGE_VECTOR_STYLE:
       let type = action.styleType
@@ -133,6 +133,7 @@ const chart = (state = initialState, action) => {
                 }
             })
         case Types.SET_SYMBOL:
+            state.ciq.newChart(action.symbol);
             return Object.assign({}, state, {
                 symbol: action.symbol
             })

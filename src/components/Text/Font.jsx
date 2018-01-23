@@ -15,12 +15,12 @@ const Font = (props) => {
     return (
         <span>
             <menu-select id='fontSizeSelect'>
-                <span className="title">{props.fontSize + 'px'}</span>
+                <span className="title">{props.fontSize}</span>
                 <menu-select-options className="menu-hover">
                     {sizeOptions}
                 </menu-select-options>
             </menu-select>
-            
+
             <menu-select id='fontFamilySelect'>
                 <span className="title">{props.fontFamily}</span>
                 <menu-select-options className="menu-hover">
