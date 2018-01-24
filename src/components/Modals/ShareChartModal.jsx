@@ -11,6 +11,7 @@ class ShareChartModal extends React.Component {
 	constructor(props) {
 		super(props);
 		var self = this;
+		requirejs(["thirdparty/html2canvas"]);
 	}
 
 	shareChart() {
