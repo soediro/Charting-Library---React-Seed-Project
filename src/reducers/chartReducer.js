@@ -143,7 +143,7 @@ const chart = (state = initialState, action) => {
       var params = {
         multiplier: action.multiplier,
         base: action.base
-      };
+			};
       if (action.interval) {
         params.periodicity = {
           interval: action.interval,
@@ -152,7 +152,12 @@ const chart = (state = initialState, action) => {
         }
       }
       state.ciq.setSpan(params, () => {})
-      return state
+      Object.assign({}, state, {
+        periodicity: {
+          period: action.periodicity.period,
+          interval: action.periodicity.interval,
+          timeUnit: action.periodicity.timeUnit
+        }
     case Types.DRAW:
       state.ciq.draw()
       return state
