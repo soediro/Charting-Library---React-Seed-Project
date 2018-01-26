@@ -122,7 +122,6 @@ const chart = (state = initialState, action) => {
 
       return state
     case Types.SET_PERIODICITY:
-      state.ciq.setPeriodicity(action.periodicity, () => { });
       return Object.assign({}, state, {
         periodicity: {
           period: action.periodicity.period,
@@ -139,20 +138,6 @@ const chart = (state = initialState, action) => {
       return Object.assign({}, state, {
         interval: refreshInterval
       })
-    case Types.SET_SPAN:
-      var params = {
-        multiplier: action.multiplier,
-        base: action.base
-      };
-      if (action.interval) {
-        params.periodicity = {
-          interval: action.interval,
-          period: action.period || 1,
-          timeUnit: action.timeUnit
-        }
-      }
-      state.ciq.setSpan(params, () => {})
-      return state
     case Types.DRAW:
       state.ciq.draw()
       return state

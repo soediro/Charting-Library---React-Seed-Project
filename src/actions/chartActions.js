@@ -11,7 +11,6 @@ const Types = createTypes(
     'SET_REFRESH_INTERVAL',
     'ADD_COMPARISON',
     'REMOVE_COMPARISON',
-    'SET_SPAN',
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
@@ -53,28 +52,37 @@ export function setTimeZone(zone){
   return { type: 'SET_TIME_ZONE', zone: zone }
 }
 
-export function setSpan(multiplier, base, interval, period, timeUnit){
-    return {
-      type: 'SET_SPAN',
-      multiplier: multiplier,
-      base: base,
-      interval: interval,
-      period: period,
-      timeUnit: timeUnit
-    }
-}
-
 export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
-  // Using redux-thunk to dispatch multiple actions with a timeout
-  // to emmulate an async call. This is to give the ChartEngine
-  // time to adjust the chart
-  return dispatch => Promise.all([
-    dispatch(changingChartData(true)),
-    dispatch(setSpan(multiplier, base, interval, period, timeUnit)),
-    setTimeout(() => {
-      dispatch(changingChartData(false))
-    }, 1000)
-  ])
+
+	var params = {
+		multiplier: multiplier,
+		base: base
+	};
+
+	if (interval) {
+		params.periodicity = {
+			interval: interval,
+			period: period || 1,
+			timeUnit: timeUnit
+		}
+	}
+
+	return (dispatch, getState) => {
+		var state = getState()
+		return Promise.all([
+		dispatch(changingChartData(true)),
+		state.chart.ciq.setSpan(params, () => {
+			dispatch(changingChartData(false))
+			dispatch(setPeriodicity(
+				{
+					period: state.chart.ciq.layout.period,
+					interval: state.chart.ciq.layout.interval,
+					timeUnit: state.chart.ciq.layout.timeUnit
+				}
+			))
+		})
+	])
+}
 }
 
 export function changeContainerSize(size){
@@ -98,16 +106,23 @@ export function changeVectorStyle(type, style){
 }
 
 export function setPeriodicityWithLoader(periodicity){
-    //Using redux-thunk to dispatch multiple actions with a timeout
-    //to emmulate an async call. This is to give the ChartEngine
-    //time to adjust the chart
-    return dispatch => Promise.all([
-        dispatch(changingChartData(true)),
-        dispatch(setPeriodicity(periodicity)),
-        setTimeout(() => {
-            dispatch(changingChartData(false))
-        }, 1000)
-    ])
+	return (dispatch, getState) => {
+		var state = getState()
+		return Promise.all([
+		dispatch(changingChartData(true)),
+		state.chart.ciq.setPeriodicity(periodicity, () => {
+			console.log(state.chart.ciq.layout)
+			dispatch(changingChartData(false))
+			dispatch(setPeriodicity(
+				{
+					period: state.chart.ciq.layout.period,
+					interval: state.chart.ciq.layout.interval,
+					timeUnit: state.chart.ciq.layout.timeUnit
+				}
+			))
+		})
+	])
+}
 }
 
 export function setPeriodicity(periodicity){
