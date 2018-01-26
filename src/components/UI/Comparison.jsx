@@ -41,7 +41,7 @@ class Comparison extends React.Component {
 		}
 
     let symbolCompare = this.state.text.replace(/\s/g,'').toUpperCase();
-    if(symbolCompare && !this.props.comparisons.find(comp=>comp && comp.id===symbolCompare)){
+    if(symbolCompare && !this.props.comparisons.find(comp=>comp && comp.id===symbolCompare) && symbolCompare!==this.props.symbol){
       this.props.addComparison(symbolCompare, seriesParams)
     }
 
