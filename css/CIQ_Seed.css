@@ -327,6 +327,7 @@ menu-select:hover menu-select-options {
 	padding: 10px 0 10px 0;
 }
 
+
 cq-plus {
 	display: inline-block;
 	float: left;
@@ -597,6 +598,7 @@ div.loader{
 	width:100px;
 	display:flex;
 	margin-top:8px;
+	height: 15px;
 }
 
 #lineSelect menu-select-options{
