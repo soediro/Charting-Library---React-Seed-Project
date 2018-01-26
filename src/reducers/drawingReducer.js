@@ -38,8 +38,7 @@ const draw = (state = initialState, action) => {
             }
 
             return Object.assign({}, state, {
-                showDrawingToolbar: flipToolbar,
-                selectedTool: !flipToolbar ? null : state.selectedTool
+                showDrawingToolbar: flipToolbar
             })
         case Types.SET_FONT_FAMILY:
             return Object.assign({}, state, {
