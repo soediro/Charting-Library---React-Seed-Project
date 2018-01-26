@@ -17,17 +17,17 @@ let night = {
                 "down": { 
                     "border": "rgba(227,70,33,1)",
                     "color": "rgba(184,44,12,1)",
-                    "wick": "rgba(0,0,0,1)" 
+                    "wick": "rgba(204,204,204,1)" 
                 },
                 "up": {
                     "border": "rgba(184,222,168,1)",
                     "color": "rgba(140,193,118,1)",
-                    "wick": "rgba(0,0,0,1)"
+                    "wick": "rgba(204,204,204,1)"
                 },
-                "even": { "wick": "rgba(0,0,0,1)" }
+                "even": { "wick": "rgba(204,204,204,1)" }
             },
-            "Line": { "color": "rgba(0,0,0,1)" },
-            "Mountain": { "color":"rgba(102,202,196,0.498039)" }
+            "Line": { "color": "rgba(255,255,255,1)" },
+            "Mountain": { "color":"rgba(27,158,252,1)"}
         }
     }
 }
