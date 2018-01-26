@@ -111,7 +111,6 @@ export function setPeriodicityWithLoader(periodicity){
 		return Promise.all([
 		dispatch(changingChartData(true)),
 		state.chart.ciq.setPeriodicity(periodicity, () => {
-			console.log(state.chart.ciq.layout)
 			dispatch(changingChartData(false))
 			dispatch(setPeriodicity(
 				{
