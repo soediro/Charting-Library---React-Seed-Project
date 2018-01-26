@@ -6,7 +6,7 @@ const Periodicity = (props) => {
 		return <menu-option key={"period" + i} className="option" onClick={props.setPeriodicityWithLoader.bind(this, periodicity)}>{item.label}</menu-option>
 	})
 
-	let label = getOptionLabel(props.periodicity)
+	let label = getOptionLabel(props.ciq.layout)
 
 	return (
 		<span>
@@ -23,9 +23,9 @@ const Periodicity = (props) => {
 //private
 function getOptionLabel(layout) {
 
-	var text = "";
 	console.log(layout)
-	var periodicity = layout.period, interval = layout.interval, timeUnit = layout.timeUnit;
+	var text = "";
+	var periodicity = layout.periodicity, interval = layout.interval, timeUnit = layout.timeUnit;
 	if (isNaN(interval)) {
 		timeUnit = interval;
 		interval = 1;
