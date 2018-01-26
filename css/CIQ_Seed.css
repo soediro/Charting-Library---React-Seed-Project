@@ -58,6 +58,9 @@ nav {
 .left span{
 	margin-right:10px;
 }
+.stx-chart-panel .stx-ico-focus, .stx-chart-panel .stx-ico-down, .stx-chart-panel .stx-ico-up{
+	display: none;
+}
 
 /* Standard Button Dimensions, Color */
 .ciq-nav button, button:active, button:focus {
