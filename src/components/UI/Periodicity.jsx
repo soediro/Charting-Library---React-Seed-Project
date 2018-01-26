@@ -23,7 +23,6 @@ const Periodicity = (props) => {
 //private
 function getOptionLabel(layout) {
 
-	console.log(layout)
 	var text = "";
 	var periodicity = layout.periodicity, interval = layout.interval, timeUnit = layout.timeUnit;
 	if (isNaN(interval)) {
