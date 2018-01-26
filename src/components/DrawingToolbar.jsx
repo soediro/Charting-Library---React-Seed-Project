@@ -3,6 +3,7 @@ import ColorSwatch from './Drawing/ColorSwatch'
 import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
+import Measure from './Drawing/Measure'
 
 //data sources
 import { ChartStore, Actions } from '../stores/ChartStores'
@@ -102,6 +103,7 @@ class DrawingToolbar extends React.Component {
 							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
+							<Measure {...this.props} />
 						</div>
 					</span>
 				</div>

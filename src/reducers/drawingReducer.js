@@ -2,7 +2,7 @@
 import Types from '../actions/drawActions'
 
 // load all drawings, with exclusions
-let tools = CIQ.Drawing.getDrawingToolList({"measure":true});
+let tools = CIQ.Drawing.getDrawingToolList();
 let toolsArray = Object.keys(tools).map((key) => {
     return tools[key]
 })
