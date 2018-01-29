@@ -326,7 +326,6 @@ menu-select-options{
 }
 
 menu-select:hover menu-select-options {
-	display:block;
 	padding: 10px 0 10px 0;
 }
 
