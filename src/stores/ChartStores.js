@@ -163,6 +163,11 @@ var Actions = {
             data: data
         });
     },
+    shareChart: function() {
+        Dispatcher.dispatch({
+            actionType: constants.SHARE_CHART
+      });
+    },
     updateChartContainerSize: function () {
         Dispatcher.dispatch({
             actionType: constants.UPDATE_CHART_CONTAINER_SIZE

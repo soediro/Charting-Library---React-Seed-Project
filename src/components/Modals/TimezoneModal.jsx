@@ -46,6 +46,7 @@ class TimeZone extends React.Component {
             {this.getTimeZoneLi()}
           </ul>
           <div className="instruct">(Scroll for more options)</div>
+					<div className="clearFloat"></div>
         </div>
       </div>
     )

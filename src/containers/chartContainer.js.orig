@@ -6,9 +6,13 @@ import { setChartContainer,
         addComparison,
         removeComparison,
         toggleCrosshairs,
+<<<<<<< HEAD
         setSpanWithLoader,
+=======
+        setSpan,
         shareChart,
         setShareStatus,
+>>>>>>> feature/5423_share_chart
         changeContainerSize,
         changeVectorParams,
         changeVectorLineParams,
@@ -41,14 +45,72 @@ const mapStateToProps = (state, props) => {
         refreshInterval: state.chart.refreshInterval,
         showCrosshairs: state.chart.showCrosshairs,
         showTimezoneModal: state.chart.showTimezoneModal,
+<<<<<<< HEAD
         setTimeZone: state.chart.setTimeZone,
+        chartSeries: state.chart.chartSeries
+=======
         chartSeries: state.chart.chartSeries,
         shareStatus: state.chart.shareStatus,
         shareStatusMsg : state.chart.shareStatusMsg
+>>>>>>> feature/5423_share_chart
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+<<<<<<< HEAD
+    return {
+        setChartContainer: (container) => {
+            dispatch(setChartContainer(container))
+        },
+        changeVectorParams: (tool) => {
+            dispatch(changeVectorParams(tool))
+        },
+        changeVectorLineParams: (weight, pattern) => {
+            dispatch(changeVectorLineParams(weight, pattern))
+        },
+        changeVectorStyle: (styleType, style) => {
+            dispatch(changeVectorStyle(styleType, style))
+        },
+        addComparison: (comparison, color) => {
+            dispatch(addComparison(comparison, color))
+        },
+        removeComparison: (comparison) => {
+            dispatch(removeComparison(comparison))
+        },
+        toggleCrosshairs: () => {
+            dispatch(toggleCrosshairs())
+        },
+        toggleTimezoneModal: () => {
+            dispatch(toggleTimezoneModal())
+        },
+        setTimeZone: (zone) => {
+          dispatch(setTimeZone(zone))
+        },
+        setSymbol: (symbol) => {
+            dispatch(setSymbol(symbol))
+        },
+        toggleDrawingToolbar: () => {
+					Promise.all([
+						dispatch(toggleDrawing()),
+						dispatch(changeVectorParams())
+					])
+        },
+        setPeriodicity: (period, interval) => {
+            dispatch(setPeriodicity(period, interval))
+        },
+        setPeriodicityWithLoader: (periodicity) => {
+            dispatch(setPeriodicityWithLoader(periodicity))
+        },
+        setChartType: (type) => {
+            dispatch(setChartType(type))
+        },
+        setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
+            dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
+        },
+        draw: () => {
+            dispatch(draw())
+        }
+=======
   return {
     setChartContainer: (container) => {
       dispatch(setChartContainer(container))
@@ -80,17 +142,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     toggleTimezoneModal: () => {
       dispatch(toggleTimezoneModal())
     },
-        setTimeZone: (zone) => {
-          dispatch(setTimeZone(zone))
-        },
     setSymbol: (symbol) => {
       dispatch(setSymbol(symbol))
     },
     toggleDrawingToolbar: () => {
-					Promise.all([
-						dispatch(toggleDrawing()),
-						dispatch(changeVectorParams())
-					])
+      dispatch(toggleDrawing())
     },
     setPeriodicity: (period, interval) => {
       dispatch(setPeriodicity(period, interval))
@@ -101,17 +157,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setChartType: (type) => {
       dispatch(setChartType(type))
     },
-        setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
-            dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
-        },
-        draw: () => {
-            dispatch(draw())
+    setSpan: (span, multiplier) => {
+      dispatch(setSpan(span, multiplier))
     },
     shareChart: () => {
       dispatch(shareChart())
     },
     setShareStatus: (status, msg) => {
       dispatch(setShareStatus(status, msg))
+>>>>>>> feature/5423_share_chart
     }
   }
 }

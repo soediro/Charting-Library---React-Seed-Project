@@ -11,8 +11,13 @@ const Types = createTypes(
     'SET_REFRESH_INTERVAL',
     'ADD_COMPARISON',
     'REMOVE_COMPARISON',
+<<<<<<< HEAD
+=======
+    'REMOVE_STUDY',
+    'SET_SPAN',
     "SHARE_CHART",
     "SET_SHARE_STATUS",
+>>>>>>> feature/5423_share_chart
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
