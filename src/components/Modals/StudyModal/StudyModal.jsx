@@ -9,7 +9,8 @@ class StudyModal extends React.Component {
 		this.state = {
 			outputs: {},
 			inputs: {},
-			parameters: {}
+			parameters: {},
+			isPickingStudyColor: false
 		};
 		this.bindCorrectContext()
 	}
@@ -17,6 +18,7 @@ class StudyModal extends React.Component {
 		this.updateStudy = this.updateStudy.bind(this)
 		this.updateInputs = this.updateInputs.bind(this)
 		this.setColor = this.setColor.bind(this)
+		this.changePickerState = this.changePickerState.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(this.props.studyHelper !== nextProps.studyHelper && nextProps.studyHelper !== null){
@@ -26,6 +28,11 @@ class StudyModal extends React.Component {
 				parameters: nextProps.studyHelper.parameters
 			})
 		}
+	}
+	changePickerState(isOpen){
+		this.setState({
+			isPickingStudyColor: isOpen
+		})
 	}
 	setColor(color, type, name) {
 		let newOutputs = this.state.outputs,
@@ -91,7 +98,7 @@ class StudyModal extends React.Component {
 		})
 
 		let outputs = this.state.outputs.map((output, i) => {
-			return (<StudyModalOutput key={'output'+i} output={output} setColor={this.setColor} />)
+			return (<StudyModalOutput key={'output'+i} output={output} setColor={this.setColor} isPickingStudyColor={this.state.isPickingStudyColor} changePickerState={this.changePickerState} />)
 		})
 
 		let params = this.state.parameters.map((param, i) => {

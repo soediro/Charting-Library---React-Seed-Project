@@ -5,7 +5,6 @@ import ChartTypes from './UI/ChartTypes'
 import Crosshairs from './UI/Crosshairs'
 import TimeZoneButton from './UI/TimeZoneButton'
 import DrawingToolbarButton from './UI/DrawingToolbarButton'
-import { Actions } from "../stores/ChartStores"
 
 //redux components
 import ThemeUIContainer from '../containers/themeUIContainer'

@@ -1,4 +1,3 @@
-import ColorPicker from "../Drawing/ColorPicker"
 import ColorSwatch from '../Drawing/ColorSwatch'
 
 class ThemeModal extends React.Component {
@@ -6,7 +5,8 @@ class ThemeModal extends React.Component {
 		super(props);
 		this.state = {
 			name: '',
-			placeholder: 'Name Your Theme'
+			placeholder: 'Name Your Theme',
+			isPickingThemeColor: false
 		}
 		this.bindCorrectContext()
 	}
@@ -18,6 +18,7 @@ class ThemeModal extends React.Component {
 	bindCorrectContext(){
 		this.saveSettings = this.saveSettings.bind(this)
 		this.updateThemeName = this.updateThemeName.bind(this)
+		this.changePickerState = this.changePickerState.bind(this)
 	}
 	saveSettings() {
 		if (!this.state.name || this.state.name==='') return;
@@ -28,10 +29,15 @@ class ThemeModal extends React.Component {
 			name: event.target.value
 		});
 	}
+	changePickerState(isOpen){
+		this.setState({
+			isPickingThemeColor: isOpen
+		})
+	}
 	render() {
 		let sections = this.props.currentThemeSettings.map((option, i) => {
 			let swatches = option.swatches.map((swatch, j) => {
-				return (<ColorSwatch isModal={true} key={'swatch'+j} setColor={this.props.updateTheme} type={swatch.class} color={swatch.color} />)
+				return (<ColorSwatch isModal={true} key={'swatch'+j} setColor={this.props.updateTheme} type={swatch.class} color={swatch.color} isPickingColor={this.state.isPickingThemeColor} changeState={this.changePickerState} />)
 			})
 
 			return (
