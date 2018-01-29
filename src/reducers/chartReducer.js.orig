@@ -7,6 +7,7 @@ let service = new ChartService().makeFeed()
 
 //initial state
 const initialState = {
+<<<<<<< HEAD
   ciq: null,
   service: service,
   chartType: null,
@@ -22,8 +23,6 @@ const initialState = {
     interval: 1,
     timeUnit: 'day'
   },
-    shareStatus: "HIDDEN",
-    shareStatusMsg: null,
   showPeriodicityLoader: false,
   studyOverlay: {
     show: false,
@@ -31,6 +30,25 @@ const initialState = {
     left: 0,
     params: null
   }
+=======
+    ciq: null,
+    service:service,
+    chartType: null,
+    refreshInterval: 1,
+    symbol: 'AAPL',
+    showDrawingToolbar: false,
+    showCrosshairs: false,
+    showTimezoneModal: false,
+    chartSeries: [],
+    comparisons: [],
+    periodicity:{
+        period: 1,
+        interval: "day"
+    },
+    showPeriodicityLoader: false,
+    shareStatus: "HIDDEN",
+    shareStatusMsg: null
+>>>>>>> feature/5423_share_chart
 }
 
 const chart = (state = initialState, action) => {
@@ -122,6 +140,7 @@ const chart = (state = initialState, action) => {
         state.ciq.currentVectorParameters.fillColor = CIQ.hexToRgba('#' + action.style.color)
       } else return state
 
+<<<<<<< HEAD
       return state
     case Types.SET_PERIODICITY:
       return Object.assign({}, state, {
@@ -140,6 +159,33 @@ const chart = (state = initialState, action) => {
       return Object.assign({}, state, {
         interval: refreshInterval
       })
+    case Types.DRAW:
+      state.ciq.draw()
+      return state
+    default:
+      return state
+  }
+=======
+            return state
+        case Types.SET_PERIODICITY:
+            state.ciq.setPeriodicityV2(action.periodicity.period, action.periodicity.interval);
+            return Object.assign({}, state, {
+                periodicity:{
+                    period: action.periodicity.period,
+                    interval: action.periodicity.interval
+                }
+            })
+        case Types.SET_SYMBOL:
+            return Object.assign({}, state, {
+                symbol: action.symbol
+            })
+        case Types.SET_REFRESH_INTERVAL:
+            return Object.assign({}, state, {
+                interval: refreshInterval
+            })
+        case Types.SET_SPAN:
+            state.ciq.setSpan({span: action.span, multiplier: action.multiplier })
+            return state
         case Types.SHARE_CHART:
 
             return state;
@@ -149,12 +195,19 @@ const chart = (state = initialState, action) => {
               shareStatus: action.status,
               shareStatusMsg: action.msg
             })
-    case Types.DRAW:
-      state.ciq.draw()
-      return state
-    default:
-      return state
+        case Types.ADD_STUDY:
+            CIQ.Studies.addStudy(state.ciq, action.study)
+            return state
+        case Types.REMOVE_STUDY:
+            CIQ.Studies.removeStudy(params.stx, params.sd)
+            return state
+        case Types.DRAW:
+            state.ciq.draw()
+            return state
+        default:
+            return state
     }
+>>>>>>> feature/5423_share_chart
 }
 
 export default chart

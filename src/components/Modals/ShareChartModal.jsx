@@ -59,19 +59,14 @@ class ShareChartModal extends React.Component {
 		switch (this.props.shareStatus) {
 			case ShareStatus.GENERATING:
 				return "Generating Image";
-				break;
 			case ShareStatus.UPLOADING:
 				return "Uploading Image";
-				break;
 			case ShareStatus.COMPLETE:
 				return "Image available below:";
-				break;
 			case ShareStatus.ERROR:
 				return "Error occurred:";
-				break;
 			default:
 				return null;
-				break;
 		}
 	}
 
@@ -96,6 +91,7 @@ class ShareChartModal extends React.Component {
 					<div className="ciq-dialog-cntrls">
 						<div className="ciq-btn" onClick={() => { this.props.setShareStatus(ShareStatus.HIDDEN) }}>Done</div>
 					</div>
+					<div className="clearFloat"></div>
 				</div>
 			</div>
 		)

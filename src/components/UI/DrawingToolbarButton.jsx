@@ -1,6 +1,13 @@
 const DrawingToolbarButton = (props) => {
+
+	function toggleDrawingToolbar() {
+
+		props.toggleDrawingToolbar()
+
+	}
+
 	return (
-		<span><button className='drawing-toolbar-btn' onClick={props.toggleDrawingToolbar} /></span>
+		<span><button className='drawing-toolbar-btn' onClick={()=>toggleDrawingToolbar()} /></span>
 	)
 }
 
