@@ -100,6 +100,7 @@ const chart = (state = initialState, action) => {
       }
       let toolbarStatus=document.getElementById('chartContainer').classList.contains('toolbarOn')
 	    if(!state.initialTool) state.initialTool=action.tool;
+      if(action.tool&&state.initialTool!==action.tool) state.initialTool=action.tool;
 	    let tool=(!action.tool&&toolbarStatus&&state.initialTool)?state.initialTool:action.tool
       state.ciq.changeVectorType(tool)
       return state
