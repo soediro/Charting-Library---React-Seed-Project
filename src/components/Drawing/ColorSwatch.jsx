@@ -28,24 +28,20 @@ class ColorSwatch extends React.Component {
         let flipColorPicker = !this.state.pickingColor;
 
         if (this.props.changeState){
-            if (flipColorPicker){
-                if(!this.props.isPickingColor){
+            if (flipColorPicker){ //picker trying to go from closed to open
+                if(!this.props.isPickingColor){ //there are no other pickers open
                     this.setState({
                         pickingColor: flipColorPicker
                     }, () => {
-                        if(this.props.changeState){
-                            this.props.changeState(flipColorPicker)
-                        }
+                        this.props.changeState(flipColorPicker)
                     });
                 }
-            }else{
+            }else{ //picker trying to go from open to closed
                 if(this.props.isPickingColor){
                     this.setState({
                         pickingColor: flipColorPicker
                     }, () => {
-                        if(this.props.changeState){
-                            this.props.changeState(flipColorPicker)
-                        }
+                        this.props.changeState(flipColorPicker)
                     });
                 }
             }
@@ -60,6 +56,9 @@ class ColorSwatch extends React.Component {
         this.setState({
             pickingColor: false
         }, () => {
+            if(this.props.changeState){
+                this.props.changeState(false)
+            }
             this.props.setColor(color, this.props.type, this.props.name)
         })
     }
