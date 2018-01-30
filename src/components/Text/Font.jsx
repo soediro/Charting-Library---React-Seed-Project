@@ -7,8 +7,6 @@ class Font extends React.Component{
             sizes: [8, 10, 12, 13, 14, 16, 20, 28, 36, 48, 64],
             families: ["Helvetica", "Courier", "Garamond", "Palatino", "Times New Roman"]
         };
-        console.log('this.state.sizes: ', this.state.sizes);
-        console.log('this.state.familes: ', this.state.families)
         this.setSizeMenu = this.setSizeMenu.bind(this);
         this.setFamilyMenu = this.setFamilyMenu.bind(this);
     }
