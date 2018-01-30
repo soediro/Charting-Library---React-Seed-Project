@@ -4,36 +4,11 @@ import themeActions from '../actions/themeActions';
 
 //create the default theme
 let night = {
-    "name": "Night",
-    "settings": {
-        "chart": {
-            "Axis Text": { "color": "rgba(197,199,201,1)" },
-            "Background": { "color": "rgba(28,42,53,1)" },
-            "Grid Dividers": { "color": "rgba(37,55,70,1)" },
-            "Grid Lines": { "color": "rgba(33,50,63,1)" }
-        },
-        "chartTypes": {
-            "Candle/Bar": {
-                "down": { 
-                    "border": "rgba(227,70,33,1)",
-                    "color": "rgba(184,44,12,1)",
-                    "wick": "rgba(204,204,204,1)" 
-                },
-                "up": {
-                    "border": "rgba(184,222,168,1)",
-                    "color": "rgba(140,193,118,1)",
-                    "wick": "rgba(204,204,204,1)"
-                },
-                "even": { "wick": "rgba(204,204,204,1)" }
-            },
-            "Line": { "color": "rgba(255,255,255,1)" },
-            "Mountain": { "color":"rgba(27,158,252,1)"}
-        }
-    }
+	"name": "Night",
+	"className":"ciq-night"
 }
 
-let defaultSettings = [
-	{
+let defaultSettings = [{
 		section: "Candle Color",
 		class: "color",
 		swatches: [{
@@ -162,16 +137,30 @@ const ThemeUI = (state = initialState, action) => {
                 themeHelper: themeHelper,
                 currentThemeSettings: newThemeSettings
             })
-        case Types.CHANGE_THEME:
-            if(action.theme.name.indexOf('+ New Theme')>-1){
-                return Object.assign({}, state, {
-                    showEditModal: true
-                })
-            } else {
-                state.themeHelper.settings = CIQ.clone(action.theme.settings)
-                state.themeHelper.update()
-            }
-            return state
+				case Types.CHANGE_THEME:
+						if (action.theme.name.indexOf('+ New Theme') > -1) {
+							return Object.assign({}, state, {
+								showEditModal: true
+							})
+						} else {
+							if (action.theme.settings) {
+								state.themeHelper.settings = CIQ.clone(action.theme.settings)
+								state.themeHelper.update()
+							} else if (action.theme.className){
+								$$$('body').className = action.theme.className
+								var stx=state.themeHelper.params.stx;
+								stx.styles={};
+								stx.chart.container.style.backgroundColor="";
+								if(stx.displayInitialized){
+									stx.headsUpHR();
+									stx.clearPixelCache();
+									stx.updateListeners("theme");
+									stx.draw();
+								}
+							}
+
+						}
+						return state
         case Types.UPDATE_THEME:
             newThemeSettings = updateThemeSettings(state.themeHelper, state.currentThemeSettings, {
                 color: action.color,
@@ -239,7 +228,7 @@ function updateThemeSettings(themeHelper, currentSettings, newParams){
                     let capitalLetter = swatch.item.search(/(?=[A-Z])/),
                     direction = swatch.item.substring(capitalLetter).toLowerCase(),
                     item = swatch.item.substring(0, capitalLetter)
-                    
+
                     if (item !== 'candle'){
                         if(rgbaColor && swatchNeedsNewColor) themeHelper.settings.chartTypes[swatch.chartType][direction][item] = rgbaColor
                         newSwatch.color = themeHelper.settings.chartTypes[swatch.chartType][direction][item] || undefined
