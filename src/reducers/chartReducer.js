@@ -28,7 +28,8 @@ const initialState = {
     top: 0,
     left: 0,
     params: null
-  }
+  },
+	initialTool:undefined
 }
 
 const chart = (state = initialState, action) => {
@@ -97,7 +98,11 @@ const chart = (state = initialState, action) => {
         state.ciq.currentVectorParameters.annotation.font.style = style.style
         state.ciq.currentVectorParameters.annotation.font.weight = style.weight
       }
-      state.ciq.changeVectorType(action.tool)
+      let toolbarStatus=document.getElementById('chartContainer').classList.contains('toolbarOn')
+	    if(!state.initialTool) state.initialTool=action.tool;
+      if(action.tool&&state.initialTool!==action.tool) state.initialTool=action.tool;
+	    let tool=(!action.tool&&toolbarStatus&&state.initialTool)?state.initialTool:action.tool
+      state.ciq.changeVectorType(tool)
       return state
     case Types.CHANGE_VECTOR_LINE_PARAMS:
       state.ciq.currentVectorParameters.lineWidth = action.weight
