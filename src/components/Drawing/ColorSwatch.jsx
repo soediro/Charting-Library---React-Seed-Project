@@ -25,9 +25,36 @@ class ColorSwatch extends React.Component {
         this.setColor = this.setColor.bind(this)
     }
     togglePicker(){
-        this.setState({
-            pickingColor: !this.state.pickingColor
-        })
+        let flipColorPicker = !this.state.pickingColor;
+
+        if (this.props.changeState){
+            if (flipColorPicker){
+                if(!this.props.isPickingColor){
+                    this.setState({
+                        pickingColor: flipColorPicker
+                    }, () => {
+                        if(this.props.changeState){
+                            this.props.changeState(flipColorPicker)
+                        }
+                    });
+                }
+            }else{
+                if(this.props.isPickingColor){
+                    this.setState({
+                        pickingColor: flipColorPicker
+                    }, () => {
+                        if(this.props.changeState){
+                            this.props.changeState(flipColorPicker)
+                        }
+                    });
+                }
+            }
+
+        }else{
+            this.setState({
+                pickingColor: flipColorPicker
+            })
+        }
     }
     setColor(color){
         this.setState({
@@ -79,12 +106,16 @@ class ColorSwatch extends React.Component {
 }
 
 ColorSwatch.defaultProps = {
-    name: ''
+    name: '',
+    isPickingColor: false,
+    changeState: () => {}
 }
 
 ColorSwatch.propTypes = {
     type: PropTypes.string.isRequired,
     setColor: PropTypes.func.isRequired,
+    isPickingColor: PropTypes.bool.isRequired,
+    changeState: PropTypes.func.isRequired,
     color: PropTypes.string,
     top: PropTypes.string,
     isModal: PropTypes.bool

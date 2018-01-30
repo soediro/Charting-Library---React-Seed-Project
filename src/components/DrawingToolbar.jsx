@@ -5,16 +5,11 @@ import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
 import Measure from './Drawing/Measure'
 
-//data sources
-import { ChartStore, Actions } from '../stores/ChartStores'
-
 class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showColorPicker: false,
-			colorPickerLeft: 0,
-			colorPickerContext: ""
+			isPickingDrawColor: false
 		};
 	}
 	componentDidMount(){
@@ -26,6 +21,7 @@ class DrawingToolbar extends React.Component {
 		this.changeFontSize = this.changeFontSize.bind(this)
 		this.changeLineStyle = this.changeLineStyle.bind(this)
 		this.setColor = this.setColor.bind(this)
+		this.changePickerState = this.changePickerState.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -80,6 +76,11 @@ class DrawingToolbar extends React.Component {
 			showColorPicker: false
 		});
 	}
+	changePickerState(isOpen){
+		this.setState({
+			isPickingDrawColor: isOpen
+		})
+	}
 	render() {
 		let options = this.props.tools.map((tool, i) => {
 			return (
@@ -98,8 +99,8 @@ class DrawingToolbar extends React.Component {
 					</menu-select>
 					<span>
 						<div className="drawingParameters">
-							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} />
- 							<ColorSwatch name="Fill" type="fill" setColor={this.setColor} color={this.props.fill} />
+							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} isPickingColor={this.state.isPickingDrawColor} changeState={this.changePickerState} />
+ 							<ColorSwatch name="Fill" type="fill" setColor={this.setColor} color={this.props.fill} isPickingColor={this.state.isPickingDrawColor} changeState={this.changePickerState} />
 							<LineStyle {...this.props} onClick={this.changeLineStyle} />
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
