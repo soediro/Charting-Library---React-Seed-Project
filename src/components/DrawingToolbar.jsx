@@ -9,7 +9,8 @@ class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isPickingDrawColor: false
+			isPickingDrawColor: false,
+			menuOpen: false
 		};
 	}
 	componentDidMount(){
@@ -22,6 +23,8 @@ class DrawingToolbar extends React.Component {
 		this.changeLineStyle = this.changeLineStyle.bind(this)
 		this.setColor = this.setColor.bind(this)
 		this.changePickerState = this.changePickerState.bind(this)
+		this.openMenu = this.openMenu.bind(this)
+		this.closeMenu = this.closeMenu.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -81,6 +84,16 @@ class DrawingToolbar extends React.Component {
 			isPickingDrawColor: isOpen
 		})
 	}
+	openMenu(){
+		this.setState({
+			menuOpen: true
+		})
+	}
+	closeMenu(){
+		this.setState({
+			menuOpen: false
+		})
+	}
 	render() {
 		let options = this.props.tools.map((tool, i) => {
 			return (
@@ -88,12 +101,16 @@ class DrawingToolbar extends React.Component {
 			)
 		})
 
+		let menuDisplay = {
+			display: this.state.menuOpen ? 'block' : 'none'
+		}
+
 		if(this.props.showDrawingToolbar){
 			return (
 				<div className="toolbar">
-					<menu-select id="toolSelect">
+					<menu-select id="toolSelect" onMouseOver={this.openMenu} onMouseOut={this.closeMenu} onClick={this.closeMenu}>
 						<span className="title">{this.props.selectedTool || "Select Tool"}</span>
-						<menu-select-options className="menu-hover">
+						<menu-select-options className="menu-hover" style={menuDisplay}>
 							{options}
 						</menu-select-options>
 					</menu-select>
