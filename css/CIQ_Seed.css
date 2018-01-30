@@ -47,6 +47,23 @@ h3 {
 	color: #000;
 	margin-top: 0px;
 }
+
+.ciq-share-button {
+	float:left;
+	cursor: pointer;
+	margin-top:  10px;
+}
+
+hr.cq-separator {
+    border-top: 1px solid #ccc;
+    margin: 10px 0 10px 0;
+    display: block;
+}
+
+.share {
+	color: #000;
+}
+
 .timezone h3{
 	display: flex;
 	justify-content: center;
@@ -197,6 +214,10 @@ nav {
 	margin: -6px auto 0;
 	color: #999;
 	padding-top: 5px;
+}
+
+.clearFloat {
+	clear: both;
 }
 
 .dialog button.current-location-btn {
@@ -360,10 +381,9 @@ cq-plus {
 	border:1px solid #888;
 	border-radius: 3px;
 	width:350px;
-	min-height: 400px;
-	max-height: 550px;
-	overflow: auto;
-	cursor: pointer;
+	/* min-height: 400px; */
+	/* max-height: 550px; */
+	/* overflow: auto; */
 	font-weight: 300;
 	font-size: 9pt;
 	line-height: 16pt;
@@ -431,6 +451,7 @@ cq-plus {
 	float: right;
 	margin-right: 10px;
 	margin-left: 5px;
+	/* clear: both; */
 }
 .dialog ul {
 	max-height: 225px;
@@ -500,6 +521,7 @@ div.cq-close{
 	border:1px solid black;
 }
 .color-picker-options {/* This is the actual color picker block */
+	z-index:  999;
 	position:absolute;
 	background:#FFF;
 	width:180px;

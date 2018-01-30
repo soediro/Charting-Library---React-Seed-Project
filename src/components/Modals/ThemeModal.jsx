@@ -59,6 +59,7 @@ class ThemeModal extends React.Component {
 							<input className="ciq" type="text" placeholder={this.state.placeholder} onChange={this.updateThemeName} value={this.state.name} />
 							<button className="pull-right ciq" onClick={this.saveSettings}>Save</button>
 						</div>
+						<div className="clearFloat"></div>
 					</div>
 				</span>
 			);

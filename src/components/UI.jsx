@@ -5,6 +5,7 @@ import ChartTypes from './UI/ChartTypes'
 import Crosshairs from './UI/Crosshairs'
 import TimeZoneButton from './UI/TimeZoneButton'
 import DrawingToolbarButton from './UI/DrawingToolbarButton'
+import ShareChartModal from './Modals/ShareChartModal';
 
 //redux components
 import ThemeUIContainer from '../containers/themeUIContainer'
@@ -14,8 +15,8 @@ const UI = (props) => {
 	return (
 		<ciq-UI-Wrapper>
 			{
-				props.ciq!==null 
-					? 
+				props.ciq!==null
+					?
 				<nav className="ciq-nav">
 					<div className="left">
 						<ChartSymbol {...props} />
@@ -29,6 +30,7 @@ const UI = (props) => {
 						<Crosshairs {...props} />
 						<TimeZoneButton {...props} />
 						<DrawingToolbarButton {...props} />
+            <ShareChartModal {...props} />
 					</div>
 				</nav>
 					:

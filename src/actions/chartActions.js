@@ -11,6 +11,8 @@ const Types = createTypes(
     'SET_REFRESH_INTERVAL',
     'ADD_COMPARISON',
     'REMOVE_COMPARISON',
+    "SHARE_CHART",
+    "SET_SHARE_STATUS",
     'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
@@ -83,6 +85,14 @@ export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
 		})
 	])
 }
+}
+
+export function shareChart(){
+  return { type:'SHARE_CHART'}
+}
+
+export function setShareStatus(status, msg){
+  return { type:'SET_SHARE_STATUS', status: status, msg: msg}
 }
 
 export function changeContainerSize(size){

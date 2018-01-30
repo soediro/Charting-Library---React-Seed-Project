@@ -22,6 +22,8 @@ const initialState = {
     interval: 1,
     timeUnit: 'day'
   },
+    shareStatus: "HIDDEN",
+    shareStatusMsg: null,
   showPeriodicityLoader: false,
   studyOverlay: {
     show: false,
@@ -143,12 +145,21 @@ const chart = (state = initialState, action) => {
       return Object.assign({}, state, {
         interval: refreshInterval
       })
+        case Types.SHARE_CHART:
+
+            return state;
+        case Types.SET_SHARE_STATUS:
+          console.log(action);
+          return Object.assign({}, state, {
+              shareStatus: action.status,
+              shareStatusMsg: action.msg
+            })
     case Types.DRAW:
       state.ciq.draw()
       return state
     default:
       return state
-  }
+    }
 }
 
 export default chart

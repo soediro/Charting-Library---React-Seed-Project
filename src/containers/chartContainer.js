@@ -7,6 +7,8 @@ import { setChartContainer,
         removeComparison,
         toggleCrosshairs,
         setSpanWithLoader,
+        shareChart,
+        setShareStatus,
         changeContainerSize,
         changeVectorParams,
         changeVectorLineParams,
@@ -40,65 +42,80 @@ const mapStateToProps = (state, props) => {
         showCrosshairs: state.chart.showCrosshairs,
         showTimezoneModal: state.chart.showTimezoneModal,
         setTimeZone: state.chart.setTimeZone,
-        chartSeries: state.chart.chartSeries
+        chartSeries: state.chart.chartSeries,
+        shareStatus: state.chart.shareStatus,
+        shareStatusMsg : state.chart.shareStatusMsg
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        setChartContainer: (container) => {
-            dispatch(setChartContainer(container))
-        },
-        changeVectorParams: (tool) => {
-            dispatch(changeVectorParams(tool))
-        },
-        changeVectorLineParams: (weight, pattern) => {
-            dispatch(changeVectorLineParams(weight, pattern))
-        },
-        changeVectorStyle: (styleType, style) => {
-            dispatch(changeVectorStyle(styleType, style))
-        },
-        addComparison: (comparison, color) => {
-            dispatch(addComparison(comparison, color))
-        },
-        removeComparison: (comparison) => {
-            dispatch(removeComparison(comparison))
-        },
-        toggleCrosshairs: () => {
-            dispatch(toggleCrosshairs())
-        },
-        toggleTimezoneModal: () => {
-            dispatch(toggleTimezoneModal())
-        },
+  return {
+    setChartContainer: (container) => {
+      dispatch(setChartContainer(container))
+    },
+    changeVectorParams: (tool) => {
+      dispatch(changeVectorParams(tool))
+    },
+    changeVectorLineParams: (weight, pattern) => {
+      dispatch(changeVectorLineParams(weight, pattern))
+    },
+    changeVectorStyle: (styleType, style) => {
+      dispatch(changeVectorStyle(styleType, style))
+    },
+    addComparison: (comparison, color) => {
+      dispatch(addComparison(comparison, color))
+    },
+    addStudy: (study) => {
+      dispatch(addStudy(study))
+    },
+    removeComparison: (comparison) => {
+      dispatch(removeComparison(comparison))
+    },
+    removeStudy: (params) => {
+      dispatch(removeStudy(params))
+    },
+    toggleCrosshairs: () => {
+      dispatch(toggleCrosshairs())
+    },
+    toggleTimezoneModal: () => {
+      dispatch(toggleTimezoneModal())
+    },
         setTimeZone: (zone) => {
           dispatch(setTimeZone(zone))
         },
-        setSymbol: (symbol) => {
-            dispatch(setSymbol(symbol))
-        },
-        toggleDrawingToolbar: () => {
+    setSymbol: (symbol) => {
+      dispatch(setSymbol(symbol))
+    },
+    toggleDrawingToolbar: () => {
 					Promise.all([
 						dispatch(toggleDrawing()),
 						dispatch(changeVectorParams())
 					])
-        },
-        setPeriodicity: (period, interval) => {
-            dispatch(setPeriodicity(period, interval))
-        },
-        setPeriodicityWithLoader: (periodicity) => {
-            dispatch(setPeriodicityWithLoader(periodicity))
-        },
-        setChartType: (type) => {
-            dispatch(setChartType(type))
-        },
+    },
+    setPeriodicity: (period, interval) => {
+      dispatch(setPeriodicity(period, interval))
+    },
+    setPeriodicityWithLoader: (periodicity) => {
+      dispatch(setPeriodicityWithLoader(periodicity))
+    },
+    setChartType: (type) => {
+      dispatch(setChartType(type))
+    },
         setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
             dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
         },
         draw: () => {
             dispatch(draw())
-        }
+    },
+    shareChart: () => {
+      dispatch(shareChart())
+    },
+    setShareStatus: (status, msg) => {
+      dispatch(setShareStatus(status, msg))
     }
+  }
 }
+
 
 const ChartContainer = connect(
     mapStateToProps,

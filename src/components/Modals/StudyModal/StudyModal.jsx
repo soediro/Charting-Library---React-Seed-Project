@@ -124,6 +124,7 @@ class StudyModal extends React.Component {
 						</div>
 					</div>
 					<button className="pull-right" onClick={this.updateStudy}>Save</button>
+					<div className="clearFloat"></div>
 				</div>
 			</div>
 		)
