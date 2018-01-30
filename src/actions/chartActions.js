@@ -17,6 +17,7 @@ const Types = createTypes(
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
     'CHANGE_VECTOR_LINE_PARAMS',
+    'TOGGLE_AXIS_LABELS',
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL',
@@ -165,4 +166,8 @@ export function setSymbol(symbol){
 
 export function draw(){
     return { type: 'DRAW' }
+}
+
+export function toggleAxisLabels(){
+    return { type: 'TOGGLE_AXIS_LABELS' }
 }

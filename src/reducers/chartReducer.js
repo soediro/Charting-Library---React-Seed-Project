@@ -15,6 +15,7 @@ const initialState = {
   showDrawingToolbar: false,
   showCrosshairs: false,
   showTimezoneModal: false,
+  showAxisLabels: false,
   chartSeries: [],
   comparisons: [],
   periodicity: {
@@ -159,6 +160,12 @@ const chart = (state = initialState, action) => {
     case Types.DRAW:
       state.ciq.draw()
       return state
+    case Types.TOGGLE_AXIS_LABELS:
+      let flipAxisLabels = !state.showAxisLabels;
+      state.ciq.currentVectorParameters.axisLabel=flipAxisLabels;
+      return Object.assign({}, state, {
+        showAxisLabels: flipAxisLabels
+      })
     default:
       return state
     }

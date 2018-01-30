@@ -4,13 +4,13 @@ import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
 import Measure from './Drawing/Measure'
+import AxisLabel from './Drawing/AxisLabel'
 
 class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isPickingDrawColor: false,
-			menuOpen: false
+			currentToolHasLabels: false
 		};
 	}
 	componentDidMount(){
@@ -37,17 +37,26 @@ class DrawingToolbar extends React.Component {
 	setTool(tool){
 		if (this.props.ciq === null) return
 		else {
-      if(tool=='callout' || tool=='annotation') { // no need to do this every time
-        // Sync the defaults for font tool
-        var style=this.props.ciq.canvasStyle("stx_annotation");
-        this.props.ciq.currentVectorParameters.annotation.font.size=style.fontSize
-        this.props.ciq.currentVectorParameters.annotation.font.family=style.fontFamily
-        this.props.ciq.currentVectorParameters.annotation.font.style=style.fontStyle
-        this.props.ciq.currentVectorParameters.annotation.font.weight=style.fontWeight
-      }
+			if(tool=='callout' || tool=='annotation') { // no need to do this every time
+				// Sync the defaults for font tool
+				var style=this.props.ciq.canvasStyle("stx_annotation");
+				this.props.ciq.currentVectorParameters.annotation.font.size=style.fontSize
+				this.props.ciq.currentVectorParameters.annotation.font.family=style.fontFamily
+				this.props.ciq.currentVectorParameters.annotation.font.style=style.fontStyle
+				this.props.ciq.currentVectorParameters.annotation.font.weight=style.fontWeight
+			}
 			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
 			this.props.changeTool(tool, toolParams)
 			this.props.changeVectorParams(tool)
+			if (toolParams.hasOwnProperty('axisLabel')){
+				this.setState({
+					currentToolHasLabels: true
+				})
+			}else{
+				this.setState({
+					currentToolHasLabels: false
+				})
+			}
 		}
 	}
 	changeFontStyle(type){
@@ -122,6 +131,7 @@ class DrawingToolbar extends React.Component {
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
 							<Measure {...this.props} />
+							<AxisLabel {...this.props} hasLabels={this.state.currentToolHasLabels} />
 						</div>
 					</span>
 				</div>
