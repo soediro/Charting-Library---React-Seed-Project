@@ -46,7 +46,7 @@ const draw = (state = initialState, action) => {
             })
         case Types.SET_FONT_SIZE:
             return Object.assign({}, state, {
-                fontSize: action.size
+                fontSize: action.size + 'px'
             })
         case Types.SET_FONT_STYLE:
             if (action.styleType==="bold"){

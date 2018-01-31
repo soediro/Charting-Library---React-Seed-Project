@@ -1,47 +1,13 @@
 import configs from "../../../configs/ui.js"
 
-class Periodicity extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			menuOpen: false
-		};
-		this.openMenu = this.openMenu.bind(this);
-		this.closeMenu = this.closeMenu.bind(this);
-	}
-	openMenu(){
-		this.setState({
-			menuOpen: true
-		});
-	}
-	closeMenu(){
-		this.setState({
-			menuOpen: false
-		});
-	}
-	render(){
-		let options = configs.periodicity.options.map((item, i) => {
-			let periodicity = { period: item.period, interval: item.interval, timeUnit: item.timeUnit }
-			return <menu-option key={"period" + i} className="option" onClick={this.props.setPeriodicityWithLoader.bind(this, periodicity)}>{item.label}</menu-option>
-		});
-	
-		let label = getOptionLabel(this.props.ciq.layout);
+import MenuSelect from './MenuSelect'
 
-		let menuDisplay = {
-			display: this.state.menuOpen ? 'block' : 'none'
-		};
-	
-		return (
-			<span>
-				<menu-select id="periodicitySelect" onMouseOver={this.openMenu} onMouseOut={this.closeMenu} onClick={this.closeMenu}>
-					<span className="title">{label ? label : null}</span>
-					<menu-select-options className="menu-hover" style={menuDisplay}>
-						{options}
-					</menu-select-options>
-				</menu-select>
-			</span>
-		)
-	}
+const Periodicity = (props) => {
+	let label = getOptionLabel(props.ciq.layout);
+
+	return (
+		<MenuSelect options={configs.periodicity.options} keyName='period' name='label' handleOptionSelect={props.setPeriodicityWithLoader} menuId='periodicitySelect' title={label} />
+	);
 }
 
 //private

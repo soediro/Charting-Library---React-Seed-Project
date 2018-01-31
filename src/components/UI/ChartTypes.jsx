@@ -1,46 +1,12 @@
-import configs from "../../../configs/ui.js"
+import configs from "../../../configs/ui.js";
 
-class ChartTypes extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			menuOpen: false
-		};
-		this.openMenu = this.openMenu.bind(this);
-		this.closeMenu = this.closeMenu.bind(this);
-	}
-	openMenu(){
-		this.setState({
-			menuOpen: true
-		});
-	}
-	closeMenu(){
-		this.setState({
-			menuOpen: false
-		});
-	}
-	render(){
-		let options = configs.chartTypes.types.map((item, i) => {
-			return (
-				<menu-option key={"type" + i} className="option" onClick={this.props.setChartType.bind(this, item)}>{item.label}</menu-option>
-			);
-		});
-	
-		let label = getOptionLabel(this.props.ciq.layout);
+import MenuSelect from './MenuSelect'
 
-		let menuDisplay = {
-			display: this.state.menuOpen ? 'block' : 'none'
-		};
-	
-		return (
-			<menu-select id="chartTypeSelect" onMouseOver={this.openMenu} onMouseOut={this.closeMenu} onClick={this.closeMenu}>
-				<span className="title">{label ? label : null}</span>
-				<menu-select-options className="menu-hover" style={menuDisplay}>
-					{options}
-				</menu-select-options>
-			</menu-select>
-		)
-	}
+const ChartTypes = (props) => {
+	let label = getOptionLabel(props.ciq.layout);
+	return (
+		<MenuSelect options={configs.chartTypes.types} keyName='type' name='label' handleOptionSelect={props.setChartType} menuId='chartTypeSelect' title={label} />
+	);
 }
 
 //private
