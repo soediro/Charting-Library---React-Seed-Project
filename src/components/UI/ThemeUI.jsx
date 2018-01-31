@@ -1,49 +1,15 @@
 //components
 import ThemeModal from '../Modals/ThemeModal';
+import MenuSelect from './MenuSelect';
 
-class ThemeUI extends React.Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			menuOpen: false
-		};
-		this.openMenu = this.openMenu.bind(this);
-		this.closeMenu = this.closeMenu.bind(this);
-	}
-	componentDidMount(){
-		this.props.setThemeHelper(this.props.ciq)
-	}
-	openMenu(){
-		this.setState({
-			menuOpen: true
-		});
-	}
-	closeMenu(){
-		this.setState({
-			menuOpen: false
-		});
-	}
-	render(){
-		let options = this.props.themeList.map((theme, i) => {
-			return (<menu-option key={'theme'+i} className='option' onClick={this.props.changeTheme.bind(this, theme)}>{theme.name}</menu-option>)
-		});
+const ThemeUI = (props) => {
+	return (
+		<span>
+			<ThemeModal {...props} />
 
-		let menuDisplay = {
-			display: this.state.menuOpen ? 'block' : 'none'
-		};
-
-		return (
-			<span>
-				<ThemeModal {...this.props} />
-				<menu-select id='themeSelect' onClick={this.closeMenu} onMouseOver={this.openMenu} onMouseOut={this.closeMenu}>
-					<span className='title'>Select Theme</span>
-					<menu-select-options style={menuDisplay}>
-						{options}
-					</menu-select-options>
-				</menu-select>
-			</span>
-		)
-	}
+			<MenuSelect options={props.themeList} keyName='theme' name='name' handleOptionSelect={props.changeTheme} menuId='themeSelect' title='Select Theme' /> 
+		</span>
+	);
 }
 
 export default ThemeUI
