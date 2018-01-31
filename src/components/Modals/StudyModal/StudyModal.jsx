@@ -7,6 +7,7 @@ class StudyModal extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			name: "",
 			outputs: {},
 			inputs: {},
 			parameters: {},
@@ -23,6 +24,7 @@ class StudyModal extends React.Component {
 	componentWillReceiveProps(nextProps){
 		if(this.props.studyHelper !== nextProps.studyHelper && nextProps.studyHelper !== null){
 			this.setState({
+				name: nextProps.studyHelper.name,
 				outputs: nextProps.studyHelper.outputs,
 				inputs: nextProps.studyHelper.inputs,
 				parameters: nextProps.studyHelper.parameters
@@ -76,20 +78,20 @@ class StudyModal extends React.Component {
 
 		this.props.updateStudy(currentInputs, currentOutputs, currentParams)
 	}
-	updateInputs = (name, event) => {
+	updateInputs(name, event){
 		let target = event.target
 		for (let input of this.state.inputs) {
-			if (input.type === "checkbox") {
-				input.value = target.checked;
-				break;
-			}
 			if (input.name === name) {
-				input.value = target.value;
+				if (input.type === "checkbox") {
+					input.value = target.checked;
+				} else {
+					input.value = target.value;
+				}
 				break;
 			}
 		}
 		this.forceUpdate();
-	}
+	};
 	render() {
 		if (!this.props.showStudyModal || !this.props.studyHelper) return <span></span>
 
@@ -109,9 +111,9 @@ class StudyModal extends React.Component {
 			<div className="dialog-overlay" id="studyDialog">
 				<div className="dialog">
 					<div className="cq-close" onClick={this.props.closeStudyModal}></div>
-					<h3>
-						{this.state.studyHelper ? this.state.studyHelper.title : ""}
-					</h3>
+					<div className="dialog-heading">
+						{this.state.name}
+					</div>
 					<div id="inputs">
 						{inputs}
 					</div>

@@ -38,7 +38,7 @@ class TimeZone extends React.Component {
       <div className="ciq dialog-overlay">
         <div className="ciq dialog timezone">
           <div className="cq-close" onClick={()=>this.props.toggleTimezoneModal()}></div>
-          <h3 className="center">Select Timezone</h3>
+					<div className="dialog-heading">Choose Timezone</div>
           <div className="current-location-message">To set your timezone use the location button below, or scroll through the following list.</div>
           <div className="current-location-message">Current timezone is {this.myTimeZone()}</div>
           {this.getMyZoneObj()}

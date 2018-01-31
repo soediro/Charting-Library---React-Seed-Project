@@ -76,8 +76,10 @@ class ShareChartModal extends React.Component {
 			<div className="ciq dialog-overlay">
 				<div className="ciq dialog share">
 					<div className="cq-close" onClick={() => { this.props.setShareStatus(ShareStatus.HIDDEN) }}></div>
+					<div className="dialog-heading">
+						Share Your Chart
+					</div>
 					<hr className="ciq-separator" />
-					<h3 className="center">Share Your Chart</h3>
 					<div className="ciq-dialog-cntrls">
 						<div className="ciq-btn" onClick={() => { this.shareChart() }}>Create Image</div>
 					</div>
