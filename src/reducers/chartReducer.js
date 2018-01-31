@@ -137,10 +137,12 @@ const chart = (state = initialState, action) => {
         }
       })
     case Types.SET_SYMBOL:
-      state.ciq.newChart(action.symbol);
-      return Object.assign({}, state, {
-        symbol: action.symbol
-      })
+      if (action.symbol && action.symbol !== null){
+        state.ciq.newChart(action.symbol);
+        return Object.assign({}, state, {
+          symbol: action.symbol
+        })
+      }else { return state; }
     case Types.SET_REFRESH_INTERVAL:
       return Object.assign({}, state, {
         interval: refreshInterval
