@@ -1,6 +1,6 @@
 //components
 import ThemeModal from '../Modals/ThemeModal';
-import MenuSelect from './MenuSelect';
+import MenuSelect from '../Menus/MenuSelectWithButtons';
 
 const ThemeUI = (props) => {
 	return (

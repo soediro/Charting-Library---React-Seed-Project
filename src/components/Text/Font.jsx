@@ -1,4 +1,4 @@
-import MenuSelect from '../UI/MenuSelect'
+import MenuSelect from '../Menus/MenuSelect'
 
 const families = ["Helvetica", "Courier", "Garamond", "Palatino", "Times New Roman"];
 const sizes = [8, 10, 12, 13, 14, 16, 20, 28, 36, 48, 64];
