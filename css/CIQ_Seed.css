@@ -648,13 +648,13 @@ div.loader{
   background-position: -580px -31px;
 }
 
-.ciq-checkbox .ciq-active > span{
+.ciq-checkbox.ciq-active > span{
   left: 1px;
   bottom: 1px;
   width: 12px;
   height: 12px;
   background-image: url(img/stx-sprite-ui.svg) !important;
-  /* background-position: -580px -31px;  */
+  background-position: -580px -31px; 
 }
 
 
