@@ -6,7 +6,8 @@ import { setThemeHelper,
          changeTheme,
          updateTheme,
          saveTheme,
-         toggleThemeEditor } from '../actions/themeActions'
+         toggleThemeEditor,
+         deleteTheme } from '../actions/themeActions'
 
 //components
 import ThemeUI from '../components/UI/ThemeUI'
@@ -36,6 +37,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         toggleThemeEditor: () => {
             dispatch(toggleThemeEditor())
+        },
+        deleteTheme: (theme) => {
+            dispatch(deleteTheme(theme))
         }
     }
 }
