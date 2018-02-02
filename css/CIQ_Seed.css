@@ -336,7 +336,12 @@ menu-select-options{
 }
 
 #themeSelect menu-select-options {
-	min-width:100px;
+	min-width:125px;
+}
+
+.ciq-edit{
+	float: right;
+	margin: 0 5px 0 5px !important;
 }
 
 #fontFamilySelect menu-select-options {
