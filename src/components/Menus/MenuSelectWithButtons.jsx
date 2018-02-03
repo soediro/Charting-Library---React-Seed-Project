@@ -4,7 +4,8 @@ class MenuSelect extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            menuOpen: false
+            menuOpen: false,
+            title: props.title
         }
         this.toggleMenu = this.toggleMenu.bind(this);
         this.edit = this.edit.bind(this);
@@ -24,7 +25,8 @@ class MenuSelect extends React.Component{
     }
     selectOption(ciq, option){
         this.setState({
-            menuOpen: false
+            menuOpen: false,
+            title: option.label
         }, () => {
             if (Object.keys(ciq).length > 0){
                 this.props.handleOptionSelect(ciq, option);
@@ -50,6 +52,7 @@ class MenuSelect extends React.Component{
             }else{
                 return (
                     <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={onSelect}>
+                        <span className='title'>{this.state.title}</span>
                         <span className='ciq-edit' onClick={this.edit.bind(this, option)}></span>
                         <cq-close onClick={this.delete.bind(this, option)}></cq-close>
                         {optionLabel}
