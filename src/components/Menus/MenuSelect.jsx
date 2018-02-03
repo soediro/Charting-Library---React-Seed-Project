@@ -2,7 +2,8 @@ class MenuSelect extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            menuOpen: false
+            menuOpen: false,
+            title: props.title
         }
         this.toggleMenu = this.toggleMenu.bind(this);
         this.selectOption = this.selectOption.bind(this);
@@ -12,7 +13,8 @@ class MenuSelect extends React.Component{
     }
     selectOption(ciq, option){
         this.setState({
-            menuOpen: false
+            menuOpen: false,
+            title: option.label
         }, () => {
             if (Object.keys(ciq).length > 0){
                 this.props.handleOptionSelect(ciq, option);
@@ -37,7 +39,7 @@ class MenuSelect extends React.Component{
 
         return (
             <menu-select id={this.props.menuId} onMouseLeave={this.toggleMenu.bind(this, false)} onClick={this.toggleMenu.bind(this, !this.state.menuOpen)}>
-                <span className='title'>{this.props.title}</span>
+                <span className='title'>{this.state.title}</span>
                 <menu-select-options className='ps-container' style={menuDisplay}>
                     {options}
                 </menu-select-options>
