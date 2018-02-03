@@ -603,8 +603,21 @@ div.loader{
 	display: inline-block;
 	min-width: 25px;
 	cursor: pointer;
-	color: #c5c7c9;
 	transition: color .20s 0s;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	-webkit-box-shadow: 0 0 0 transparent ;
+	-moz-box-shadow: 0 0 0 transparent ;
+	box-shadow: 0 0 0 transparent ;
+	color: #4d4d4d;
+	border: solid 1px transparent;
+}
+
+.boldBtn.ciq-active, .italicBtn.ciq-active{
+	color:#fff;
+	border: solid 1px #ddd;
 }
 
 .boldBtn:hover, .italicBtn:hover{
@@ -622,6 +635,8 @@ div.loader{
 .italicBtn{
 	font-style: italic;
 }
+
+
 
 #lineSelect{
 	padding:0;
