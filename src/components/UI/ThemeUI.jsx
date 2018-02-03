@@ -1,14 +1,16 @@
 //components
 import ThemeModal from '../Modals/ThemeModal';
-import MenuSelect from '../Menus/MenuSelectWithButtons';
+import MenuSelect from '../shared/MenuSelect';
 
 const ThemeUI = (props) => {
 	return (
 		<span>
 			<ThemeModal {...props} />
 
-			<MenuSelect options={props.themeList} 
-						keyName='theme' name='name' 
+			<MenuSelect hasButtons={true}
+						options={props.themeList} 
+						keyName='theme' 
+						name='name' 
 						handleOptionSelect={props.changeTheme} 
 						menuId='themeSelect' 
 						title='Select Theme' 

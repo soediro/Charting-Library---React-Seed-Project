@@ -27,7 +27,7 @@ class LineStyle extends React.Component{
 		if(cName){
 			return (
 				<span>
-					<menu-select id='lineSelect' onMouseOver={this.openMenu} onMouseOut={this.closeMenu} onClick={this.closeMenu}>
+					<menu-select id='lineSelect' onMouseLeave={this.closeMenu} onClick={() => { this.state.menuOpen ? this.closeMenu() : this.openMenu() }}>
 						<span className={'title ' + cName}></span>
 						<menu-select-options className="menu-hover" style={menuDisplay}>
 							<menu-option class="option" onClick={this.props.onClick.bind(this, 1, 'solid')}><span className="ciq-line-style-option ciq-solid-1"></span></menu-option>
