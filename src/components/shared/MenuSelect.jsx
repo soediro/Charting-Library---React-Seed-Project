@@ -5,7 +5,8 @@ class MenuSelect extends React.Component{
         super(props);
         this.state = {
             menuOpen: false,
-            title: props.title
+            title: props.title,
+            hasButtons: props.hasButtons
         }
         this.toggleMenu = this.toggleMenu.bind(this);
         this.edit = this.edit.bind(this);
@@ -39,11 +40,10 @@ class MenuSelect extends React.Component{
         if(this.props.options.length===0) { return (<div></div>); }
 
         let options = this.props.options.map((option, i) => {
-            // let onSelect = this.props.needsCiq ? this.props.handleOptionSelect.bind(this, this.props.ciq, option) : this.props.handleOptionSelect.bind(this, option),
             let onSelect = this.props.needsCiq ? this.selectOption.bind(this, this.props.ciq, option) : this.selectOption.bind(this, option),
-            optionLabel = this.props.name ? option[this.props.name] : option
+            optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option);
 
-            if(this.props.noButtons.indexOf(optionLabel)>-1){
+            if(this.props.noButtons.indexOf(optionLabel)>-1 || !this.state.hasButtons){
                 return (
                     <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={onSelect}>
                         {optionLabel}
@@ -77,8 +77,12 @@ class MenuSelect extends React.Component{
 }
 
 MenuSelect.defaultProps = {
+    hasButtons: false,
     options: [],
-    noButtons: []
+    noButtons: [],
+    needsCiq: false,
+    labelNeedsTransform: false,
+    keyName: 'option'
 };
 
 MenuSelect.PropTypes = {
@@ -88,6 +92,9 @@ MenuSelect.PropTypes = {
     deleteItem: PropTypes.func.isRequired,
     editItem: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    hasButtons: PropTypes.bool.isRequired,
+    labelNeedsTransform: PropTypes.bool,
+    labelTransform: PropTypes.func,
     needsCiq: PropTypes.bool,
     ciq: PropTypes.object,
     noButtons: PropTypes.array

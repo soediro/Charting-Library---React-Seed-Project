@@ -1,7 +1,7 @@
 //components
 import OverlayMenu from './OverlayMenu';
 import StudyModal from '../Modals/StudyModal/StudyModal';
-import MenuSelect from '../Menus/MenuSelect';
+import MenuSelect from '../shared/MenuSelect'
 
 const StudyUI = (props) => {
 	let tempStudies = [];
@@ -26,7 +26,15 @@ const StudyUI = (props) => {
 			<OverlayMenu {...props} />
 			<StudyModal {...props} />
 
-			<MenuSelect options={tempStudies} keyName='study' name='name' handleOptionSelect={props.addStudy} needsCiq={true} ciq={props.ciq} menuId='studySelect' title='Studies' />
+			<MenuSelect hasButtons={false}
+						options={tempStudies} 
+						keyName='study' 
+						name='name' 
+						handleOptionSelect={props.addStudy} 
+						needsCiq={true} 
+						ciq={props.ciq} 
+						menuId='studySelect' 
+						title='Studies' />
 		</span>
 	);
 }
