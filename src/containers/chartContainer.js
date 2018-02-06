@@ -3,21 +3,19 @@ import { connect } from 'react-redux'
 
 //actions
 import { setChartContainer,
-        addComparison,
-        removeComparison,
-        toggleCrosshairs,
+        addComparisonAndSave,
+        removeComparisonAndSave,
+        toggleCrosshairsAndSave,
         setSpanWithLoader,
         shareChart,
         setShareStatus,
-        changeContainerSize,
         changeVectorParams,
         changeVectorLineParams,
         changeVectorStyle,
         setPeriodicity,
         setChartType,
         toggleLoader,
-        setRefreshInterval,
-        setSymbol,
+        setSymbolAndSave,
         changingChartData,
         setPeriodicityWithLoader,
         toggleTimezoneModal,
@@ -62,29 +60,29 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     changeVectorStyle: (styleType, style) => {
       dispatch(changeVectorStyle(styleType, style))
     },
-    addComparison: (comparison, color) => {
-      dispatch(addComparison(comparison, color))
+    addComparisonAndSave: (symbol, params) => {
+      dispatch(addComparisonAndSave(symbol, params))
     },
     addStudy: (study) => {
       dispatch(addStudy(study))
     },
-    removeComparison: (comparison) => {
-      dispatch(removeComparison(comparison))
+    removeComparisonAndSave: (comparison) => {
+      dispatch(removeComparisonAndSave(comparison))
     },
     removeStudy: (params) => {
       dispatch(removeStudy(params))
     },
-    toggleCrosshairs: () => {
-      dispatch(toggleCrosshairs())
+    toggleCrosshairsAndSave: () => {
+      dispatch(toggleCrosshairsAndSave())
     },
     toggleTimezoneModal: () => {
       dispatch(toggleTimezoneModal())
     },
-        setTimeZone: (zone) => {
-          dispatch(setTimeZone(zone))
-        },
-    setSymbol: (symbol) => {
-      dispatch(setSymbol(symbol))
+    setTimeZone: (zone) => {
+      dispatch(setTimeZone(zone))
+    },
+    setSymbolAndSave: (symbol) => {
+      dispatch(setSymbolAndSave(symbol))
     },
     toggleDrawingToolbar: () => {
 					Promise.all([
@@ -101,11 +99,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setChartType: (type) => {
       dispatch(setChartType(type))
     },
-        setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
-            dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
-        },
-        draw: () => {
-            dispatch(draw())
+    setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
+        dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
+    },
+    draw: () => {
+        dispatch(draw())
     },
     shareChart: () => {
       dispatch(shareChart())

@@ -14,6 +14,10 @@ class Comparison extends React.Component {
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
+	componentDidMount(){
+		this.props.ciq.callbacks.symbolChange = this.updateComparisonSeries.bind(this);
+	}
+
   onChange(event) {
 		this.setState({
 			text: event.target.value
@@ -21,8 +25,6 @@ class Comparison extends React.Component {
   }
 
 	onOptionClick() {
-		if (!this.props.ciq) { return; }
-		if (!this.props.ciq.callbacks.symbolChange) { this.props.ciq.callbacks.symbolChange = this.updateComparisonSeries.bind(this) }
 		function getRandomColor() {
 			var letters = '0123456789ABCDEF';
 			var color = '#';
@@ -42,7 +44,7 @@ class Comparison extends React.Component {
 
     let symbolCompare = this.state.text.replace(/\s/g,'').toUpperCase();
     if(symbolCompare && !this.props.comparisons.find(comp=>comp && comp.id===symbolCompare) && symbolCompare!==this.props.symbol){
-      this.props.addComparison(symbolCompare, seriesParams)
+      this.props.addComparisonAndSave(symbolCompare, seriesParams)
     }
 
 		this.setState({
@@ -60,7 +62,7 @@ class Comparison extends React.Component {
 	updateComparisonSeries() {
 		if (arguments[0].action == 'remove-series') {
       let stx = arguments[0]
-			this.props.removeComparison(stx.symbol)
+			this.props.removeComparisonAndSave(stx.symbol)
 		}
   }
 

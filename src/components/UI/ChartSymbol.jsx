@@ -14,7 +14,7 @@ class ChartSymbol extends React.Component {
     }
 	onOptionClick() {
 		if (!this.props.ciq || !this.props.symbol) { return; }
-		this.props.setSymbol(this.state.text)
+		this.props.setSymbolAndSave(this.state.text)
 	}
 	onChange(event) {
 		this.setState({
