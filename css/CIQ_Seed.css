@@ -592,11 +592,39 @@ div.loader{
 	background: #1c2a35;
 }
 
+.toolbar > span{
+	width:100%;
+	padding-left:10px;
+}
+
+#toolSelect{
+	width:12%;
+}
+
+.toolbar .undoSection{
+	float: right;
+	width: 30%;
+}
+
+.toolbar .undoSection button{
+	margin-left: 3px;
+	opacity: .45;
+	float: right;
+}
+
+.toolbar .undoSection button:active, .toolbar .undoSection button:focus{
+	background-color: #fff;
+}
+
+.toolbar .undoSection button.active{
+	opacity:1;
+}
+
 .drawingParameters{
 	padding:5px;
-	margin-left:10px;
-	width: 415px;
+	width: 70%;
 	display: flex;
+	float:left;
 }
 
 .boldBtn, .italicBtn{

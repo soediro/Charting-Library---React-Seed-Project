@@ -5,6 +5,9 @@ import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
 import Measure from './Drawing/Measure'
 import MenuSelect from './shared/MenuSelect'
+import Undo from './Drawing/Undo'
+import Redo from './Drawing/Redo'
+import Clear from './Drawing/Clear'
 
 class DrawingToolbar extends React.Component {
 	constructor(props) {
@@ -129,6 +132,11 @@ class DrawingToolbar extends React.Component {
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
 							<Measure {...this.props} />
+						</div>
+						<div className="undoSection">
+							<Undo {...this.props} />
+							<Redo {...this.props} />
+							<Clear {...this.props} />
 						</div>
 					</span>
 				</div>
