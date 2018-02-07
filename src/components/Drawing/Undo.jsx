@@ -1,10 +1,6 @@
 class Undo extends React.Component {
 	constructor(props){
 		super(props);
-		let drawings=props.ciq.drawingObjects.length
-		this.state={
-			activeDrawings:drawings
-		}
 		this.bindCorrectContext()
 	}
 	bindCorrectContext(){
@@ -15,13 +11,10 @@ class Undo extends React.Component {
 		this.props.ciq.undoLast()
 		let after=this.props.ciq.drawingObjects
 		this.props.ciq.undoStamp(before,after);
-		this.setState({
-			activeDrawings:this.props.ciq.drawingObjects.length
-		})
 	}
 	render(){
 		return(
-			<button className={"ciq-btn " + (this.state.activeDrawings?'active':'')} onClick={this.undoDrawing}>Undo</button>
+			<button className={"ciq-btn " + (this.props.ciq.drawingObjects.length?'active':'')} onClick={this.undoDrawing}>Undo</button>
 		)
 	}
 }

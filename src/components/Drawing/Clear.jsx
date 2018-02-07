@@ -1,10 +1,6 @@
 class Clear extends React.Component {
 	constructor(props){
 		super(props)
-		let drawings=props.ciq.drawingObjects.length
-		this.state={
-			activeDrawings:drawings
-		}
 		this.bindCorrectContext()
 	}
 	bindCorrectContext(){
@@ -12,13 +8,10 @@ class Clear extends React.Component {
 	}
 	clearDrawings(){
 		this.props.ciq.clearDrawings()
-		this.setState({
-			activeDrawings:this.props.ciq.drawingObjects.length
-		})
 	}
 	render(){
 			return(
-				<button className={"ciq-btn " + (this.state.activeDrawings?'active':'')} onClick={this.clearDrawings}>Clear</button>
+				<button className={"ciq-btn " + (this.props.ciq.drawingObjects.length?'active':'')} onClick={this.clearDrawings}>Clear</button>
 			)
 	}
 }
