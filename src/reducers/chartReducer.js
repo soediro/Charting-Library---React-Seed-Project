@@ -31,7 +31,12 @@ const initialState = {
     left: 0,
     params: null
   },
-	initialTool:undefined
+  initialTool:undefined,
+  drawings: [],
+  undoStamps: [],
+  canUndo: false,
+  canRedo: false,
+  canClear: false
 }
 
 const chart = (state = initialState, action) => {
@@ -154,6 +159,15 @@ const chart = (state = initialState, action) => {
     case Types.DRAW:
       state.ciq.draw()
       return state
+    case Types.UPDATE_UNDO_STAMPS:
+        let undoStamps = state.ciq.undoStamps,
+        hasStamps = undoStamps.length > 0;
+        return Object.assign({}, state, {
+          undoStamps: undoStamps,
+          canUndo: state.ciq.drawingObjects.length > 0,
+          canClear: state.ciq.drawingObjects.length > 0,
+          canRedo: hasStamps
+        });
     default:
       return state
     }

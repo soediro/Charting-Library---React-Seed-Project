@@ -20,7 +20,9 @@ import { setChartContainer,
         setPeriodicityWithLoader,
         toggleTimezoneModal,
         setTimeZone,
-        draw } from '../actions/chartActions'
+        draw,
+        undo,
+        redo} from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -42,7 +44,11 @@ const mapStateToProps = (state, props) => {
         setTimeZone: state.chart.setTimeZone,
         chartSeries: state.chart.chartSeries,
         shareStatus: state.chart.shareStatus,
-        shareStatusMsg : state.chart.shareStatusMsg
+        shareStatusMsg : state.chart.shareStatusMsg,
+        canUndo: state.chart.canUndo,
+        canRedo: state.chart.canRedo,
+        canClear: state.chart.canClear,
+        undoStamps: state.chart.undoStamps
     }
 }
 
@@ -104,6 +110,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     draw: () => {
         dispatch(draw())
+    },
+    undo: () => {
+        dispatch(undo())
+    },
+    redo: () => {
+        dispatch(redo())
     },
     shareChart: () => {
       dispatch(shareChart())

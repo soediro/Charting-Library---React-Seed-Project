@@ -18,7 +18,12 @@ const Types = createTypes(
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL',
-    'DRAW'
+    'DRAW',
+    'CREATE_UNDO_STAMP',
+    'UPDATE_UNDO_STAMPS',
+    'UNDO',
+    'REDO',
+    'CLEAR',
 );
 
 export default Types;
@@ -207,6 +212,44 @@ export function setSymbol(symbol){
 
 export function draw(){
     return { type: 'DRAW' }
+}
+
+export function createUndoStamp(before, after){
+    return (dispatch, getState) => {
+        let state = getState();
+        state.chart.ciq.undoStamp(before, after);
+        dispatch(updateUndoStamps());
+    }
+}
+
+export function updateUndoStamps(){
+    return { type: 'UPDATE_UNDO_STAMPS' }
+}
+
+export function undo(){
+    return (dispatch, getState) => {
+        let state = getState(),
+        before = state.chart.ciq.drawingObjects;
+        state.chart.ciq.undoLast();
+        let after = state.chart.ciq.drawingObjects;
+        return Promise.all([
+            dispatch(createUndoStamp(before, after)),
+            dispatch(saveLayout())
+        ]);
+    }
+}
+
+export function redo(){
+    return (dispatch, getState) => {
+        let state = getState(),
+        before = state.chart.ciq.drawingObjects;
+        state.chart.ciq.drawingObjects=state.chart.ciq.undoStamps.pop();
+        let after = state.chart.ciq.drawingObjects;
+        return Promise.all([
+            dispatch(createUndoStamp(before, after)),
+            dispatch(saveLayout())
+        ]);
+    }
 }
 
 export function drawingsChanged(params){
