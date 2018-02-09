@@ -159,32 +159,41 @@ const chart = (state = initialState, action) => {
       state.ciq.draw()
       return state
     case Types.DRAWINGS_CHANGED:
+        let drawings = state.ciq.drawingObjects.slice();
         return Object.assign({}, state, {
-          drawings: action.drawings,
-          canUndo: true
+          drawings: drawings,
+          canUndo: true,
+          canClear: drawings.length > 0
         });
     case Types.UNDO:
         return Object.assign({}, state, {
           canRedo: true,
-          canUndo: false
+          canUndo: false,
+          canClear: state.ciq.drawingObjects.length > 0
         });
     case Types.REDO:
         return Object.assign({}, state, {
           canRedo: false,
-          canUndo: true
+          canUndo: true,
+          canClear: state.ciq.drawingObjects.length > 0
+        });
+    case Types.CLEAR:
+        return Object.assign({}, state, {
+          drawings: [],
+          canClear: false
         });
     case Types.UPDATE_UNDO_STAMPS:
-        let undoStamps = state.ciq.undoStamps;
+        let undoStamps = state.ciq.undoStamps.slice();
         return Object.assign({}, state, {
           undoStamps: undoStamps,
+          canUndo: undoStamps.length > 0,
           canClear: state.ciq.drawingObjects.length > 0
         });
     case Types.IMPORT_DRAWINGS:
-        console.log('state: ', state);
-        console.log('drawings: ', state.ciq.drawingObjects);
-        let drawings = state.ciq.drawingObjects;
+        drawings = state.ciq.drawingObjects.slice();
         return Object.assign({}, state, {
-          drawings: drawings
+          drawings: drawings,
+          canClear: drawings.length > 0
         });
     default:
       return state
