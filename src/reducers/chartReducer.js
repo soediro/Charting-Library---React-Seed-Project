@@ -53,7 +53,6 @@ const chart = (state = initialState, action) => {
       } else {
         ciq.newChart(state.symbol)    
       }
-    
       return Object.assign({}, state, {
         ciq: ciq,
         periodicity: {
@@ -159,14 +158,33 @@ const chart = (state = initialState, action) => {
     case Types.DRAW:
       state.ciq.draw()
       return state
+    case Types.DRAWINGS_CHANGED:
+        return Object.assign({}, state, {
+          drawings: action.drawings,
+          canUndo: true
+        });
+    case Types.UNDO:
+        return Object.assign({}, state, {
+          canRedo: true,
+          canUndo: false
+        });
+    case Types.REDO:
+        return Object.assign({}, state, {
+          canRedo: false,
+          canUndo: true
+        });
     case Types.UPDATE_UNDO_STAMPS:
-        let undoStamps = state.ciq.undoStamps,
-        hasStamps = undoStamps.length > 0;
+        let undoStamps = state.ciq.undoStamps;
         return Object.assign({}, state, {
           undoStamps: undoStamps,
-          canUndo: state.ciq.drawingObjects.length > 0,
-          canClear: state.ciq.drawingObjects.length > 0,
-          canRedo: hasStamps
+          canClear: state.ciq.drawingObjects.length > 0
+        });
+    case Types.IMPORT_DRAWINGS:
+        console.log('state: ', state);
+        console.log('drawings: ', state.ciq.drawingObjects);
+        let drawings = state.ciq.drawingObjects;
+        return Object.assign({}, state, {
+          drawings: drawings
         });
     default:
       return state
@@ -176,7 +194,7 @@ const chart = (state = initialState, action) => {
 /*
 * private functions
 */
-function restoreDrawings(stx, symbol){
+function restoreDrawings(stx){
   var memory=CIQ.localStorage.getItem(stx.chart.symbol);
 	if(memory!==null){
     var parsed=JSON.parse(memory);

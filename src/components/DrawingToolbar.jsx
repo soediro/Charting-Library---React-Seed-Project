@@ -36,8 +36,10 @@ class DrawingToolbar extends React.Component {
 			this.props.draw()
 		}
 
-		if(this.props.ciq === null && nextProps.ciq !== null && nextProps.ciq.callbacks.drawing === null){
-			nextProps.ciq.callbacks.drawing = this.drawingsChanged
+		if(this.props.ciq === null && nextProps.ciq !== null){
+			if (nextProps.ciq.callbacks.drawing === null){
+				nextProps.ciq.callbacks.drawing = this.drawingsChanged;
+			}
 		}
 	}
 	drawingsChanged(args){
