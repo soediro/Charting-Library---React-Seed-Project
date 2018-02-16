@@ -15,7 +15,7 @@ const initialState = {
   showDrawingToolbar: false,
   showCrosshairs: false,
   showTimezoneModal: false,
-  showAxisLabels: false,
+  showAxisLabels: true,
   chartSeries: [],
   comparisons: [],
   periodicity: {

@@ -82,36 +82,35 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     toggleTimezoneModal: () => {
       dispatch(toggleTimezoneModal())
     },
-        setTimeZone: (zone) => {
-          dispatch(setTimeZone(zone))
-        },
-        setSymbol: (symbol) => {
-            dispatch(setSymbol(symbol))
-        },
-        toggleDrawingToolbar: () => {
-            Promise.all([
-                dispatch(toggleDrawing()),
-                dispatch(changeVectorParams())
-            ])
-        },
-        setPeriodicity: (period, interval) => {
-            dispatch(setPeriodicity(period, interval))
-        },
-        setPeriodicityWithLoader: (periodicity) => {
-            dispatch(setPeriodicityWithLoader(periodicity))
-        },
-        setChartType: (type) => {
-            dispatch(setChartType(type))
-        },
-        setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
-            dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
-        },
-        draw: () => {
-            dispatch(draw())
-        },
-        toggleAxisLabels: () => {
-            dispatch(toggleAxisLabels())
-        }
+    setTimeZone: (zone) => {
+      dispatch(setTimeZone(zone))
+    },
+    setSymbol: (symbol) => {
+        dispatch(setSymbol(symbol))
+    },
+    toggleDrawingToolbar: () => {
+        Promise.all([
+            dispatch(toggleDrawing()),
+            dispatch(changeVectorParams())
+        ])
+    },
+    setPeriodicity: (period, interval) => {
+        dispatch(setPeriodicity(period, interval))
+    },
+    setPeriodicityWithLoader: (periodicity) => {
+        dispatch(setPeriodicityWithLoader(periodicity))
+    },
+    setChartType: (type) => {
+        dispatch(setChartType(type))
+    },
+    setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
+        dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
+    },
+    draw: () => {
+        dispatch(draw())
+    },
+    toggleAxisLabels: () => {
+        dispatch(toggleAxisLabels())
     }
   }
 }
