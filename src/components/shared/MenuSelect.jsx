@@ -5,8 +5,9 @@ class MenuSelect extends React.Component{
         super(props);
         this.state = {
             menuOpen: false,
-            title: props.title,
-            hasButtons: props.hasButtons
+            hasButtons: props.hasButtons,
+            hasCheckboxes: props.hasCheckboxes,
+            selected: props.chartType ? props.chartType : {type:'candle', label:'Candle'}
         }
         this.toggleMenu = this.toggleMenu.bind(this);
         this.edit = this.edit.bind(this);
@@ -25,14 +26,18 @@ class MenuSelect extends React.Component{
         this.props.deleteItem(option);
     }
     selectOption(ciq, option){
+        let oldOption = this.state.selected;
         this.setState({
             menuOpen: false,
-            title: option.label
+            selected: option
         }, () => {
-            if (Object.keys(ciq).length > 0){
-                this.props.handleOptionSelect(ciq, option);
-            } else {
-                this.props.handleOptionSelect(option);
+            //Call handleOptionSelect when the option selected has actually changed
+            if (oldOption.type !== option.type && oldOption.label !== option.label){
+                if (Object.keys(ciq).length > 0){
+                    this.props.handleOptionSelect(ciq, option);
+                } else {
+                    this.props.handleOptionSelect(option);
+                }
             }
         });
     }
@@ -40,25 +45,30 @@ class MenuSelect extends React.Component{
         if(this.props.options.length===0) { return (<div></div>); }
 
         let options = this.props.options.map((option, i) => {
-            let onSelect = this.props.needsCiq ? this.selectOption.bind(this, this.props.ciq, option) : this.selectOption.bind(this, option),
-            optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option);
+            let onSelect = this.props.needsCiq ? this.selectOption.bind(this, this.props.ciq, option) : this.selectOption.bind(this, {}, option),
+            optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option),
+            buttonCName = (this.state.selected.type === option.type && this.state.selected.label === option.label) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
+            select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
 
-            if(this.props.noButtons.indexOf(optionLabel)>-1 || !this.state.hasButtons){
-                return (
-                    <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={onSelect}>
-                        {optionLabel}
-                    </menu-option>
-                );
-            }else{
-                return (
-                    <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={onSelect}>
-                        <span className='title'>{this.state.title}</span>
+            return (
+                <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={select}>
+                    {this.state.hasButtons && !this.props.noButtons.indexOf(optionLabel)>-1
+                                ? 
+                        (<span>
                         <span className='ciq-edit' onClick={this.edit.bind(this, option)}></span>
-                        <cq-close onClick={this.delete.bind(this, option)}></cq-close>
-                        {optionLabel}
-                    </menu-option>
-                );
-            }
+                        <cq-close onClick={this.delete.bind(this, option)}></cq-close></span>)
+                                :
+                                null
+                    }
+                    {this.state.hasCheckboxes
+                                ?
+                        (<div><span className={buttonCName}><span></span></span></div>)
+                                :
+                                null
+                    }
+                    {optionLabel}
+                </menu-option>
+            );
         });
 
         let menuDisplay = {
