@@ -1,36 +1,55 @@
-const Legend = (props) => {
-
-  if (props.comparisons && props.comparisons.length === 0) return (<span></span>)
-
-	let position={marginTop:props.ciq.chart.top+35+'px'}
-	var reposition = function(){
-  	position={marginTop:props.ciq.chart.top+35+'px'}
+class Legend extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+			style: {}
+		};
+		this.moveLegend = this.moveLegend.bind(this);
+		this.removeSeries = this.removeSeries.bind(this);
 	}
-	props.ciq.callbacks.layout=function(){
-		console.log('in the layout callback')
-		reposition()
+	componentWillReceiveProps(nextProps){
+		if (this.props.ciq === null && nextProps.ciq !== null){
+			nextProps.ciq.callbacks.layout = this.moveLegend;
+		}
+
+		if (this.props.comparisons.length !== nextProps.comparisons.length){
+			this.setState({
+				style: {
+					marginTop: nextProps.ciq.chart.top + 35 + 'px'
+				}
+			});
+		}
 	}
+	moveLegend(args){
+		console.log('args: ', args);
+		this.setState({
+			style: {
+				marginTop: this.props.ciq.chart.top + 35 + 'px'
+			}
+		});
+	}
+	removeSeries(id){
+		this.props.ciq.removeSeries(id);
+	}
+	render(){
 
-  var removeComparison = function(comparison){
-    // action is handled via callback in in Comparison.jsx, so just remove the series to initiate
-    props.ciq.removeSeries(comparison.id)
-  }
+		let comparisons = this.props.comparisons.map((comparison, i) => {
+			return (
+				<div className='comparisonWrapper' key={'comparison'+i}>
+					<div className='chartSeriesColor' style={{ 'backgroundColor': comparison.parameters.color }}></div>
+					<div className='chartSeries'>{comparison.display}</div>
+					<div className='deleteSeries' onClick={this.removeSeries.bind(this, comparison.id)}></div>
+				</div>
+			);
+		});
 
-	let comparisons = props.comparisons.map((comparison, i) => {
+
 		return (
-			<div className="comparisonWrapper" key={"comparison" + i} style={position}>
-				<div className="chartSeriesColor" style={{ 'backgroundColor': comparison.parameters.color }}></div>
-				<div className="chartSeries">{comparison.display}</div>
-				<div className="deleteSeries" onClick={()=>removeComparison(comparison)}></div>
+			<div className='comparisons' style={this.state.style}>
+				{comparisons}
 			</div>
-		)
-	})
-
-	return (
-		<div className="comparisons">
-			{comparisons}
-		</div>
-	)
+		);
+	}
 }
 
-export default Legend
+export default Legend;
