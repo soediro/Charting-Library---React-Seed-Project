@@ -1,4 +1,4 @@
-import createTypes from 'redux-create-action-types'
+import createTypes from 'redux-create-action-types';
 
 /*
  * action types
@@ -26,7 +26,7 @@ const Types = createTypes(
     'UPDATE_UNDO_STAMPS',
     'UNDO',
     'REDO',
-    'CLEAR',
+    'CLEAR'
 );
 
 export default Types;
@@ -259,7 +259,6 @@ export function undo(before, after){
         }
         state.chart.ciq.undoLast();
         a = !before || !after ? state.chart.ciq.drawingObjects : after;
-        console.log()
         return Promise.all([
             dispatch(createUndoStamp(b, a)),
             dispatch(undid()),
@@ -308,13 +307,10 @@ export function cleared(){
 }
 
 export function drawingsChanged(params){
-    console.log('drawings changed: ', params)
     return (dispatch, getState) => {
         let state = getState(),
         oldDrawings = state.chart.drawings,
         tmp = params.stx.exportDrawings();
-        console.log('oldDrawings: ', oldDrawings)
-        console.log('currentDrawings: ', tmp)
         if(tmp.length===0){
             CIQ.localStorage.removeItem(params.symbol);
         }else{
