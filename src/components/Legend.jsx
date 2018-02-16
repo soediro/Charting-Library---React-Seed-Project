@@ -20,7 +20,7 @@ class Legend extends React.Component{
 			});
 		}
 	}
-	moveLegend(args){
+	moveLegend(){
 		this.setState({
 			style: {
 				marginTop: this.props.ciq.chart.top + 35 + 'px'
