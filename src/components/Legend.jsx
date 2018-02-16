@@ -21,7 +21,6 @@ class Legend extends React.Component{
 		}
 	}
 	moveLegend(args){
-		console.log('args: ', args);
 		this.setState({
 			style: {
 				marginTop: this.props.ciq.chart.top + 35 + 'px'
