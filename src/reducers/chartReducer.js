@@ -73,7 +73,6 @@ const chart = (state = initialState, action) => {
         chartType: action.chartType.type
       })
     case Types.ADD_COMPARISON:
-      // let newSeries = state.ciq.addSeries(action.symbol, action.params);
       let newComparisons = state.comparisons.concat([action.series]);
       return Object.assign({}, state, {
         comparisons: newComparisons
