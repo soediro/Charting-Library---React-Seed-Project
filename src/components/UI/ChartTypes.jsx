@@ -1,23 +1,23 @@
 import configs from "../../../configs/ui.js";
 
-import MenuSelect from './MenuSelect'
+import MenuSelect from '../shared/MenuSelect'
 
 const ChartTypes = (props) => {
-	let label = getOptionLabel(props.ciq.layout);
 	return (
-		<MenuSelect options={configs.chartTypes.types} keyName='type' name='label' handleOptionSelect={props.setChartType} menuId='chartTypeSelect' title={label} />
+		<MenuSelect options={configs.chartTypes.types} keyName='type' name='label' handleOptionSelect={props.setChartType} menuId='chartTypeSelect' title='Chart Type' hasCheckboxes={true} chartType={props.chartType} />
 	);
 }
 
 //private
-function getOptionLabel(layout){
-	for (var i = 0; i < configs.chartTypes.types.length; i++){
-		let option = configs.chartTypes.types[i];
-		if(layout.chartType === option.type){
-			return option.label
-		}
-	}
-	return configs.chartTypes.types[0].label
-}
+// function getOptionLabel(layout){
+// 	console.log('layout: ', layout)
+// 	for (var i = 0; i < configs.chartTypes.types.length; i++){
+// 		let option = configs.chartTypes.types[i];
+// 		if(layout.chartType === option.type){
+// 			return option.label
+// 		}
+// 	}
+// 	return configs.chartTypes.types[0].label
+// }
 
 export default ChartTypes

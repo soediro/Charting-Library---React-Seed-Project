@@ -1,6 +1,6 @@
 import configs from "../../../configs/ui.js"
 
-import MenuSelect from './MenuSelect'
+import MenuSelect from '../shared/MenuSelect'
 
 const Periodicity = (props) => {
 	let label = getOptionLabel(props.ciq.layout);

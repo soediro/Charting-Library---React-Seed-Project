@@ -304,7 +304,7 @@ menu-select-options menu-option{
 	text-align:left;
 	display:block;
 	line-height: 27px;
-	height: 27px;
+	height: auto;
 	color:#666;
 }
 menu-select-options menu-option span{
@@ -336,7 +336,12 @@ menu-select-options{
 }
 
 #themeSelect menu-select-options {
-	min-width:100px;
+	min-width:125px;
+}
+
+.ciq-edit{
+	float: right;
+	margin: 0 5px 0 5px !important;
 }
 
 #fontFamilySelect menu-select-options {
@@ -598,8 +603,21 @@ div.loader{
 	display: inline-block;
 	min-width: 25px;
 	cursor: pointer;
-	color: #c5c7c9;
 	transition: color .20s 0s;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	-webkit-box-shadow: 0 0 0 transparent ;
+	-moz-box-shadow: 0 0 0 transparent ;
+	box-shadow: 0 0 0 transparent ;
+	color: #4d4d4d;
+	border: solid 1px transparent;
+}
+
+.boldBtn.ciq-active, .italicBtn.ciq-active{
+	color:#fff;
+	border: solid 1px #ddd;
 }
 
 .boldBtn:hover, .italicBtn:hover{
@@ -618,6 +636,8 @@ div.loader{
 	font-style: italic;
 }
 
+
+
 #lineSelect{
 	padding:0;
 	width:100px;
@@ -629,6 +649,34 @@ div.loader{
 #lineSelect menu-select-options{
 	margin-top:7px;
 }
+
+.ciq-heading{
+	float: left;
+	line-height: 27px;
+	font-size: 11px;
+	text-transform: uppercase;
+	font-family: "Roboto Condensed", sans-serif;
+	color: #999999; 
+  }
+  
+  .ciq-checkbox{
+	/* border: solid 1px #999;  */
+	left: 1px;
+	bottom: 1px;
+	width: 12px;
+	height: 12px;
+	background-position: -580px -31px;
+	float: right;
+  }
+  
+  .ciq-checkbox.ciq-active > span{
+	left: 1px;
+	bottom: 1px;
+	width: 12px;
+	height: 12px;
+	background-image: url(img/stx-sprite-ui.svg) !important;
+	background-position: -580px -31px; 
+  }
 
 .option .ciq-solid-1,
 .option .ciq-solid-3,
