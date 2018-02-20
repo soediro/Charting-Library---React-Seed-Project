@@ -5,13 +5,13 @@ import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
 import Measure from './Drawing/Measure'
 import MenuSelect from './shared/MenuSelect'
+import AxisLabel from './Drawing/AxisLabel'
 
 class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isPickingDrawColor: false,
-			menuOpen: false
+			currentToolHasLabels: false
 		};
 	}
 	componentDidMount(){
@@ -57,6 +57,15 @@ class DrawingToolbar extends React.Component {
 			let toolParams = CIQ.Drawing.getDrawingParameters(ciq, tool)
 			this.props.changeTool(tool, toolParams)
 			this.props.changeVectorParams(tool)
+			if (toolParams.hasOwnProperty('axisLabel')){
+				this.setState({
+					currentToolHasLabels: true
+				})
+			}else{
+				this.setState({
+					currentToolHasLabels: false
+				})
+			}
 		}
 	}
 	changeFontStyle(type){
@@ -129,6 +138,7 @@ class DrawingToolbar extends React.Component {
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
 							<Measure {...this.props} />
+							<AxisLabel {...this.props} hasLabels={this.state.currentToolHasLabels} />
 						</div>
 					</span>
 				</div>

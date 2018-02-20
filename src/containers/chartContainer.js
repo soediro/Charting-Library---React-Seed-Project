@@ -20,7 +20,8 @@ import { setChartContainer,
         setPeriodicityWithLoader,
         toggleTimezoneModal,
         setTimeZone,
-        draw } from '../actions/chartActions'
+        draw,
+        toggleAxisLabels } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -39,6 +40,7 @@ const mapStateToProps = (state, props) => {
         refreshInterval: state.chart.refreshInterval,
         showCrosshairs: state.chart.showCrosshairs,
         showTimezoneModal: state.chart.showTimezoneModal,
+        showAxisLabels: state.chart.showAxisLabels,
         setTimeZone: state.chart.setTimeZone,
         chartSeries: state.chart.chartSeries,
         shareStatus: state.chart.shareStatus,
@@ -85,19 +87,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(setSymbolAndSave(symbol))
     },
     toggleDrawingToolbar: () => {
-					Promise.all([
-						dispatch(toggleDrawing()),
-						dispatch(changeVectorParams())
-					])
+        Promise.all([
+            dispatch(toggleDrawing()),
+            dispatch(changeVectorParams())
+        ])
     },
     setPeriodicity: (period, interval) => {
-      dispatch(setPeriodicity(period, interval))
+        dispatch(setPeriodicity(period, interval))
     },
     setPeriodicityWithLoader: (periodicity) => {
-      dispatch(setPeriodicityWithLoader(periodicity))
+        dispatch(setPeriodicityWithLoader(periodicity))
     },
     setChartType: (type) => {
-      dispatch(setChartType(type))
+        dispatch(setChartType(type))
     },
     setSpanWithLoader: (multiplier, base, interval, period, timeUnit) => {
         dispatch(setSpanWithLoader(multiplier, base, interval, period, timeUnit))
@@ -105,11 +107,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     draw: () => {
         dispatch(draw())
     },
-    shareChart: () => {
-      dispatch(shareChart())
-    },
-    setShareStatus: (status, msg) => {
-      dispatch(setShareStatus(status, msg))
+    toggleAxisLabels: () => {
+        dispatch(toggleAxisLabels())
     }
   }
 }
