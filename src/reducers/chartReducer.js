@@ -50,7 +50,8 @@ const chart = (state = initialState, action) => {
       ciq.setMarketFactory(CIQ.Market.Symbology.factory);
       let layout = CIQ.localStorage.getItem('myChartLayout');
       if (layout !== null){
-        ciq.importLayout(JSON.parse(layout), { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
+        layout = JSON.parse(layout);
+        ciq.importLayout(layout, { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
       } else {
         ciq.newChart(state.symbol)    
       }
@@ -63,7 +64,7 @@ const chart = (state = initialState, action) => {
         },
         chartType: layout ? layout.chartType : state.chartType,
         showCrosshairs: layout ? layout.crosshair : state.showCrosshairs,
-        symbol: layout && layout.symbols ? layout.symbols[0].symbol : state.symbol
+        symbol: layout && layout.symbols ? layout.symbols[0].symbol.toUpperCase() : state.symbol
       })
     case Types.SET_CHART_TYPE:
       if (action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) {

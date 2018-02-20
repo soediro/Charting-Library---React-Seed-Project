@@ -650,10 +650,12 @@ div.loader{
 
 .boldBtn:hover, .italicBtn:hover{
 	color:#fff;
+	border: solid 1px #ddd;
 }
 
 .italicBtn, .boldBtn{
 	font-family: serif;
+	color: #bbbfc2;
 }
 
 .boldBtn{
