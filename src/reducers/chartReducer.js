@@ -22,8 +22,8 @@ const initialState = {
     interval: 1,
     timeUnit: 'day'
   },
-    shareStatus: "HIDDEN",
-    shareStatusMsg: null,
+  shareStatus: "HIDDEN",
+  shareStatusMsg: null,
   showPeriodicityLoader: false,
   studyOverlay: {
     show: false,
@@ -42,10 +42,23 @@ const chart = (state = initialState, action) => {
       })
       ciq.attachQuoteFeed(state.service, { refreshInterval: state.refreshInterval })
       ciq.setMarketFactory(CIQ.Market.Symbology.factory);
-      // new CIQ.ExtendedHours({stx:stxx, filter:true});
-      ciq.newChart(state.symbol)
+      let layout = CIQ.localStorage.getItem('myChartLayout');
+      if (layout !== null){
+        ciq.importLayout(JSON.parse(layout), { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
+      } else {
+        ciq.newChart(state.symbol)    
+      }
+    
       return Object.assign({}, state, {
-        ciq: ciq
+        ciq: ciq,
+        periodicity: {
+          period: layout ? layout.periodicity : state.periodicity.period,
+          interval: layout ? layout.interval : state.periodicity.interval,
+          timeUnit: layout ? layout.timeUnit : state.periodicity.timeUnit
+        },
+        chartType: layout ? layout.chartType : state.chartType,
+        showCrosshairs: layout ? layout.crosshair : state.showCrosshairs,
+        symbol: layout && layout.symbols ? layout.symbols[0].symbol : state.symbol
       })
     case Types.SET_CHART_TYPE:
       if (action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) {
@@ -60,8 +73,7 @@ const chart = (state = initialState, action) => {
         chartType: action.chartType.type
       })
     case Types.ADD_COMPARISON:
-      let newSeries = state.ciq.addSeries(action.symbol, action.params);
-      let newComparisons = state.comparisons.concat([newSeries]);
+      let newComparisons = state.comparisons.concat([action.series]);
       return Object.assign({}, state, {
         comparisons: newComparisons
       })
@@ -74,15 +86,6 @@ const chart = (state = initialState, action) => {
       return Object.assign({}, state, {
         showTimezoneModal: !state.showTimezoneModal
       })
-    case Types.SET_TIME_ZONE:
-      if (action.zone) {
-        state.ciq.setTimeZone(null, action.zone)
-      } else {
-        state.ciq.displayZone = null;
-        state.ciq.setTimeZone();
-      }
-      if (state.ciq.displayInitialized) state.ciq.draw();
-      return Object.assign({}, state);
     case Types.TOGGLE_CROSSHAIRS:
       state.ciq.layout.crosshair = !state.showCrosshairs
       return Object.assign({}, state, {
@@ -137,31 +140,36 @@ const chart = (state = initialState, action) => {
         }
       })
     case Types.SET_SYMBOL:
-      if (action.symbol && action.symbol !== null){
-        state.ciq.newChart(action.symbol);
-        return Object.assign({}, state, {
-          symbol: action.symbol
-        })
-      }else { return state; }
-    case Types.SET_REFRESH_INTERVAL:
       return Object.assign({}, state, {
-        interval: refreshInterval
+        symbol: action.symbol
       })
-        case Types.SHARE_CHART:
-
-            return state;
-        case Types.SET_SHARE_STATUS:
-          console.log(action);
-          return Object.assign({}, state, {
-              shareStatus: action.status,
-              shareStatusMsg: action.msg
-            })
+    case Types.SHARE_CHART:
+        return state;
+    case Types.SET_SHARE_STATUS:
+      return Object.assign({}, state, {
+          shareStatus: action.status,
+          shareStatusMsg: action.msg
+        })
     case Types.DRAW:
       state.ciq.draw()
       return state
     default:
       return state
     }
+}
+
+/*
+* private functions
+*/
+function restoreDrawings(stx, symbol){
+  var memory=CIQ.localStorage.getItem(stx.chart.symbol);
+	if(memory!==null){
+    var parsed=JSON.parse(memory);
+		if(parsed){
+			stx.importDrawings(parsed);
+			stx.draw();
+		}
+	}
 }
 
 export default chart

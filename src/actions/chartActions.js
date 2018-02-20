@@ -8,19 +8,16 @@ const Types = createTypes(
     'SET_CHART_TYPE',
     'SET_CONTAINER',
     'SET_SYMBOL',
-    'SET_REFRESH_INTERVAL',
     'ADD_COMPARISON',
     'REMOVE_COMPARISON',
     "SHARE_CHART",
     "SET_SHARE_STATUS",
-    'CHANGE_CONTAINER_SIZE',
     'CHANGE_VECTOR_PARAMS',
     'CHANGE_VECTOR_STYLE',
     'CHANGE_VECTOR_LINE_PARAMS',
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL',
-    'SET_TIME_ZONE',
     'DRAW'
 );
 
@@ -34,12 +31,42 @@ export function setChartContainer(container){
     return { type: 'SET_CONTAINER', container: container };
 }
 
-export function addComparison(symbol, params){
-    return { type: 'ADD_COMPARISON', symbol:symbol, params: params}
+export function addComparisonAndSave(symbol, params){
+    return (dispatch, getState) => {
+        let state = getState();
+        return Promise.all([
+            state.chart.ciq.addSeries(symbol, params, (err, series) => {
+                dispatch(addComparison(series));
+                dispatch(saveLayout());
+            })
+        ]);
+    };
+}
+
+export function addComparison(series){
+    return { type: 'ADD_COMPARISON', series: series }
+}
+
+export function removeComparisonAndSave(comparison){
+    return (dispatch) => {
+        return Promise.all([
+            dispatch(removeComparison(comparison)),
+            dispatch(saveLayout())
+        ]);
+    };
 }
 
 export function removeComparison(comparison){
     return { type: 'REMOVE_COMPARISON', comparison:comparison }
+}
+
+export function toggleCrosshairsAndSave(){
+    return (dispatch) => {
+        return Promise.all([
+            dispatch(toggleCrosshairs()),
+            dispatch(saveLayout())
+        ]);
+    };
 }
 
 export function toggleCrosshairs(){
@@ -51,7 +78,15 @@ export function toggleTimezoneModal(){
 }
 
 export function setTimeZone(zone){
-  return { type: 'SET_TIME_ZONE', zone: zone }
+    return (dispatch, getState) => {
+        let state = getState();
+        return Promise.all([
+            state.chart.ciq.setTimeZone(null, zone, () => {
+                if (state.chart.ciq.displayInitialized) { dispatch(draw()); }
+                dispatch(saveLayout())
+            })
+        ]);
+    };
 }
 
 export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
@@ -72,19 +107,19 @@ export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
 	return (dispatch, getState) => {
 		var state = getState()
 		return Promise.all([
-		dispatch(changingChartData(true)),
-		state.chart.ciq.setSpan(params, () => {
-			dispatch(changingChartData(false))
-			dispatch(setPeriodicity(
-				{
-					period: state.chart.ciq.layout.period,
-					interval: state.chart.ciq.layout.interval,
-					timeUnit: state.chart.ciq.layout.timeUnit
-				}
-			))
-		})
-	])
-}
+            dispatch(changingChartData(true)),
+            state.chart.ciq.setSpan(params, () => {
+                dispatch(changingChartData(false))
+                dispatch(setPeriodicity(
+                    {
+                        period: state.chart.ciq.layout.period,
+                        interval: state.chart.ciq.layout.interval,
+                        timeUnit: state.chart.ciq.layout.timeUnit
+                    }
+                ))
+            })
+        ])
+    }
 }
 
 export function shareChart(){
@@ -93,10 +128,6 @@ export function shareChart(){
 
 export function setShareStatus(status, msg){
   return { type:'SET_SHARE_STATUS', status: status, msg: msg}
-}
-
-export function changeContainerSize(size){
-    return { type: 'CHANGE_CONTAINER_SIZE', size: size }
 }
 
 export function changingChartData(isChanging){
@@ -155,8 +186,19 @@ export function setChartType(type){
     return { type: 'SET_CHART_TYPE', chartType: type }
 }
 
-export function setRefreshInterval(interval){
-    return { type: 'SET_REFRESH_INTERVAL', interval: interval }
+export function setSymbolAndSave(symbol){
+    return (dispatch, getState) => {
+        let state = getState();
+        if(symbol && symbol !== null){
+            return Promise.all([
+                state.chart.ciq.newChart(symbol, null, state.ciq, () => {
+                    dispatch(setSymbol(symbol));
+                    dispatch(saveLayout());
+                })
+            ]);
+        }
+        return;
+    };
 }
 
 export function setSymbol(symbol){
@@ -165,4 +207,24 @@ export function setSymbol(symbol){
 
 export function draw(){
     return { type: 'DRAW' }
+}
+
+export function drawingsChanged(params){
+    return (dispatch) => {
+        let tmp = params.stx.exportDrawings();
+        if(tmp.length===0){
+            CIQ.localStorage.removeItem(params.symbol);
+        }else{
+            CIQ.localStorageSetItem(params.symbol, JSON.stringify(tmp));
+        }
+        dispatch(saveLayout())
+    }
+}
+
+export function saveLayout(){
+    return (dispatch, getState) => {
+        let state = getState(),
+        savedLayout = JSON.stringify(state.chart.ciq.exportLayout({ withSymbols: true }));
+        CIQ.localStorageSetItem("myChartLayout", savedLayout);
+    }
 }

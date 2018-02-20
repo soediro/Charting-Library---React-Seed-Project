@@ -30,7 +30,7 @@ const UI = (props) => {
 						<Crosshairs {...props} />
 						<TimeZoneButton {...props} />
 						<DrawingToolbarButton {...props} />
-            <ShareChartModal {...props} />
+            			<ShareChartModal {...props} />
 					</div>
 				</nav>
 					:
