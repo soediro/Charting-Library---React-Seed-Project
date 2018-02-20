@@ -32,7 +32,12 @@ const initialState = {
     left: 0,
     params: null
   },
-	initialTool:undefined
+  initialTool:undefined,
+  drawings: [],
+  undoStamps: [],
+  canUndo: false,
+  canRedo: false,
+  canClear: false
 }
 
 const chart = (state = initialState, action) => {
@@ -49,7 +54,6 @@ const chart = (state = initialState, action) => {
       } else {
         ciq.newChart(state.symbol)    
       }
-    
       return Object.assign({}, state, {
         ciq: ciq,
         periodicity: {
@@ -160,6 +164,43 @@ const chart = (state = initialState, action) => {
       return Object.assign({}, state, {
         showAxisLabels: flipAxisLabels
       })
+    case Types.DRAWINGS_CHANGED:
+        let drawings = state.ciq.drawingObjects.slice();
+        return Object.assign({}, state, {
+          drawings: drawings,
+          canUndo: true,
+          canClear: drawings.length > 0
+        });
+    case Types.UNDO:
+        return Object.assign({}, state, {
+          canRedo: true,
+          canUndo: false,
+          canClear: state.ciq.drawingObjects.length > 0
+        });
+    case Types.REDO:
+        return Object.assign({}, state, {
+          canRedo: false,
+          canUndo: true,
+          canClear: state.ciq.drawingObjects.length > 0
+        });
+    case Types.CLEAR:
+        return Object.assign({}, state, {
+          drawings: [],
+          canClear: false
+        });
+    case Types.UPDATE_UNDO_STAMPS:
+        let undoStamps = state.ciq.undoStamps.slice();
+        return Object.assign({}, state, {
+          undoStamps: undoStamps,
+          canUndo: undoStamps.length > 0,
+          canClear: state.ciq.drawingObjects.length > 0
+        });
+    case Types.IMPORT_DRAWINGS:
+        drawings = state.ciq.drawingObjects.slice();
+        return Object.assign({}, state, {
+          drawings: drawings,
+          canClear: drawings.length > 0
+        });
     default:
       return state
     }
@@ -168,7 +209,7 @@ const chart = (state = initialState, action) => {
 /*
 * private functions
 */
-function restoreDrawings(stx, symbol){
+function restoreDrawings(stx){
   var memory=CIQ.localStorage.getItem(stx.chart.symbol);
 	if(memory!==null){
     var parsed=JSON.parse(memory);

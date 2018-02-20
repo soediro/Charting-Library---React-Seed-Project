@@ -6,6 +6,9 @@ import Font from './Text/Font'
 import Measure from './Drawing/Measure'
 import MenuSelect from './shared/MenuSelect'
 import AxisLabel from './Drawing/AxisLabel'
+import Undo from './Drawing/Undo'
+import Redo from './Drawing/Redo'
+import Clear from './Drawing/Clear'
 
 class DrawingToolbar extends React.Component {
 	constructor(props) {
@@ -33,8 +36,10 @@ class DrawingToolbar extends React.Component {
 			this.props.draw()
 		}
 
-		if(this.props.ciq === null && nextProps.ciq !== null && nextProps.ciq.callbacks.drawing === null){
-			nextProps.ciq.callbacks.drawing = this.drawingsChanged
+		if(this.props.ciq === null && nextProps.ciq !== null){
+			if (nextProps.ciq.callbacks.drawing === null){
+				nextProps.ciq.callbacks.drawing = this.drawingsChanged;
+			}
 		}
 	}
 	drawingsChanged(args){
@@ -139,6 +144,11 @@ class DrawingToolbar extends React.Component {
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
 							<Measure {...this.props} />
 							<AxisLabel {...this.props} hasLabels={this.state.currentToolHasLabels} />
+						</div>
+						<div className="undoSection">
+							<Undo {...this.props} />
+							<Redo {...this.props} />
+							<Clear {...this.props} />
 						</div>
 					</span>
 				</div>

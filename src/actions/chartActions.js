@@ -1,4 +1,4 @@
-import createTypes from 'redux-create-action-types'
+import createTypes from 'redux-create-action-types';
 
 /*
  * action types
@@ -7,6 +7,8 @@ const Types = createTypes(
     'CHANGE_CHART_DATA',
     'SET_CHART_TYPE',
     'SET_CONTAINER',
+    'IMPORT_LAYOUT',
+    'IMPORT_DRAWINGS',
     'SET_SYMBOL',
     'ADD_COMPARISON',
     'REMOVE_COMPARISON',
@@ -19,7 +21,13 @@ const Types = createTypes(
     'SET_PERIODICITY',
     'TOGGLE_CROSSHAIRS',
     'TOGGLE_TIMEZONE_MODAL',
-    'DRAW'
+    'DRAW',
+    'DRAWINGS_CHANGED',
+    'CREATE_UNDO_STAMP',
+    'UPDATE_UNDO_STAMPS',
+    'UNDO',
+    'REDO',
+    'CLEAR'
 );
 
 export default Types;
@@ -29,7 +37,24 @@ export default Types;
  */
 
 export function setChartContainer(container){
+    return (dispatch) => {
+        return Promise.all([
+            dispatch(setContainer(container)),
+            dispatch(changingChartData(true)),
+            setTimeout(() => {
+                dispatch(importDrawings())
+                dispatch(changingChartData(false))
+            }, 2500)
+        ]);
+    }
+}
+
+export function setContainer(container){
     return { type: 'SET_CONTAINER', container: container };
+}
+
+export function importDrawings(){
+    return { type: 'IMPORT_DRAWINGS' }
 }
 
 export function addComparisonAndSave(symbol, params){
@@ -210,16 +235,97 @@ export function draw(){
     return { type: 'DRAW' }
 }
 
+export function createUndoStamp(before, after){
+    return (dispatch, getState) => {
+        let state = getState();
+        state.chart.ciq.undoStamp(before, after);
+        dispatch(updateUndoStamps());
+    }
+}
+
+export function updateUndoStamps(){
+    return { type: 'UPDATE_UNDO_STAMPS' }
+}
+
+export function undo(before, after){
+    return (dispatch, getState) => {
+        let state = getState(),
+        b, a;
+
+        if (!before || !after){
+            b = state.chart.ciq.drawingObjects;
+        }else{
+            b = before;
+            a = after;
+        }
+        state.chart.ciq.undoLast();
+        a = !before || !after ? state.chart.ciq.drawingObjects : after;
+        return Promise.all([
+            dispatch(createUndoStamp(b, a)),
+            dispatch(undid()),
+            dispatch(saveLayout())
+        ]);
+    };
+}
+
+export function undid(){
+    return { type: 'UNDO' }
+}
+
+export function redo(){
+    return (dispatch, getState) => {
+        let state = getState(),
+        before = state.chart.ciq.drawingObjects;
+        state.chart.ciq.drawingObjects=state.chart.ciq.undoStamps.pop();
+        let after = state.chart.ciq.drawingObjects;
+        return Promise.all([
+            dispatch(createUndoStamp(before, after)),
+            dispatch(redid()),
+            dispatch(saveLayout())
+        ]);
+    }
+}
+
+export function redid(){
+    return { type: 'REDO' }
+}
+
+export function clear(){
+    return (dispatch, getState) => {
+        let state = getState(),
+        oldDrawings = state.chart.ciq.drawingObjects;
+        state.chart.ciq.clearDrawings();
+        return Promise.all([
+            dispatch(createUndoStamp(oldDrawings, [])),
+            dispatch(saveLayout()),
+            dispatch(cleared())
+        ]);
+    };
+}
+
+export function cleared(){
+    return { type: 'CLEAR' }
+}
+
 export function drawingsChanged(params){
-    return (dispatch) => {
-        let tmp = params.stx.exportDrawings();
+    return (dispatch, getState) => {
+        let state = getState(),
+        oldDrawings = state.chart.drawings,
+        tmp = params.stx.exportDrawings();
         if(tmp.length===0){
             CIQ.localStorage.removeItem(params.symbol);
         }else{
             CIQ.localStorageSetItem(params.symbol, JSON.stringify(tmp));
         }
-        dispatch(saveLayout())
+        return Promise.all([
+            dispatch(createUndoStamp(oldDrawings, tmp)),
+            dispatch(saveLayout())
+        ]);
     }
+}
+
+export function changeDrawings(){
+    return { type: 'DRAWINGS_CHANGED' }
 }
 
 export function saveLayout(){
