@@ -137,30 +137,30 @@ const ThemeUI = (state = initialState, action) => {
                 themeHelper: themeHelper,
                 currentThemeSettings: newThemeSettings
             })
-				case Types.CHANGE_THEME:
-						if (action.theme.name.indexOf('+ New Theme') > -1) {
-							return Object.assign({}, state, {
-								showEditModal: true
-							})
-						} else {
-							if (action.theme.settings) {
-								state.themeHelper.settings = CIQ.clone(action.theme.settings)
-								state.themeHelper.update()
-							} else if (action.theme.className){
-								$$$('body').className = action.theme.className
-								var stx=state.themeHelper.params.stx;
-								stx.styles={};
-								stx.chart.container.style.backgroundColor="";
-								if(stx.displayInitialized){
-									stx.headsUpHR();
-									stx.clearPixelCache();
-									stx.updateListeners("theme");
-									stx.draw();
-								}
-							}
+		case Types.CHANGE_THEME:
+			if (action.theme.name.indexOf('+ New Theme') > -1) {
+				return Object.assign({}, state, {
+					showEditModal: true
+				})
+			} else {
+				if (action.theme.settings) {
+					state.themeHelper.settings = CIQ.clone(action.theme.settings);
+					state.themeHelper.update();
+				} else if (action.theme.className){
+					$$$('body').className = action.theme.className
+					var stx=state.themeHelper.params.stx;
+					stx.styles={};
+					stx.chart.container.style.backgroundColor="";
+					if(stx.displayInitialized){
+						stx.headsUpHR();
+						stx.clearPixelCache();
+						stx.updateListeners("theme");
+						stx.draw();
+					}
+				}
 
-						}
-						return state
+			}
+			return state
         case Types.UPDATE_THEME:
             newThemeSettings = updateThemeSettings(state.themeHelper, state.currentThemeSettings, {
                 color: action.color,
@@ -176,9 +176,17 @@ const ThemeUI = (state = initialState, action) => {
                 settings: action.theme
             },
             endIndex = state.themeList.length-1,
-            newThemeList = state.themeList.slice()
+			newThemeList = state.themeList.slice(),
+			existsIndex = -1;
 
-            newThemeList.splice(endIndex, 0, item)
+			newThemeList.map((theme, i) => {
+				if (theme.name === action.name){
+					existsIndex = i;
+				}
+			});
+
+			if (existsIndex > -1) { newThemeList.splice(existsIndex, 1, item); }
+            else { newThemeList.splice(endIndex, 0, item); }
 
             state.themeHelper.settings = CIQ.clone(action.theme)
             state.themeHelper.update()
@@ -191,7 +199,23 @@ const ThemeUI = (state = initialState, action) => {
         case Types.TOGGLE_THEME_EDITOR:
             return Object.assign({}, state, {
                 showEditModal: !state.showEditModal
-            })
+			})
+		case Types.DELETE_THEME:
+			let themeIndex = -1, themeName = action.theme.name;
+			newThemeList = state.themeList.slice();
+
+			newThemeList.map((theme, i) => {
+				if (theme.name === action.theme.name){
+					themeIndex = i;
+				}
+			})
+            newThemeList.splice(themeIndex, 1)
+
+			return Object.assign({}, state, {
+				themeList: newThemeList,
+				currentThemeName: themeName,
+				showEditModal: false,
+			})
         default:
             return state
     }

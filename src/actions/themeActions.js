@@ -8,7 +8,8 @@ const Types = createTypes(
     'CHANGE_THEME',
     'SAVE_THEME',
     'UPDATE_THEME',
-    'TOGGLE_THEME_EDITOR'
+    'TOGGLE_THEME_EDITOR',
+    'DELETE_THEME'
 )
 
 export default Types
@@ -35,4 +36,8 @@ export function saveTheme(name, theme){
 
 export function toggleThemeEditor(){
     return { type: 'TOGGLE_THEME_EDITOR' }
+}
+
+export function deleteTheme(theme){
+    return { type: 'DELETE_THEME', theme: theme }
 }

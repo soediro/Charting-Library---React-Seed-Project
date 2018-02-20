@@ -304,7 +304,7 @@ menu-select-options menu-option{
 	text-align:left;
 	display:block;
 	line-height: 27px;
-	height: 27px;
+	height: auto;
 	color:#666;
 }
 menu-select-options menu-option span{
@@ -336,7 +336,12 @@ menu-select-options{
 }
 
 #themeSelect menu-select-options {
-	min-width:100px;
+	min-width:125px;
+}
+
+.ciq-edit{
+	float: right;
+	margin: 0 5px 0 5px !important;
 }
 
 #fontFamilySelect menu-select-options {
@@ -587,19 +592,60 @@ div.loader{
 	background: #1c2a35;
 }
 
+.toolbar > span{
+	width:100%;
+	padding-left:10px;
+}
+
+#toolSelect{
+	width:12%;
+}
+
+.toolbar .undoSection{
+	float: right;
+	width: 30%;
+}
+
+.toolbar .undoSection button{
+	margin-left: 3px;
+	opacity: .45;
+	float: right;
+}
+
+.toolbar .undoSection button:active, .toolbar .undoSection button:focus{
+	background-color: #fff;
+}
+
+.toolbar .undoSection button.active{
+	opacity:1;
+}
+
 .drawingParameters{
 	padding:5px;
-	margin-left:10px;
-	width: 415px;
+	width: 70%;
 	display: flex;
+	float:left;
 }
 
 .boldBtn, .italicBtn{
 	display: inline-block;
 	min-width: 25px;
 	cursor: pointer;
-	color: #c5c7c9;
 	transition: color .20s 0s;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 14px;
+	font-weight: 300;
+	text-align: center;
+	-webkit-box-shadow: 0 0 0 transparent ;
+	-moz-box-shadow: 0 0 0 transparent ;
+	box-shadow: 0 0 0 transparent ;
+	color: #4d4d4d;
+	border: solid 1px transparent;
+}
+
+.boldBtn.ciq-active, .italicBtn.ciq-active{
+	color:#fff;
+	border: solid 1px #ddd;
 }
 
 .boldBtn:hover, .italicBtn:hover{
@@ -617,6 +663,8 @@ div.loader{
 .italicBtn{
 	font-style: italic;
 }
+
+
 
 #lineSelect{
 	padding:0;

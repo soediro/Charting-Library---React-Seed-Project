@@ -4,6 +4,10 @@ import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
 import Font from './Text/Font'
 import Measure from './Drawing/Measure'
+import MenuSelect from './shared/MenuSelect'
+import Undo from './Drawing/Undo'
+import Redo from './Drawing/Redo'
+import Clear from './Drawing/Clear'
 
 class DrawingToolbar extends React.Component {
 	constructor(props) {
@@ -32,8 +36,10 @@ class DrawingToolbar extends React.Component {
 			this.props.draw()
 		}
 
-		if(this.props.ciq === null && nextProps.ciq !== null && nextProps.ciq.callbacks.drawing === null){
-			nextProps.ciq.callbacks.drawing = this.drawingsChanged
+		if(this.props.ciq === null && nextProps.ciq !== null){
+			if (nextProps.ciq.callbacks.drawing === null){
+				nextProps.ciq.callbacks.drawing = this.drawingsChanged;
+			}
 		}
 	}
 	drawingsChanged(args){
@@ -42,18 +48,18 @@ class DrawingToolbar extends React.Component {
 	toTitleCase(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
-	setTool(tool){
-		if (this.props.ciq === null) return
+	setTool(ciq, tool){
+		if (ciq === null) return
 		else {
-      if(tool=='callout' || tool=='annotation') { // no need to do this every time
-        // Sync the defaults for font tool
-        var style=this.props.ciq.canvasStyle("stx_annotation");
-        this.props.ciq.currentVectorParameters.annotation.font.size=style.fontSize
-        this.props.ciq.currentVectorParameters.annotation.font.family=style.fontFamily
-        this.props.ciq.currentVectorParameters.annotation.font.style=style.fontStyle
-        this.props.ciq.currentVectorParameters.annotation.font.weight=style.fontWeight
-      }
-			let toolParams = CIQ.Drawing.getDrawingParameters(this.props.ciq, tool)
+			if(tool=='callout' || tool=='annotation') { // no need to do this every time
+				// Sync the defaults for font tool
+				var style=ciq.canvasStyle("stx_annotation");
+				ciq.currentVectorParameters.annotation.font.size=style.fontSize
+				ciq.currentVectorParameters.annotation.font.family=style.fontFamily
+				ciq.currentVectorParameters.annotation.font.style=style.fontStyle
+				ciq.currentVectorParameters.annotation.font.weight=style.fontWeight
+			}
+			let toolParams = CIQ.Drawing.getDrawingParameters(ciq, tool)
 			this.props.changeTool(tool, toolParams)
 			this.props.changeVectorParams(tool)
 		}
@@ -77,11 +83,11 @@ class DrawingToolbar extends React.Component {
 	setColor(color, type){
 		if(type==="line"){
 			this.props.setLineColor(color)
-      this.props.changeVectorStyle('lineColor', { color: color })
+			this.props.changeVectorStyle('lineColor', { color: color })
 		}else if(type==="fill"){
-      this.props.setFillColor(color)
-      this.props.changeVectorStyle('fillColor', { color: color })
-    }else return
+			this.props.setFillColor(color)
+			this.props.changeVectorStyle('fillColor', { color: color })
+		}else { return }
 
 		this.setState({
 			showColorPicker: false
@@ -103,12 +109,6 @@ class DrawingToolbar extends React.Component {
 		})
 	}
 	render() {
-		let options = this.props.tools.map((tool, i) => {
-			return (
-				<menu-option key={"tool"+i} className="option" onClick={this.setTool.bind(this, tool)}>{this.toTitleCase(tool)}</menu-option>
-			)
-		})
-
 		let menuDisplay = {
 			display: this.state.menuOpen ? 'block' : 'none'
 		}
@@ -116,12 +116,16 @@ class DrawingToolbar extends React.Component {
 		if(this.props.showDrawingToolbar){
 			return (
 				<div className="toolbar">
-					<menu-select id="toolSelect" onMouseOver={this.openMenu} onMouseOut={this.closeMenu} onClick={this.closeMenu}>
-						<span className="title">{this.props.selectedTool || "Select Tool"}</span>
-						<menu-select-options className="menu-hover" style={menuDisplay}>
-							{options}
-						</menu-select-options>
-					</menu-select>
+					<MenuSelect hasButtons={false}
+								options={this.props.tools}
+								keyName='tool'
+								handleOptionSelect={this.setTool.bind(this)}
+								menuId='toolSelect'
+								title='Select Tool'
+								needsCiq={true}
+								ciq={this.props.ciq}
+								labelNeedsTransform={true}
+								labelTransform={this.toTitleCase} />
 					<span>
 						<div className="drawingParameters">
 							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} isPickingColor={this.state.isPickingDrawColor} changeState={this.changePickerState} />
@@ -130,6 +134,11 @@ class DrawingToolbar extends React.Component {
 							<FontStyle {...this.props} onClick={this.changeFontStyle} />
 							<Font {...this.props} onFamilyClick={this.changeFontFamily} onSizeClick={this.changeFontSize} />
 							<Measure {...this.props} />
+						</div>
+						<div className="undoSection">
+							<Undo {...this.props} />
+							<Redo {...this.props} />
+							<Clear {...this.props} />
 						</div>
 					</span>
 				</div>
