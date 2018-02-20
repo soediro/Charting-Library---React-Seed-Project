@@ -49,7 +49,6 @@ class MenuSelect extends React.Component{
             optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option),
             buttonCName = (this.state.selected.type === option.type && this.state.selected.label === option.label) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
             select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
-            console.log(this.props.noButtons.indexOf(optionLabel), optionLabel)
 
             return (
                 <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={select}>
