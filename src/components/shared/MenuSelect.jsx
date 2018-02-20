@@ -49,22 +49,23 @@ class MenuSelect extends React.Component{
             optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option),
             buttonCName = (this.state.selected.type === option.type && this.state.selected.label === option.label) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
             select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
+            console.log(this.props.noButtons.indexOf(optionLabel), optionLabel)
 
             return (
                 <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={select}>
-                    {this.state.hasButtons && !this.props.noButtons.indexOf(optionLabel)>-1
-                                ? 
+                    {(this.state.hasButtons && (this.props.noButtons.indexOf(optionLabel)===-1))
+                                ?
                         (<span>
                         <span className='ciq-edit' onClick={this.edit.bind(this, option)}></span>
                         <cq-close onClick={this.delete.bind(this, option)}></cq-close></span>)
                                 :
-                                null
+                                <span></span>
                     }
                     {this.state.hasCheckboxes
                                 ?
                         (<div><span className={buttonCName}><span></span></span></div>)
                                 :
-                                null
+                                <span></span>
                     }
                     {optionLabel}
                 </menu-option>
