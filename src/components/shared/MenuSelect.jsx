@@ -31,8 +31,8 @@ class MenuSelect extends React.Component{
             menuOpen: false,
             selected: option
         }, () => {
-            //Call handleOptionSelect when the option selected has actually changed
-            if (oldOption.type !== option.type && oldOption.label !== option.label){
+            //Call handleOptionSelect when the option selected has actually changed, ignore this when selecting '+ New Theme' from the theme menu
+            if ((oldOption !== option) || (oldOption.type && option.type && oldOption.type !== option.type && oldOption.label && option.label && oldOption.label !== option.label) || (option.name && option.name.indexOf('New Theme')>-1)){
                 if (Object.keys(ciq).length > 0){
                     this.props.handleOptionSelect(ciq, option);
                 } else {
@@ -58,13 +58,13 @@ class MenuSelect extends React.Component{
                         <span className='ciq-edit' onClick={this.edit.bind(this, option)}></span>
                         <cq-close onClick={this.delete.bind(this, option)}></cq-close></span>)
                                 :
-                                <span></span>
+                                null
                     }
                     {this.state.hasCheckboxes
                                 ?
                         (<div><span className={buttonCName}><span></span></span></div>)
                                 :
-                                <span></span>
+                                null
                     }
                     {optionLabel}
                 </menu-option>

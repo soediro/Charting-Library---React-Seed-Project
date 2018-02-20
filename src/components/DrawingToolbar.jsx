@@ -14,7 +14,8 @@ class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentToolHasLabels: false
+			currentToolHasLabels: false,
+			toolTitle: 'Select Tool'
 		};
 	}
 	componentDidMount(){
@@ -62,15 +63,10 @@ class DrawingToolbar extends React.Component {
 			let toolParams = CIQ.Drawing.getDrawingParameters(ciq, tool)
 			this.props.changeTool(tool, toolParams)
 			this.props.changeVectorParams(tool)
-			if (toolParams.hasOwnProperty('axisLabel')){
-				this.setState({
-					currentToolHasLabels: true
-				})
-			}else{
-				this.setState({
-					currentToolHasLabels: false
-				})
-			}
+			this.setState({
+				currentToolHasLabels: toolParams.hasOwnProperty('axisLabel'),
+				toolTitle: this.toTitleCase(tool)
+			});
 		}
 	}
 	changeFontStyle(type){
@@ -130,11 +126,12 @@ class DrawingToolbar extends React.Component {
 								keyName='tool'
 								handleOptionSelect={this.setTool.bind(this)}
 								menuId='toolSelect'
-								title='Select Tool'
+								title={this.state.toolTitle}
 								needsCiq={true}
 								ciq={this.props.ciq}
 								labelNeedsTransform={true}
-								labelTransform={this.toTitleCase} />
+								labelTransform={this.toTitleCase}
+								handlesOwnContent={true} />
 					<span>
 						<div className="drawingParameters">
 							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} isPickingColor={this.state.isPickingDrawColor} changeState={this.changePickerState} />
