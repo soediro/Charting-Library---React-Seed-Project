@@ -55,6 +55,13 @@ const chart = (state = initialState, action) => {
       } else {
         ciq.newChart(state.symbol)    
       }
+      let preferences = CIQ.localStorage.getItem('myChartPreferences');
+      if (preferences !== null){
+        preferences = JSON.parse(preferences);
+        if (preferences.timeZone) {
+          ciq.setTimeZone(null, preferences.timeZone);
+        }
+      }
       return Object.assign({}, state, {
         ciq: ciq,
         periodicity: {

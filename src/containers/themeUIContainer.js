@@ -7,12 +7,13 @@ import { setThemeHelper,
          updateTheme,
          saveTheme,
          toggleThemeEditor,
-         deleteTheme } from '../actions/themeActions'
+         deleteTheme,
+         restoreThemes } from '../actions/themeActions'
 
 //components
 import ThemeUI from '../components/UI/ThemeUI'
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
     return {
         themeHelper: state.theme.themeHelper,
         themeList: state.theme.themeList,
@@ -21,7 +22,7 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         setThemeHelper: (ciq) => {
             dispatch(setThemeHelper(ciq))
@@ -40,6 +41,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         deleteTheme: (theme) => {
             dispatch(deleteTheme(theme))
+        },
+        restoreThemes: () => {
+            dispatch(restoreThemes())
         }
     }
 }

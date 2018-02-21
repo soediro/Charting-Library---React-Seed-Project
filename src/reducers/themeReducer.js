@@ -191,6 +191,7 @@ const ThemeUI = (state = initialState, action) => {
             state.themeHelper.settings = CIQ.clone(action.theme)
             state.themeHelper.update()
 
+			CIQ.localStorageSetItem('myChartThemes', JSON.stringify(newThemeList));
             return Object.assign({}, state, {
                 currentThemeName: action.name,
                 themeList: newThemeList,
@@ -209,13 +210,19 @@ const ThemeUI = (state = initialState, action) => {
 					themeIndex = i;
 				}
 			})
-            newThemeList.splice(themeIndex, 1)
-
+			newThemeList.splice(themeIndex, 1);
+			
+			CIQ.localStorageSetItem('myChartThemes', JSON.stringify(newThemeList));
 			return Object.assign({}, state, {
 				themeList: newThemeList,
 				currentThemeName: themeName,
 				showEditModal: false,
 			})
+		case Types.RESTORE_THEMES:
+			let restoredThemeList = JSON.parse(CIQ.localStorage.getItem('myChartThemes'));
+			return Object.assign({}, state, {
+				themeList: restoredThemeList ? restoredThemeList : state.themeList
+			});
         default:
             return state
     }

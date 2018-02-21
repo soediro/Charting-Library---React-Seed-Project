@@ -25,7 +25,8 @@ import { setChartContainer,
         undo,
         redo,
         clear,
-        importDrawings} from '../actions/chartActions'
+        importDrawings,
+        saveLayout } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -130,6 +131,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     toggleAxisLabels: () => {
         dispatch(toggleAxisLabels())
+    },
+    saveLayout: () => {
+      dispatch(saveLayout())
     }
   }
 }

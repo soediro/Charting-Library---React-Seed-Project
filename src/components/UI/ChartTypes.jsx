@@ -8,16 +8,4 @@ const ChartTypes = (props) => {
 	);
 }
 
-//private
-// function getOptionLabel(layout){
-// 	console.log('layout: ', layout)
-// 	for (var i = 0; i < configs.chartTypes.types.length; i++){
-// 		let option = configs.chartTypes.types[i];
-// 		if(layout.chartType === option.type){
-// 			return option.label
-// 		}
-// 	}
-// 	return configs.chartTypes.types[0].label
-// }
-
 export default ChartTypes

@@ -21,7 +21,14 @@ class ThemeModal extends React.Component {
 		this.changePickerState = this.changePickerState.bind(this)
 	}
 	saveSettings() {
-		if (!this.state.name || this.state.name==='') return;
+		let isRepeat = false;
+		this.props.themeList.map((theme) => {
+			if (theme.name === this.state.name) { isRepeat = true; }
+		});
+		if (!this.state.name || this.state.name==='' || isRepeat) { 
+			alert('Cannot save theme with a name that\'s already used');	
+			return; 
+		}
 		this.props.saveTheme(this.state.name, this.props.themeHelper.settings);
 	}
 	updateThemeName(event) {

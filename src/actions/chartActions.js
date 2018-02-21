@@ -107,12 +107,15 @@ export function setTimeZone(zone){
     return (dispatch, getState) => {
         let state = getState();
         return Promise.all([
-            state.chart.ciq.setTimeZone(null, zone, () => {
-                if (state.chart.ciq.displayInitialized) { dispatch(draw()); }
-                dispatch(saveLayout())
-            })
+            state.chart.ciq.setTimeZone(null, zone),
+            dispatch(changingChartData(true)),
+            setTimeout(() => {
+                dispatch(draw()),
+                dispatch(saveLayout()),
+                dispatch(changingChartData(false))
+            }, 1500)
         ]);
-    };
+    }
 }
 
 export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
@@ -252,14 +255,14 @@ export function undo(before, after){
         let state = getState(),
         b, a;
 
-        if (!before || !after){
+        if (!before && !after){
             b = state.chart.ciq.drawingObjects;
         }else{
             b = before;
             a = after;
         }
         state.chart.ciq.undoLast();
-        a = !before || !after ? state.chart.ciq.drawingObjects : after;
+        a = !before && !after ? state.chart.ciq.drawingObjects : after;
         return Promise.all([
             dispatch(createUndoStamp(b, a)),
             dispatch(undid()),
@@ -310,8 +313,9 @@ export function cleared(){
 export function drawingsChanged(params){
     return (dispatch, getState) => {
         let state = getState(),
-        oldDrawings = state.chart.drawings,
-        tmp = params.stx.exportDrawings();
+        oldDrawings = state.chart.drawings;
+        dispatch(changeDrawings());
+        let tmp = params.stx.exportDrawings();
         if(tmp.length===0){
             CIQ.localStorage.removeItem(params.symbol);
         }else{
@@ -333,5 +337,6 @@ export function saveLayout(){
         let state = getState(),
         savedLayout = JSON.stringify(state.chart.ciq.exportLayout({ withSymbols: true }));
         CIQ.localStorageSetItem("myChartLayout", savedLayout);
+        CIQ.localStorageSetItem('myChartPreferences', JSON.stringify(state.chart.ciq.exportPreferences()));
     }
 }

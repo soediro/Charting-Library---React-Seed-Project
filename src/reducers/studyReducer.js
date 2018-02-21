@@ -64,7 +64,7 @@ const study = (state = initialState, action) => {
                 studyHelper: null
             })
         case Types.REMOVE_STUDY:
-            if(state.studyHelper !== null) CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd)
+            if(state.studyHelper !== null) { CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd); }
             return Object.assign({}, state, {
                 studyOverlay: {
                     show: false,
