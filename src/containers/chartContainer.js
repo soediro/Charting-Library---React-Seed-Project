@@ -53,8 +53,7 @@ const mapStateToProps = (state, props) => {
         drawings: state.chart.drawings,
         canUndo: state.chart.canUndo,
         canRedo: state.chart.canRedo,
-        canClear: state.chart.canClear,
-        undoStamps: state.chart.undoStamps
+        canClear: state.chart.canClear
     }
 }
 

@@ -242,6 +242,8 @@ export function createUndoStamp(before, after){
     return (dispatch, getState) => {
         let state = getState();
         state.chart.ciq.undoStamp(before, after);
+        state.chart.ciq.undoStamps.pop();
+        console.log(state.chart.ciq.undoStamps)
         dispatch(updateUndoStamps());
     }
 }
@@ -250,24 +252,11 @@ export function updateUndoStamps(){
     return { type: 'UPDATE_UNDO_STAMPS' }
 }
 
-export function undo(before, after){
+export function undo(){
     return (dispatch, getState) => {
-        let state = getState(),
-        b, a;
-
-        if (!before && !after){
-            b = state.chart.ciq.drawingObjects;
-        }else{
-            b = before;
-            a = after;
-        }
+        let state = getState();
         state.chart.ciq.undoLast();
-        a = !before && !after ? state.chart.ciq.drawingObjects : after;
-        return Promise.all([
-            dispatch(createUndoStamp(b, a)),
-            dispatch(undid()),
-            dispatch(saveLayout())
-        ]);
+        dispatch(undid());
     };
 }
 
@@ -277,15 +266,17 @@ export function undid(){
 
 export function redo(){
     return (dispatch, getState) => {
-        let state = getState(),
-        before = state.chart.ciq.drawingObjects;
-        state.chart.ciq.drawingObjects=state.chart.ciq.undoStamps.pop();
-        let after = state.chart.ciq.drawingObjects;
-        return Promise.all([
-            dispatch(createUndoStamp(before, after)),
-            dispatch(redid()),
-            dispatch(saveLayout())
-        ]);
+        let state = getState();
+
+        // before = state.chart.ciq.drawingObjects;
+        state.chart.ciq.drawingObjects=state.chart.oldDrawings;
+        // let after = state.chart.ciq.drawingObjects;
+        dispatch(redid());
+        // return Promise.all([
+        //     dispatch(createUndoStamp(before, after)),
+        //     dispatch(redid()),
+        //     dispatch(saveLayout())
+        // ]);
     }
 }
 
@@ -295,36 +286,44 @@ export function redid(){
 
 export function clear(){
     return (dispatch, getState) => {
-        let state = getState(),
-        oldDrawings = state.chart.ciq.drawingObjects;
+        let state = getState();
+        // oldDrawings = state.chart.ciq.drawingObjects;
         state.chart.ciq.clearDrawings();
-        return Promise.all([
-            dispatch(createUndoStamp(oldDrawings, [])),
-            dispatch(saveLayout()),
-            dispatch(cleared())
-        ]);
+        // return Promise.all([
+        //     dispatch(createUndoStamp(oldDrawings, [])),
+        //     dispatch(saveLayout()),
+        //     dispatch(cleared())
+        // ]);
     };
 }
 
-export function cleared(){
-    return { type: 'CLEAR' }
-}
+// export function cleared(){
+//     return { type: 'CLEAR' }
+// }
 
 export function drawingsChanged(params){
+    console.log('drawingsChanged: ', params);
     return (dispatch, getState) => {
         let state = getState(),
         oldDrawings = state.chart.drawings;
-        dispatch(changeDrawings());
-        let tmp = params.stx.exportDrawings();
+        let tmp = params.drawings;
         if(tmp.length===0){
-            CIQ.localStorage.removeItem(params.symbol);
+            CIQ.localStorage.removeItem(state.chart.ciq.chart.symbol);
         }else{
-            CIQ.localStorageSetItem(params.symbol, JSON.stringify(tmp));
+            CIQ.localStorageSetItem(state.chart.ciq.chart.symbol, tmp);
         }
-        return Promise.all([
-            dispatch(createUndoStamp(oldDrawings, tmp)),
-            dispatch(saveLayout())
-        ]);
+        if (tmp.length!==0) {
+            console.log('creating undo stamp with oldDrawings: ', oldDrawings, ' and tmp: ', tmp);
+            return Promise.all([
+                dispatch(changeDrawings()),
+                dispatch(createUndoStamp(oldDrawings, tmp)),
+                dispatch(saveLayout())
+            ]);
+        } else {
+            console.log('not creating undo stamp');
+            dispatch(changeDrawings());
+            return dispatch(saveLayout());
+        }
     }
 }
 

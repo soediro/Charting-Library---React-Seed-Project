@@ -34,7 +34,7 @@ const initialState = {
   },
   initialTool:undefined,
   drawings: [],
-  undoStamps: [],
+  oldDrawings: [],
   canUndo: false,
   canRedo: false,
   canClear: false
@@ -175,33 +175,29 @@ const chart = (state = initialState, action) => {
     case Types.DRAWINGS_CHANGED:
         let drawings = state.ciq.drawingObjects.slice();
         return Object.assign({}, state, {
-          drawings: drawings,
-          canUndo: true,
-          canClear: drawings.length > 0
+          drawings: drawings
         });
     case Types.UNDO:
         return Object.assign({}, state, {
-          canRedo: true,
-          canUndo: false,
-          canClear: state.ciq.drawingObjects.length > 0
+          oldDrawings: state.drawings,
+          canRedo: true
         });
     case Types.REDO:
         return Object.assign({}, state, {
           canRedo: false,
-          canUndo: true,
-          canClear: state.ciq.drawingObjects.length > 0
+          oldDrawings: []
         });
-    case Types.CLEAR:
-        return Object.assign({}, state, {
-          drawings: [],
-          canClear: false
-        });
+    // case Types.CLEAR:
+    //     return Object.assign({}, state, {
+    //       drawings: [],
+    //       canClear: false
+    //     });
     case Types.UPDATE_UNDO_STAMPS:
-        let undoStamps = state.ciq.undoStamps.slice();
         return Object.assign({}, state, {
-          undoStamps: undoStamps,
-          canUndo: undoStamps.length > 0,
-          canClear: state.ciq.drawingObjects.length > 0
+          canUndo: state.ciq.undoStamps.length > 0,
+          canClear: state.ciq.drawingObjects.length > 0,
+          oldDrawings: [],
+          canRedo: state.oldDrawings.length>0 && state.canRedo ? false : state.canRedo
         });
     case Types.IMPORT_DRAWINGS:
         drawings = state.ciq.drawingObjects.slice();
