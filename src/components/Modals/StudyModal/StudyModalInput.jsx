@@ -1,3 +1,5 @@
+import React from 'react'
+
 const StudyModalInput = (props) => {
     if(props.input.type === 'select'){
         let inputOptions = []

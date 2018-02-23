@@ -1,3 +1,5 @@
+import React from 'react'
+
 const Crosshairs = (props) => {
 	let cName = props.ciq.layout.crosshair ? 'crosshair-btn active' : 'crosshair-btn'
 	return (

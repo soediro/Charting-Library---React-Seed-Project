@@ -1,3 +1,5 @@
+import React from 'react'
+
 import ColorSwatch from '../Drawing/ColorSwatch'
 
 class ThemeModal extends React.Component {

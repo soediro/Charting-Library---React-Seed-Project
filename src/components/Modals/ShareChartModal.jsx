@@ -1,3 +1,5 @@
+import React from 'react'
+
 const ShareStatus = Object.freeze({
 	HIDDEN: "HIDDEN",
 	SHOW: "SHOW",

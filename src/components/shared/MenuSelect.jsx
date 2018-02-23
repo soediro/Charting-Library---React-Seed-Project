@@ -1,4 +1,6 @@
+import React from 'react'
 import PropTypes from 'prop-types'
+
 
 class MenuSelect extends React.Component{
     constructor(props){
@@ -53,7 +55,7 @@ class MenuSelect extends React.Component{
             return (
                 <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={select}>
                     {this.state.hasButtons && !this.props.noButtons.indexOf(optionLabel)>-1
-                                ? 
+                                ?
                         (<span>
                         <span className='ciq-edit' onClick={this.edit.bind(this, option)}></span>
                         <cq-close onClick={this.delete.bind(this, option)}></cq-close></span>)

@@ -1,4 +1,4 @@
-//components
+import React from 'react'
 import ThemeModal from '../Modals/ThemeModal';
 import MenuSelect from '../shared/MenuSelect';
 
@@ -8,15 +8,15 @@ const ThemeUI = (props) => {
 			<ThemeModal {...props} />
 
 			<MenuSelect hasButtons={true}
-						options={props.themeList} 
-						keyName='theme' 
-						name='name' 
-						handleOptionSelect={props.changeTheme} 
-						menuId='themeSelect' 
-						title='Select Theme' 
+						options={props.themeList}
+						keyName='theme'
+						name='name'
+						handleOptionSelect={props.changeTheme}
+						menuId='themeSelect'
+						title='Select Theme'
 						noButtons={['Night', '+ New Theme']}
 						editItem={props.toggleThemeEditor}
-						deleteItem={props.deleteTheme} /> 
+						deleteItem={props.deleteTheme} />
 		</span>
 	);
 }

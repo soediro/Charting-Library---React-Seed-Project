@@ -1,4 +1,5 @@
 //components
+import React from 'react'
 import ColorSwatch from './Drawing/ColorSwatch'
 import LineStyle from "./Drawing/LineStyle"
 import FontStyle from "./Text/FontStyle"
