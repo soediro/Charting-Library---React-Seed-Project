@@ -3,23 +3,23 @@ var webpack = require('webpack');
 
 module.exports = {
 	devtool: 'source-map',
-	entry: {
-		"chartIQ": "./src/index.js"
-	},
+	entry: ["babel-polyfill","./src/index.js"],
 	output: {
 		publicPath:'/dist/',
 		path: path.resolve(__dirname, './dist'),
 		filename: "[name].js"
 	},
 	module: {
-		loaders: [{
-			exclude: [/node_modules/, "/chartiq/"],
-			loader: 'babel-loader',
-			query: {
-				presets: ['react', 'es2015', 'stage-2']
-			}
-		}]
-	},
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: [/node_modules/,/ChartIQ/],
+        use: [
+          'babel-loader',
+        ],
+      },
+    ],
+  },
 	plugins: [
 		new webpack.DefinePlugin({
 			"process.env": {

@@ -13,6 +13,6 @@ define('chartIQ', ['chartiq'], function(chartiq) {
 
 
 require(['chartIQ'], function() {
-	require(["./dist/chartIQ.js"], function() {})
+	require(["./dist/main.js"], function() {})
 });
 
