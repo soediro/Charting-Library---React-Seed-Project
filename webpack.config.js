@@ -7,7 +7,7 @@ module.exports = {
 	output: {
 		publicPath:'/dist/',
 		path: path.resolve(__dirname, './dist'),
-		filename: "main.js"
+		filename: "[name].js"
 	},
 	module: {
     rules: [
@@ -19,8 +19,14 @@ module.exports = {
         ],
       },
     ],
-  },
+	},
+	externals: {
+		// Use external version of React
+		//"react": "React",
+		//"react-dom": "ReactDOM"
+	},
 	plugins: [
+		//new webpack.IgnorePlugin(/react/),
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')

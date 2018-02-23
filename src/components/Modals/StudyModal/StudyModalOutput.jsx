@@ -18,7 +18,7 @@ StudyModalOutput.defaultProps = {
     isModal: false
 };
 
-StudyModalOutput.PropTypes = {
+StudyModalOutput.propTypes = {
     output: PropTypes.object.isRequired,
     setColor: PropTypes.func.isRequired,
     isPickingStudyColor: PropTypes.bool.isRequired,

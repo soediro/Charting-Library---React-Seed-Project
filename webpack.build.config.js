@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-	devtool: 'source-map',
+	// devtool: 'source-map',
 	entry: ["babel-polyfill","./src/index.js"],
 	output: {
 		publicPath:'/dist/',
@@ -19,8 +19,14 @@ module.exports = {
         ],
       },
     ],
-  },
+	},
+	externals: {
+		// Use external version of React
+		//"react": "React",
+		//"react-dom": "ReactDOM"
+	},
 	plugins: [
+		//new webpack.IgnorePlugin(/react/),
 		new webpack.DefinePlugin({
 			"process.env": {
 				NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
