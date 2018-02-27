@@ -238,96 +238,78 @@ export function draw(){
     return { type: 'DRAW' }
 }
 
-export function createUndoStamp(before, after){
-    return (dispatch, getState) => {
-        let state = getState();
-        state.chart.ciq.undoStamp(before, after);
-        state.chart.ciq.undoStamps.pop();
-        console.log(state.chart.ciq.undoStamps)
-        dispatch(updateUndoStamps());
-    }
-}
-
-export function updateUndoStamps(){
-    return { type: 'UPDATE_UNDO_STAMPS' }
+export function updateUndoStamps(params){
+    return { type: 'UPDATE_UNDO_STAMPS', params: params }
 }
 
 export function undo(){
     return (dispatch, getState) => {
         let state = getState();
-        state.chart.ciq.undoLast();
-        dispatch(undid());
+        let undone = state.chart.undoStack.pop();
+        if (undone){
+            let drawings = CIQ.shallowClone(undone),
+            oldDrawings = CIQ.shallowClone(state.chart.ciq.drawingObjects);
+            state.chart.ciq.drawingObjects=drawings;
+            return Promise.all([
+                dispatch(undid(oldDrawings)),
+                dispatch(draw())
+            ]);
+        }
     };
 }
 
-export function undid(){
-    return { type: 'UNDO' }
+export function undid(item){
+    return { type: 'UNDO', item: item }
 }
 
 export function redo(){
     return (dispatch, getState) => {
         let state = getState();
-
-        // before = state.chart.ciq.drawingObjects;
-        state.chart.ciq.drawingObjects=state.chart.oldDrawings;
-        // let after = state.chart.ciq.drawingObjects;
-        dispatch(redid());
-        // return Promise.all([
-        //     dispatch(createUndoStamp(before, after)),
-        //     dispatch(redid()),
-        //     dispatch(saveLayout())
-        // ]);
+        let redone = state.chart.redoStack.pop();
+        if (redone){
+            let drawings = CIQ.shallowClone(redone),
+            oldDrawings = CIQ.shallowClone(state.chart.ciq.drawingObjects);
+            state.chart.ciq.drawingObjects=drawings;
+            return Promise.all([
+                dispatch(redid(oldDrawings)),
+                dispatch(draw())
+            ]);
+        }
     }
 }
 
-export function redid(){
-    return { type: 'REDO' }
+export function redid(item){
+    return { type: 'REDO', item: item }
 }
 
 export function clear(){
     return (dispatch, getState) => {
         let state = getState();
-        // oldDrawings = state.chart.ciq.drawingObjects;
         state.chart.ciq.clearDrawings();
-        // return Promise.all([
-        //     dispatch(createUndoStamp(oldDrawings, [])),
-        //     dispatch(saveLayout()),
-        //     dispatch(cleared())
-        // ]);
     };
 }
 
-// export function cleared(){
-//     return { type: 'CLEAR' }
-// }
-
-export function drawingsChanged(params){
-    console.log('drawingsChanged: ', params);
+export function undoStamps(params){
     return (dispatch, getState) => {
-        let state = getState(),
-        oldDrawings = state.chart.drawings;
-        let tmp = params.drawings;
-        if(tmp.length===0){
-            CIQ.localStorage.removeItem(state.chart.ciq.chart.symbol);
-        }else{
-            CIQ.localStorageSetItem(state.chart.ciq.chart.symbol, tmp);
-        }
-        if (tmp.length!==0) {
-            console.log('creating undo stamp with oldDrawings: ', oldDrawings, ' and tmp: ', tmp);
-            return Promise.all([
-                dispatch(changeDrawings()),
-                dispatch(createUndoStamp(oldDrawings, tmp)),
-                dispatch(saveLayout())
-            ]);
-        } else {
-            console.log('not creating undo stamp');
-            dispatch(changeDrawings());
-            return dispatch(saveLayout());
-        }
+        let state = getState();
+        dispatch(updateUndoStamps(params));
     }
 }
 
-export function changeDrawings(){
+export function changeDrawings(params){
+    return (dispatch, getState) => {
+        let state = getState(),
+        tmp = params.stx.exportDrawings();
+        if(tmp.length===0){
+            CIQ.localStorage.removeItem(params.symbol);
+        }else{
+            CIQ.localStorageSetItem(params.symbol, JSON.stringify(tmp));
+        }
+        return dispatch(drawingsChanged());
+    }
+}
+
+export function drawingsChanged(){
     return { type: 'DRAWINGS_CHANGED' }
 }
 

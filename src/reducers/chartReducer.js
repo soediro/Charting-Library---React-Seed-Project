@@ -34,10 +34,11 @@ const initialState = {
   },
   initialTool:undefined,
   drawings: [],
-  oldDrawings: [],
   canUndo: false,
   canRedo: false,
-  canClear: false
+  canClear: false,
+  undoStack: [],
+  redoStack: []
 }
 
 const chart = (state = initialState, action) => {
@@ -164,8 +165,12 @@ const chart = (state = initialState, action) => {
           shareStatusMsg: action.msg
         })
     case Types.DRAW:
-      state.ciq.draw()
-      return state
+      state.ciq.draw();
+      return Object.assign({}, state, {
+        canUndo: state.undoStack.length > 0,
+        canRedo: state.redoStack.length > 0,
+        canClear: state.ciq.drawingObjects.length > 0
+      });
     case Types.TOGGLE_AXIS_LABELS:
       let flipAxisLabels = !state.showAxisLabels;
       state.ciq.currentVectorParameters.axisLabel=flipAxisLabels;
@@ -178,26 +183,26 @@ const chart = (state = initialState, action) => {
           drawings: drawings
         });
     case Types.UNDO:
+        let newRedoStack = state.redoStack.slice();
+        newRedoStack.push(action.item);
         return Object.assign({}, state, {
-          oldDrawings: state.drawings,
-          canRedo: true
+          canRedo: true,
+          redoStack: newRedoStack
         });
     case Types.REDO:
+        let newUndoStack = state.undoStack.slice();
+        newUndoStack.push(action.item);
         return Object.assign({}, state, {
-          canRedo: false,
-          oldDrawings: []
+          undoStack: newUndoStack
         });
-    // case Types.CLEAR:
-    //     return Object.assign({}, state, {
-    //       drawings: [],
-    //       canClear: false
-    //     });
     case Types.UPDATE_UNDO_STAMPS:
+        let newStack = state.undoStack.slice();
+        newStack.push(action.params.before);
         return Object.assign({}, state, {
-          canUndo: state.ciq.undoStamps.length > 0,
-          canClear: state.ciq.drawingObjects.length > 0,
-          oldDrawings: [],
-          canRedo: state.oldDrawings.length>0 && state.canRedo ? false : state.canRedo
+          undoStack: newStack,
+          canUndo: newStack.length > 0,
+          canRedo: state.redoStack.length  > 0,
+          canClear: state.ciq.drawingObjects.length > 0
         });
     case Types.IMPORT_DRAWINGS:
         drawings = state.ciq.drawingObjects.slice();

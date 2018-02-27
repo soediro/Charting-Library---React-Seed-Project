@@ -26,7 +26,8 @@ import { setChartContainer,
         redo,
         clear,
         importDrawings,
-        saveLayout } from '../actions/chartActions'
+        saveLayout,
+        undoStamps } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
 
@@ -51,6 +52,8 @@ const mapStateToProps = (state, props) => {
         shareStatus: state.chart.shareStatus,
         shareStatusMsg : state.chart.shareStatusMsg,
         drawings: state.chart.drawings,
+        redoStack: state.chart.redoStack,
+        undoStack: state.chart.undoStack,
         canUndo: state.chart.canUndo,
         canRedo: state.chart.canRedo,
         canClear: state.chart.canClear
@@ -119,8 +122,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     draw: () => {
         dispatch(draw())
     },
-    undo: () => {
-        dispatch(undo())
+    undo: (undid) => {
+        dispatch(undo(undid))
     },
     redo: () => {
         dispatch(redo())
@@ -133,6 +136,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     saveLayout: () => {
       dispatch(saveLayout())
+    },
+    undoStamps: (params) => {
+      dispatch(undoStamps(params))
     }
   }
 }

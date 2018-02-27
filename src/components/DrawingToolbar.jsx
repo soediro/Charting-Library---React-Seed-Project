@@ -30,7 +30,6 @@ class DrawingToolbar extends React.Component {
 		this.changePickerState = this.changePickerState.bind(this)
 		this.openMenu = this.openMenu.bind(this)
 		this.closeMenu = this.closeMenu.bind(this)
-		this.drawingsChanged = this.drawingsChanged.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -39,12 +38,9 @@ class DrawingToolbar extends React.Component {
 
 		if(this.props.ciq === null && nextProps.ciq !== null){
 			if (nextProps.ciq.callbacks.drawing === null){
-				nextProps.ciq.callbacks.drawing = this.drawingsChanged;
+				nextProps.ciq.addEventListener('undoStamp', this.props.undoStamps);
 			}
 		}
-	}
-	drawingsChanged(args){
-		this.props.drawingsChanged(args);
 	}
 	toTitleCase(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
