@@ -54,7 +54,7 @@ const chart = (state = initialState, action) => {
         layout = JSON.parse(layout);
         ciq.importLayout(layout, { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
       } else {
-        ciq.newChart(state.symbol)    
+        ciq.newChart(state.symbol)
       }
       let preferences = CIQ.localStorage.getItem('myChartPreferences');
       if (preferences !== null){
@@ -86,8 +86,10 @@ const chart = (state = initialState, action) => {
       return Object.assign({}, state, {
         chartType: action.chartType.type
       })
-    case Types.ADD_COMPARISON:
-      let newComparisons = state.comparisons.concat([action.series]);
+		case Types.ADD_COMPARISON:
+			if(!action.series) return state;
+			var seriesArray = Array.isArray(action.series) ? action.series : [action.series]
+      let newComparisons = state.comparisons.concat(seriesArray);
       return Object.assign({}, state, {
         comparisons: newComparisons
       })

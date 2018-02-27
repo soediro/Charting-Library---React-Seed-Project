@@ -37,12 +37,20 @@ export default Types;
  */
 
 export function setChartContainer(container){
-    return (dispatch) => {
+    return (dispatch, getState) => {
+
+			let getCurrentComparisons = (ciq)=> {
+				return Object.keys(ciq.chart.series).
+				filter((s)=>ciq.chart.series[s].parameters.isComparison).
+				map((s)=>ciq.chart.series[s])
+			}
+
         return Promise.all([
             dispatch(setContainer(container)),
             dispatch(changingChartData(true)),
             setTimeout(() => {
-                dispatch(importDrawings())
+								dispatch(importDrawings())
+								dispatch(addComparison(getCurrentComparisons(getState().chart.ciq)))
                 dispatch(changingChartData(false))
             }, 2500)
         ]);
