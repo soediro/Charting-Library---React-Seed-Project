@@ -70,13 +70,16 @@ class ColorSwatch extends React.Component {
 
         let colors = this.state.colors.map((color, i) => {
             return (<li key={"color"+i}><a href="#" title={color} onClick={this.setColor.bind(this, color)} style={{background: '#'+color}}>{color}</a></li>)
-        }), pickerStyle = {
+				})
+
+				let pickerStyle = {
             display: this.state.pickingColor ? 'block' : 'none',
             left: this.props.isModal ? '-120px' : elementBounds-120 + 'px',
             top: this.props.top ? this.props.top : 0
-        },
-        cName = 'color-picker-swatch ' + this.props.type,
-        colorStyle = { background: '' }
+				}
+				let cName = 'color-picker-swatch ' + this.props.type
+
+				let colorStyle = { background: '' }
 
         if(this.props.color){
             if(this.props.color=="auto") colorStyle.background = 'white'
