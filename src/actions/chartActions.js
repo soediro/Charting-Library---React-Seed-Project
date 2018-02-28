@@ -1,4 +1,5 @@
 import createTypes from 'redux-create-action-types';
+import configs from "../../configs/ui.js";
 
 /*
  * action types
@@ -49,10 +50,11 @@ export function setChartContainer(container){
             dispatch(setContainer(container)),
             dispatch(changingChartData(true)),
             setTimeout(() => {
+								let ciq = getState().chart.ciq
 								dispatch(importDrawings())
-								dispatch(addComparison(getCurrentComparisons(getState().chart.ciq)))
-                dispatch(changingChartData(false))
-            }, 2500)
+								dispatch(addComparison(getCurrentComparisons(ciq)))
+								dispatch(changingChartData(false))
+            }, 1500)
         ]);
     }
 }
@@ -220,7 +222,19 @@ export function setChartTypeWithLoader(type){
 }
 
 export function setChartType(type){
-    return { type: 'SET_CHART_TYPE', chartType: type }
+	return (dispatch, getState) => {
+		let state = getState()
+		let ciq = state.chart.ciq
+		if (type.aggregationEdit && ciq.layout.aggregationType != type.type) {
+			ciq.setChartType('none');
+			ciq.setAggregationType(type.type);
+		} else {
+			ciq.setAggregationType(type.type)
+			ciq.setChartType(type.type)
+		}
+		ciq.draw()
+		return 		dispatch({ type: 'SET_CHART_TYPE', chartType: type })
+	}
 }
 
 export function setSymbolAndSave(symbol){

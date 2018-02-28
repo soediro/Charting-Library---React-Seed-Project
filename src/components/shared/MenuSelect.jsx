@@ -7,8 +7,9 @@ class MenuSelect extends React.Component{
             menuOpen: false,
             hasButtons: props.hasButtons,
             hasCheckboxes: props.hasCheckboxes,
-            selected: props.chartType ? props.chartType : {type:'candle', label:'Candle'}
-        }
+            selected: props.selected
+				}
+
         this.toggleMenu = this.toggleMenu.bind(this);
         this.edit = this.edit.bind(this);
         this.delete = this.delete.bind(this);
@@ -26,7 +27,7 @@ class MenuSelect extends React.Component{
         this.props.deleteItem(option);
     }
     selectOption(ciq, option){
-        let oldOption = this.state.selected;
+				let oldOption = this.state.selected;
         this.setState({
             menuOpen: false,
             selected: option
@@ -42,13 +43,13 @@ class MenuSelect extends React.Component{
         });
     }
     render(){
-        if(this.props.options.length===0) { return (<div></div>); }
+				if(this.props.options.length===0) { return (<div></div>); }
 
         let options = this.props.options.map((option, i) => {
             let onSelect = this.props.needsCiq ? this.selectOption.bind(this, this.props.ciq, option) : this.selectOption.bind(this, {}, option),
             optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option),
-            buttonCName = (this.state.selected.type === option.type && this.state.selected.label === option.label) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
-            select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
+            buttonCName = (this.state.selected && option === this.state.selected) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
+						select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
 
             return (
                 <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={select}>

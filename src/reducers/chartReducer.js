@@ -75,14 +75,6 @@ const chart = (state = initialState, action) => {
         symbol: layout && layout.symbols ? layout.symbols[0].symbol.toUpperCase() : state.symbol
       })
     case Types.SET_CHART_TYPE:
-      if (action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) {
-        state.ciq.setChartType('none');
-        state.ciq.setAggregationType(action.chartType.type);
-      } else {
-        state.ciq.setAggregationType(action.chartType.type)
-        state.ciq.setChartType(action.chartType.type)
-      }
-      state.ciq.draw()
       return Object.assign({}, state, {
         chartType: action.chartType.type
       })
