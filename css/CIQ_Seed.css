@@ -307,6 +307,11 @@ menu-select-options menu-option{
 	height: auto;
 	color:#666;
 }
+
+#lineSelect menu-select-options menu-option{
+	padding: 10px 20px;
+}
+
 menu-select-options menu-option span{
 	font-weight:300;
 }
