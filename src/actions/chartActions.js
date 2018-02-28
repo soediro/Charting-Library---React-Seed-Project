@@ -313,20 +313,24 @@ export function clear(){
 
 export function undoStamps(params){
     return (dispatch, getState) => {
-        let state = getState();
-        dispatch(updateUndoStamps(params));
+				let state = getState();
+				return Promise.all([
+					dispatch(updateUndoStamps(params)),
+					dispatch(changeDrawings(params))
+			]);
+
     }
 }
 
 export function changeDrawings(params){
     return (dispatch, getState) => {
         let state = getState(),
-        tmp = params.stx.exportDrawings();
+				tmp = params.stx.exportDrawings();
         if(tmp.length===0){
-            CIQ.localStorage.removeItem(params.symbol);
+            CIQ.localStorage.removeItem(state.chart.symbol);
         }else{
-            CIQ.localStorageSetItem(params.symbol, JSON.stringify(tmp));
-        }
+            CIQ.localStorageSetItem(state.chart.symbol, JSON.stringify(tmp));
+				}
         return dispatch(drawingsChanged());
     }
 }
