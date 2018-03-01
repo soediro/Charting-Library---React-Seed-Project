@@ -170,33 +170,35 @@ const ThemeUI = (state = initialState, action) => {
             return Object.assign({}, state, {
                 currentThemeSettings: newThemeSettings
             })
-        case Types.SAVE_THEME:
+	    case Types.SAVE_THEME:
             let item = {
                 name: action.name,
                 settings: action.theme
             },
             endIndex = state.themeList.length-1,
-			newThemeList = state.themeList.slice(),
-			existsIndex = -1;
+						newThemeList = state.themeList.slice(),
+						existsIndex = -1;
+						newThemeList.map((theme, i) => {
+							if (theme.name === action.name){
+								existsIndex = i;
+							}
+						});
+				    if(action.name==="Night" || action.name==="+ New Theme") {
+					    alert('Cannot override a built in theme');
+					    return state;
+				    }
 
-			newThemeList.map((theme, i) => {
-				if (theme.name === action.name){
-					existsIndex = i;
-				}
-			});
+						if (existsIndex > -1) { newThemeList.splice(existsIndex, 1, item); }
+			            else { newThemeList.splice(endIndex, 0, item); }
 
-			if (existsIndex > -1) { newThemeList.splice(existsIndex, 1, item); }
-            else { newThemeList.splice(endIndex, 0, item); }
-
-            state.themeHelper.settings = CIQ.clone(action.theme)
-            state.themeHelper.update()
-
-			CIQ.localStorageSetItem('myChartThemes', JSON.stringify(newThemeList));
-            return Object.assign({}, state, {
-                currentThemeName: action.name,
-                themeList: newThemeList,
-                showEditModal: false
-            })
+			            state.themeHelper.settings = CIQ.clone(action.theme)
+			            state.themeHelper.update()
+						CIQ.localStorageSetItem('myChartThemes', JSON.stringify(newThemeList));
+			            return Object.assign({}, state, {
+			                currentThemeName: action.name,
+			                themeList: newThemeList,
+			                showEditModal: false
+			            })
         case Types.TOGGLE_THEME_EDITOR:
             return Object.assign({}, state, {
                 showEditModal: !state.showEditModal
@@ -211,7 +213,7 @@ const ThemeUI = (state = initialState, action) => {
 				}
 			})
 			newThemeList.splice(themeIndex, 1);
-			
+
 			CIQ.localStorageSetItem('myChartThemes', JSON.stringify(newThemeList));
 			return Object.assign({}, state, {
 				themeList: newThemeList,
