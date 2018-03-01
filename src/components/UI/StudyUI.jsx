@@ -34,7 +34,9 @@ const StudyUI = (props) => {
 						needsCiq={true} 
 						ciq={props.ciq} 
 						menuId='studySelect' 
-						title='Studies' />
+						title='Studies'
+						hasLegend={Object.keys(props.studies).length > 0 ? true : false}
+						legendItems={props.studies} />
 		</span>
 	);
 }

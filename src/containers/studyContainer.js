@@ -17,7 +17,8 @@ const mapStateToProps = (state, props) => {
         studyOverlay: state.study.studyOverlay,
         showStudyModal: state.study.showStudyModal,
         studyHelper: state.study.studyHelper,
-        studyList: state.study.studyList
+        studyList: state.study.studyList,
+        studies: state.study.studies
     }
 }
 

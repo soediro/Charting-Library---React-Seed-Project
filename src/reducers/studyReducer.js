@@ -9,7 +9,8 @@ const initialState = {
         show: false,
         top: 0,
         left: 0
-    }
+    },
+    studies: {}
 }
 
 const study = (state = initialState, action) => {
@@ -46,12 +47,14 @@ const study = (state = initialState, action) => {
                 studyHelper: null
             })
         case Types.ADD_STUDY:
-            let studyLookup = {}
+            let studyLookup = {};
             for(let libraryEntry in state.studyList){
                 studyLookup[state.studyList[libraryEntry].name] = libraryEntry
             }
-            CIQ.Studies.addStudy(action.ciq, studyLookup[action.study.name])
-            return state
+            CIQ.Studies.addStudy(action.ciq, studyLookup[action.study.name]);
+            return Object.assign({}, state, {
+                studies: action.ciq.layout.studies
+            });
         case Types.UPDATE_STUDY:
             state.studyHelper.updateStudy({ inputs: action.inputs, outputs: action.outputs, parameters: action.parameters });
             return Object.assign({}, state, {
@@ -61,16 +64,18 @@ const study = (state = initialState, action) => {
                     top: 0,
                     left: 0
                 },
-                studyHelper: null
+                studyHelper: null,
+                studies: state.studyHelper.stx.layout.studies
             })
         case Types.REMOVE_STUDY:
-            if(state.studyHelper !== null) CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd)
+            if(state.studyHelper !== null) { CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd); }
             return Object.assign({}, state, {
                 studyOverlay: {
                     show: false,
                     top: 0,
                     left: 0
-                }
+                },
+                studies: state.studyHelper.stx.layout.studies
             })
         default:
             return state
