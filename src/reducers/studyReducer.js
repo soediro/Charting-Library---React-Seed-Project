@@ -26,7 +26,7 @@ const study = (state = initialState, action) => {
                 studyHelper: flipOverlay ? new CIQ.Studies.DialogHelper(action.params) : null
             })
         case Types.OPEN_STUDY_MODAL:
-            let needsStudyHelper = action.params.hasOwnProperty('stx')
+            let needsStudyHelper = action.params.hasOwnProperty('stx');
             return Object.assign({}, state, {
                 showStudyModal: true,
                 studyHelper: needsStudyHelper ? new CIQ.Studies.DialogHelper(action.params) : state.studyHelper,
@@ -68,15 +68,29 @@ const study = (state = initialState, action) => {
                 studies: state.studyHelper.stx.layout.studies
             })
         case Types.REMOVE_STUDY:
-            if(state.studyHelper !== null) { CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd); }
+            let hasStx = false;
+            if (action.study.hasOwnProperty('stx')) { hasStx = true; }
+            if (hasStx){
+                CIQ.Studies.removeStudy(action.study.stx, action.study.sd);
+            } else {
+                if(state.studyHelper !== null) { CIQ.Studies.removeStudy(state.studyHelper.stx, state.studyHelper.sd); }
+            }
             return Object.assign({}, state, {
                 studyOverlay: {
                     show: false,
                     top: 0,
                     left: 0
                 },
-                studies: state.studyHelper.stx.layout.studies
+                studies: hasStx ? CIQ.extend(action.study.stx.layout.studies) : CIQ.extend(state.studyHelper.stx.layout.studies)
             })
+        case Types.CLEAR_STUDIES:
+            return Object.assign({}, state, {
+                studies: {}
+            });
+        case Types.SYNC_STUDIES:
+            return Object.assign({}, state, {
+                studies: action.studies
+            });
         default:
             return state
     }

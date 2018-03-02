@@ -6,18 +6,14 @@ class StudyLegend extends React.Component{
         this.bindCorrectContext();
     }
     bindCorrectContext(){
-        this.clearStudies = this.clearStudies.bind(this);
         this.removeStudy = this.removeStudy.bind(this);
         this.editStudy = this.editStudy.bind(this);
     }
-    clearStudies(){
-
+    removeStudy(study){
+        this.props.removeLegendItem({stx: this.props.ciq, sd: study, inputs: study.inputs, outputs: study.outputs, parameters: study.parameters});
     }
-    removeStudy(){
-
-    }
-    editStudy(){
-
+    editStudy(study){
+        this.props.ciq.callbacks.studyPanelEdit({stx: this.props.ciq, sd: study, inputs: study.inputs, outputs: study.outputs, parameters: study.parameters});
     }
     render(){
         let studies = Object.keys(this.props.legendItems).map((key, i) => {
@@ -36,7 +32,7 @@ class StudyLegend extends React.Component{
                     {studies}
                 </div>
                 <div className='cq-placeholder'>
-                    <button className='ciq-btn' onClick={this.clearStudies}><span className='legend-clear-all'>Clear All</span></button>
+                    <button className='ciq-btn' onClick={this.props.legendButtonAction}><span className='legend-clear-all'>Clear All</span></button>
                 </div>
             </div>
         );
