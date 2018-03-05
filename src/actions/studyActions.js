@@ -69,6 +69,7 @@ export function clearStudies(){
 export function syncStudies(){
     return (dispatch, getState) => {
         let state = getState();
-        return dispatch({ type: 'SYNC_STUDIES', studies: _.cloneDeep(state.chart.ciq.layout.studies)});
+        let newStudies = _.cloneDeep(state.chart.ciq.layout.studies);
+        return dispatch({ type: 'SYNC_STUDIES', studies: newStudies});
     }
 }

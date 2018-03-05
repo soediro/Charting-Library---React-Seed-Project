@@ -10,6 +10,9 @@ class StudyLegend extends React.Component{
         this.editStudy = this.editStudy.bind(this);
     }
     removeStudy(study){
+        //If a manual removal is taking place we will remove the appended event listener
+        //as this causes too many updates. It will be reappended when the state of the studies changes (from removing a study)
+        this.props.ciq.remove('panelClose');
         this.props.removeLegendItem({stx: this.props.ciq, sd: study, inputs: study.inputs, outputs: study.outputs, parameters: study.parameters});
     }
     editStudy(study){
@@ -21,7 +24,7 @@ class StudyLegend extends React.Component{
             return (
                 <span key={i} className='cq-item'>
                     <span className='cq-label' onClick={this.editStudy.bind(this, study)}>{key}</span>
-                    <div className='cq-close' onClick={this.removeStudy.bind(this, study)} />
+                    <div className='cq-legend-close' onClick={this.removeStudy.bind(this, study)} />
                 </span>
             );
         });

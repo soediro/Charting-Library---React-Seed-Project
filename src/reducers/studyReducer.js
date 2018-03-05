@@ -1,6 +1,8 @@
 //actiont types
 import Types from '../actions/studyActions'
 
+import _ from 'lodash';
+
 const initialState = {
     showStudyModal: false,
     studyList: CIQ.Studies.studyLibrary,
@@ -81,7 +83,7 @@ const study = (state = initialState, action) => {
                     top: 0,
                     left: 0
                 },
-                studies: hasStx ? CIQ.extend(action.study.stx.layout.studies) : CIQ.extend(state.studyHelper.stx.layout.studies)
+                studies: hasStx ? _.cloneDeep(action.study.stx.layout.studies) : _.cloneDeep(state.studyHelper.stx.layout.studies)
             })
         case Types.CLEAR_STUDIES:
             return Object.assign({}, state, {
