@@ -35,8 +35,8 @@ export function saveTheme(name, theme){
     return { type: 'SAVE_THEME', name: name, theme: theme }
 }
 
-export function toggleThemeEditor(){
-    return { type: 'TOGGLE_THEME_EDITOR' }
+export function toggleThemeEditor(theme){
+    return { type: 'TOGGLE_THEME_EDITOR', theme: theme }
 }
 
 export function deleteTheme(theme){

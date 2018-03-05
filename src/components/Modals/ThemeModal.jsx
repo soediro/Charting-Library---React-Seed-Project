@@ -10,23 +10,12 @@ class ThemeModal extends React.Component {
 		}
 		this.bindCorrectContext()
 	}
-	componentWillReceiveProps(nextProps){
-		if(nextProps.themeHelper === null){
-			this.props.setThemeHelper(this.props.ciq)
-		}
-	}
 	bindCorrectContext(){
 		this.saveSettings = this.saveSettings.bind(this)
-		this.updateThemeName = this.updateThemeName.bind(this)
 		this.changePickerState = this.changePickerState.bind(this)
 	}
 	saveSettings() {
-		this.props.saveTheme(this.state.name, this.props.themeHelper.settings);
-	}
-	updateThemeName(event) {
-		this.setState({
-			name: event.target.value
-		});
+		this.props.saveTheme(this.txtThemeName.value, this.props.themeHelper.settings);
 	}
 	changePickerState(isOpen){
 		this.setState({
@@ -55,7 +44,7 @@ class ThemeModal extends React.Component {
 						<div className="dialog-heading">Create Custom Theme</div>
 						{ sections }
 						<div className="dialog-item theme-save">
-							<input className="ciq" type="text" placeholder={this.state.placeholder} onChange={this.updateThemeName} value={this.state.name} />
+							<input ref={(input) => { this.txtThemeName = input; }} className="ciq" type="text" placeholder={this.state.placeholder} defaultValue={this.props.currentThemeName} />
 							<button className="pull-right ciq" onClick={this.saveSettings}>Save</button>
 						</div>
 						<div className="clearFloat"></div>

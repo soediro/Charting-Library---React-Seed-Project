@@ -5,7 +5,8 @@ import themeActions from '../actions/themeActions';
 //create the default theme
 let night = {
 	"name": "Night",
-	"className":"ciq-night"
+	"className":"ciq-night",
+	"builtIn":true
 }
 
 let defaultSettings = [{
@@ -124,48 +125,47 @@ const initialState = {
     themeHelper: null
 }
 
+var newState;
+
 let newThemeSettings
 const ThemeUI = (state = initialState, action) => {
     switch(action.type){
-        case Types.SET_HELPER:
+			case Types.SET_HELPER:
             if(!action.ciq) return state
             let themeHelper = new CIQ.ThemeHelper({
                 'stx': action.ciq
             })
             newThemeSettings = updateThemeSettings(themeHelper, state.currentThemeSettings)
             return Object.assign({}, state, {
-                themeHelper: themeHelper,
+								themeHelper: themeHelper,
                 currentThemeSettings: newThemeSettings
-            })
-		case Types.CHANGE_THEME:
-			if (action.theme.name.indexOf('+ New Theme') > -1) {
-				return Object.assign({}, state, {
-					showEditModal: true
-				})
-			} else {
-				if (action.theme.settings) {
-					state.themeHelper.settings = CIQ.clone(action.theme.settings);
-					state.themeHelper.update();
-				} else if (action.theme.className){
-					$$$('body').className = action.theme.className
-					var stx=state.themeHelper.params.stx;
-					stx.styles={};
-					stx.chart.container.style.backgroundColor="";
-					if(stx.displayInitialized){
-						stx.headsUpHR();
-						stx.clearPixelCache();
-						stx.updateListeners("theme");
-						stx.draw();
-					}
+						})
+
+			case Types.CHANGE_THEME:
+				if (action.theme.name.indexOf('+ New Theme') > -1) {
+						return Object.assign({}, state, {
+							showEditModal: true
+						})
+				} else {
+
+					setTheme(state.themeHelper, action.theme)
+					newThemeSettings = state.currentThemeSettings ? updateThemeSettings(state.themeHelper, state.currentThemeSettings) : defaultSettings;
+
+					CIQ.localStorageSetItem('myChartCurrentThemeName', JSON.stringify(action.theme.name));
+
+					return Object.assign({}, state, {
+							currentThemeName: action.theme.name,
+							currentThemeSettings: newThemeSettings
+					})
+
 				}
 
-			}
-			return state
-        case Types.UPDATE_THEME:
+			case Types.UPDATE_THEME:
+					console.log(action)
             newThemeSettings = updateThemeSettings(state.themeHelper, state.currentThemeSettings, {
                 color: action.color,
                 swatch: action.swatch
-            })
+						})
 
             return Object.assign({}, state, {
                 currentThemeSettings: newThemeSettings
@@ -183,26 +183,40 @@ const ThemeUI = (state = initialState, action) => {
 								existsIndex = i;
 							}
 						});
+
 				    if(action.name==="Night" || action.name==="+ New Theme") {
 					    alert('Cannot override a built in theme');
 					    return state;
 				    }
 
 						if (existsIndex > -1) { newThemeList.splice(existsIndex, 1, item); }
-			            else { newThemeList.splice(endIndex, 0, item); }
+						else { newThemeList.splice(endIndex, 0, item); }
 
-			            state.themeHelper.settings = CIQ.clone(action.theme)
-			            state.themeHelper.update()
+						setTheme(state.themeHelper, {settings: action.theme})
+
 						CIQ.localStorageSetItem('myChartThemes', JSON.stringify(newThemeList));
-			            return Object.assign({}, state, {
-			                currentThemeName: action.name,
-			                themeList: newThemeList,
-			                showEditModal: false
-			            })
-        case Types.TOGGLE_THEME_EDITOR:
-            return Object.assign({}, state, {
-                showEditModal: !state.showEditModal
-			})
+						CIQ.localStorageSetItem('myChartCurrentThemeName', JSON.stringify(action.name));
+
+						return Object.assign({}, state, {
+								currentThemeName: action.name,
+								themeList: newThemeList,
+								showEditModal: false
+						})
+
+				case Types.TOGGLE_THEME_EDITOR:
+					newState = Object.assign({}, state)
+
+					if(!state.showEditModal && action.theme){
+						setTheme(state.themeHelper, action.theme)
+						newThemeSettings = updateThemeSettings(state.themeHelper, state.currentThemeSettings)
+						newState.currentThemeName = action.theme.name
+						newState.currentThemeSettings = newThemeSettings
+					}
+
+					newState.showEditModal = !state.showEditModal
+
+					return newState
+
 		case Types.DELETE_THEME:
 			let themeIndex = -1, themeName = action.theme.name;
 			newThemeList = state.themeList.slice();
@@ -222,11 +236,24 @@ const ThemeUI = (state = initialState, action) => {
 			})
 		case Types.RESTORE_THEMES:
 			let restoredThemeList = JSON.parse(CIQ.localStorage.getItem('myChartThemes'));
-			return Object.assign({}, state, {
-				themeList: restoredThemeList ? restoredThemeList : state.themeList
-			});
-        default:
-            return state
+			let restoredCurrentThemeName = JSON.parse(CIQ.localStorage.getItem('myChartCurrentThemeName'));
+
+			newState = Object.assign({}, state)
+
+			if(restoredThemeList){
+				newState.themeList = restoredThemeList
+				let currentTheme = restoredThemeList.find(t=>t.name===restoredCurrentThemeName)
+				if(currentTheme){
+					setTheme(state.themeHelper, currentTheme)
+					newState.currentThemeName = currentTheme.name
+					newState.currentThemeSettings = updateThemeSettings(state.themeHelper, defaultSettings)
+				}
+			}
+
+			return newState
+
+		default:
+    	return state
     }
 }
 
@@ -283,4 +310,25 @@ function updateThemeSettings(themeHelper, currentSettings, newParams){
     })
 
     return newSettings
+}
+
+function setTheme(themeHelper, theme) {
+	if (theme.settings) {
+		themeHelper.settings = CIQ.clone(theme.settings);
+		themeHelper.update();
+} else if (theme.builtIn===true) {
+		$$$('body').className = theme.className
+		var stx = themeHelper.params.stx;
+		stx.styles = {};
+		stx.chart.container.style.backgroundColor = "";
+		if (stx.displayInitialized) {
+				stx.headsUpHR();
+				stx.clearPixelCache();
+				stx.updateListeners("theme");
+				stx.draw();
+		}
+} else {
+	console.error("InvalidArgument: No valid theme with properties:", action.theme)
+}
+
 }

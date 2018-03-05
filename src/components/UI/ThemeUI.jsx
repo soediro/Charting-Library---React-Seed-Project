@@ -7,15 +7,16 @@ class ThemeUI extends React.Component{
 		super(props);
 	}
 	componentDidMount(){
-		this.props.restoreThemes();
+		this.props.setThemeHelper(this.props.ciq)
+		this.props.restoreThemes()
 	}
 	render(){
 		return (
 			<span>
 				<ThemeModal {...this.props} />
-	
+
 				<MenuSelect hasButtons={true}
-							options={this.props.themeList}
+							options={this.props.themeList.filter(t=>t.name)}
 							keyName='theme'
 							name='name'
 							handleOptionSelect={this.props.changeTheme}

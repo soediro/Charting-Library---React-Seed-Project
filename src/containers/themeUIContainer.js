@@ -18,7 +18,8 @@ const mapStateToProps = (state) => {
         themeHelper: state.theme.themeHelper,
         themeList: state.theme.themeList,
         showEditModal: state.theme.showEditModal,
-        currentThemeSettings: state.theme.currentThemeSettings
+				currentThemeSettings: state.theme.currentThemeSettings,
+				currentThemeName: state.theme.currentThemeName
     }
 }
 
@@ -36,8 +37,8 @@ const mapDispatchToProps = (dispatch) => {
         saveTheme: (name, theme) => {
             dispatch(saveTheme(name, theme))
         },
-        toggleThemeEditor: () => {
-            dispatch(toggleThemeEditor())
+        toggleThemeEditor: (theme) => {
+            dispatch(toggleThemeEditor(theme))
         },
         deleteTheme: (theme) => {
             dispatch(deleteTheme(theme))
