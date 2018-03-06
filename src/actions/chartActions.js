@@ -1,4 +1,5 @@
 import createTypes from 'redux-create-action-types';
+import configs from "../../configs/ui.js";
 
 /*
  * action types
@@ -37,14 +38,23 @@ export default Types;
  */
 
 export function setChartContainer(container){
-    return (dispatch) => {
+    return (dispatch, getState) => {
+
+			let getCurrentComparisons = (ciq)=> {
+				return Object.keys(ciq.chart.series).
+				filter((s)=>ciq.chart.series[s].parameters.isComparison).
+				map((s)=>ciq.chart.series[s])
+			}
+
         return Promise.all([
             dispatch(setContainer(container)),
             dispatch(changingChartData(true)),
             setTimeout(() => {
-                dispatch(importDrawings())
-                dispatch(changingChartData(false))
-            }, 2500)
+								let ciq = getState().chart.ciq
+								dispatch(importDrawings())
+								dispatch(addComparison(getCurrentComparisons(ciq)))
+								dispatch(changingChartData(false))
+            }, 1500)
         ]);
     }
 }
@@ -107,12 +117,15 @@ export function setTimeZone(zone){
     return (dispatch, getState) => {
         let state = getState();
         return Promise.all([
-            state.chart.ciq.setTimeZone(null, zone, () => {
-                if (state.chart.ciq.displayInitialized) { dispatch(draw()); }
-                dispatch(saveLayout())
-            })
+            state.chart.ciq.setTimeZone(null, zone),
+            dispatch(changingChartData(true)),
+            setTimeout(() => {
+                dispatch(draw()),
+                dispatch(saveLayout()),
+                dispatch(changingChartData(false))
+            }, 1500)
         ]);
-    };
+    }
 }
 
 export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
@@ -209,7 +222,19 @@ export function setChartTypeWithLoader(type){
 }
 
 export function setChartType(type){
-    return { type: 'SET_CHART_TYPE', chartType: type }
+	return (dispatch, getState) => {
+		let state = getState()
+		let ciq = state.chart.ciq
+		if (type.aggregationEdit && ciq.layout.aggregationType != type.type) {
+			ciq.setChartType('none');
+			ciq.setAggregationType(type.type);
+		} else {
+			ciq.setAggregationType(type.type)
+			ciq.setChartType(type.type)
+		}
+		ciq.draw()
+		return 		dispatch({ type: 'SET_CHART_TYPE', chartType: type })
+	}
 }
 
 export function setSymbolAndSave(symbol){
@@ -235,96 +260,82 @@ export function draw(){
     return { type: 'DRAW' }
 }
 
-export function createUndoStamp(before, after){
+export function updateUndoStamps(params){
+    return { type: 'UPDATE_UNDO_STAMPS', params: params }
+}
+
+export function undo(){
     return (dispatch, getState) => {
         let state = getState();
-        state.chart.ciq.undoStamp(before, after);
-        dispatch(updateUndoStamps());
-    }
-}
-
-export function updateUndoStamps(){
-    return { type: 'UPDATE_UNDO_STAMPS' }
-}
-
-export function undo(before, after){
-    return (dispatch, getState) => {
-        let state = getState(),
-        b, a;
-
-        if (!before || !after){
-            b = state.chart.ciq.drawingObjects;
-        }else{
-            b = before;
-            a = after;
+        let undone = state.chart.undoStack.pop();
+        if (undone){
+            let drawings = CIQ.shallowClone(undone),
+            oldDrawings = CIQ.shallowClone(state.chart.ciq.drawingObjects);
+            state.chart.ciq.drawingObjects=drawings;
+            return Promise.all([
+                dispatch(undid(oldDrawings)),
+                dispatch(draw())
+            ]);
         }
-        state.chart.ciq.undoLast();
-        a = !before || !after ? state.chart.ciq.drawingObjects : after;
-        return Promise.all([
-            dispatch(createUndoStamp(b, a)),
-            dispatch(undid()),
-            dispatch(saveLayout())
-        ]);
     };
 }
 
-export function undid(){
-    return { type: 'UNDO' }
+export function undid(item){
+    return { type: 'UNDO', item: item }
 }
 
 export function redo(){
     return (dispatch, getState) => {
-        let state = getState(),
-        before = state.chart.ciq.drawingObjects;
-        state.chart.ciq.drawingObjects=state.chart.ciq.undoStamps.pop();
-        let after = state.chart.ciq.drawingObjects;
-        return Promise.all([
-            dispatch(createUndoStamp(before, after)),
-            dispatch(redid()),
-            dispatch(saveLayout())
-        ]);
+        let state = getState();
+        let redone = state.chart.redoStack.pop();
+        if (redone){
+            let drawings = CIQ.shallowClone(redone),
+            oldDrawings = CIQ.shallowClone(state.chart.ciq.drawingObjects);
+            state.chart.ciq.drawingObjects=drawings;
+            return Promise.all([
+                dispatch(redid(oldDrawings)),
+                dispatch(draw())
+            ]);
+        }
     }
 }
 
-export function redid(){
-    return { type: 'REDO' }
+export function redid(item){
+    return { type: 'REDO', item: item }
 }
 
 export function clear(){
     return (dispatch, getState) => {
-        let state = getState(),
-        oldDrawings = state.chart.ciq.drawingObjects;
+        let state = getState();
         state.chart.ciq.clearDrawings();
-        return Promise.all([
-            dispatch(createUndoStamp(oldDrawings, [])),
-            dispatch(saveLayout()),
-            dispatch(cleared())
-        ]);
     };
 }
 
-export function cleared(){
-    return { type: 'CLEAR' }
-}
-
-export function drawingsChanged(params){
+export function undoStamps(params){
     return (dispatch, getState) => {
-        let state = getState(),
-        oldDrawings = state.chart.drawings,
-        tmp = params.stx.exportDrawings();
-        if(tmp.length===0){
-            CIQ.localStorage.removeItem(params.symbol);
-        }else{
-            CIQ.localStorageSetItem(params.symbol, JSON.stringify(tmp));
-        }
-        return Promise.all([
-            dispatch(createUndoStamp(oldDrawings, tmp)),
-            dispatch(saveLayout())
-        ]);
+				let state = getState();
+				return Promise.all([
+					dispatch(updateUndoStamps(params)),
+					dispatch(changeDrawings(params))
+			]);
+
     }
 }
 
-export function changeDrawings(){
+export function changeDrawings(params){
+    return (dispatch, getState) => {
+        let state = getState(),
+				tmp = params.stx.exportDrawings();
+        if(tmp.length===0){
+            CIQ.localStorage.removeItem(state.chart.symbol);
+        }else{
+            CIQ.localStorageSetItem(state.chart.symbol, JSON.stringify(tmp));
+				}
+        return dispatch(drawingsChanged());
+    }
+}
+
+export function drawingsChanged(){
     return { type: 'DRAWINGS_CHANGED' }
 }
 
@@ -333,5 +344,6 @@ export function saveLayout(){
         let state = getState(),
         savedLayout = JSON.stringify(state.chart.ciq.exportLayout({ withSymbols: true }));
         CIQ.localStorageSetItem("myChartLayout", savedLayout);
+        CIQ.localStorageSetItem('myChartPreferences', JSON.stringify(state.chart.ciq.exportPreferences()));
     }
 }

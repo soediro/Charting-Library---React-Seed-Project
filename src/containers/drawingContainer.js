@@ -14,7 +14,7 @@ import { toggleDrawing,
          setLineParams,
          changeTool} from '../actions/drawActions'
 
-import { draw, drawingsChanged } from '../actions/chartActions'
+import { draw, changeDrawings } from '../actions/chartActions'
 
 //components
 import DrawingToolbar from '../components/DrawingToolbar'
@@ -68,8 +68,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         draw: () => {
             dispatch(draw())
         },
-        drawingsChanged: (params) => {
-            dispatch(drawingsChanged(params))
+        changeDrawings: (params) => {
+            dispatch(changeDrawings(params))
         }
     }
 }

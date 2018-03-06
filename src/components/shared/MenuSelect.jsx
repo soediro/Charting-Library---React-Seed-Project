@@ -7,8 +7,9 @@ class MenuSelect extends React.Component{
             menuOpen: false,
             hasButtons: props.hasButtons,
             hasCheckboxes: props.hasCheckboxes,
-            selected: props.chartType ? props.chartType : {type:'candle', label:'Candle'}
-        }
+            selected: props.selected
+				}
+
         this.toggleMenu = this.toggleMenu.bind(this);
         this.edit = this.edit.bind(this);
         this.delete = this.delete.bind(this);
@@ -26,13 +27,13 @@ class MenuSelect extends React.Component{
         this.props.deleteItem(option);
     }
     selectOption(ciq, option){
-        let oldOption = this.state.selected;
+				let oldOption = this.state.selected;
         this.setState({
             menuOpen: false,
             selected: option
         }, () => {
-            //Call handleOptionSelect when the option selected has actually changed
-            if (oldOption.type !== option.type && oldOption.label !== option.label){
+            //Call handleOptionSelect when the option selected has actually changed, ignore this when selecting '+ New Theme' from the theme menu
+            if ((oldOption !== option) || (oldOption.type && option.type && oldOption.type !== option.type && oldOption.label && option.label && oldOption.label !== option.label) || (option.name && option.name.indexOf('New Theme')>-1)){
                 if (Object.keys(ciq).length > 0){
                     this.props.handleOptionSelect(ciq, option);
                 } else {
@@ -42,18 +43,18 @@ class MenuSelect extends React.Component{
         });
     }
     render(){
-        if(this.props.options.length===0) { return (<div></div>); }
+				if(this.props.options.length===0) { return (<div></div>); }
 
         let options = this.props.options.map((option, i) => {
             let onSelect = this.props.needsCiq ? this.selectOption.bind(this, this.props.ciq, option) : this.selectOption.bind(this, {}, option),
             optionLabel = this.props.name ? option[this.props.name] : (this.props.labelNeedsTransform ? this.props.labelTransform(option) : option),
-            buttonCName = (this.state.selected.type === option.type && this.state.selected.label === option.label) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
-            select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
+            buttonCName = (this.state.selected && option === this.state.selected) ? 'ciq-checkbox ciq-active' : 'ciq-checkbox',
+						select = (this.state.hasCheckboxes ? this.selectOption.bind(this, {}, option, true) : onSelect);
 
             return (
                 <menu-option key={'menuSelectOption' + this.props.keyName + i} onClick={select}>
-                    {this.state.hasButtons && !this.props.noButtons.indexOf(optionLabel)>-1
-                                ? 
+                    {(this.state.hasButtons && (this.props.noButtons.indexOf(optionLabel)===-1))
+                                ?
                         (<span>
                         <span className='ciq-edit' onClick={this.edit.bind(this, option)}></span>
                         <cq-close onClick={this.delete.bind(this, option)}></cq-close></span>)
