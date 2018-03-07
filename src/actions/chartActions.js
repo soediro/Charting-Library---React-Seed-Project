@@ -208,19 +208,6 @@ export function setPeriodicity(periodicity){
     return { type: 'SET_PERIODICITY', periodicity:periodicity }
 }
 
-export function setChartTypeWithLoader(type){
-    //Using redux-thunk to dispatch multiple actions with a timeout
-    //to emmulate an async call. This is to give the ChartEngine
-    //time to adjust the chart
-    return dispatch => Promise.all([
-        dispatch(changingChartData(true)),
-        dispatch(setChartType(type)),
-        setTimeout(() => {
-            dispatch(changingChartData(false))
-        }, 1000)
-    ])
-}
-
 export function setChartType(type){
 	return (dispatch, getState) => {
 		let state = getState()
@@ -233,7 +220,10 @@ export function setChartType(type){
 			ciq.setChartType(type.type)
 		}
 		ciq.draw()
-		return 		dispatch({ type: 'SET_CHART_TYPE', chartType: type })
+		return Promise.all([
+			dispatch({ type: 'SET_CHART_TYPE', chartType: type }),
+			dispatch(saveLayout())
+		])
 	}
 }
 
@@ -342,7 +332,7 @@ export function drawingsChanged(){
 export function saveLayout(){
     return (dispatch, getState) => {
         let state = getState(),
-        savedLayout = JSON.stringify(state.chart.ciq.exportLayout({ withSymbols: true }));
+				savedLayout = JSON.stringify(state.chart.ciq.exportLayout({ withSymbols: true }));
         CIQ.localStorageSetItem("myChartLayout", savedLayout);
         CIQ.localStorageSetItem('myChartPreferences', JSON.stringify(state.chart.ciq.exportPreferences()));
     }
