@@ -6,10 +6,11 @@ import Crosshairs from './UI/Crosshairs'
 import TimeZoneButton from './UI/TimeZoneButton'
 import DrawingToolbarButton from './UI/DrawingToolbarButton'
 import ShareChartModal from './Modals/ShareChartModal';
+import ChartStudyLegend from './UI/ChartStudyLegend';
 
 //redux components
 import ThemeUIContainer from '../containers/themeUIContainer'
-import StudyUIContainer from '../containers/studyContainer'
+import StudyContainer from '../containers/studyContainer'
 
 const UI = (props) => {
 	return (
@@ -25,12 +26,12 @@ const UI = (props) => {
 					<div className="right">
 						<Periodicity {...props} />
 						<ChartTypes {...props} />
-						<StudyUIContainer ciq={props.ciq} {...props} />
+						<StudyContainer uiType='menu' ciq={props.ciq} {...props} />
 						<ThemeUIContainer ciq={props.ciq} {...props} />
 						<Crosshairs {...props} />
 						<TimeZoneButton {...props} />
 						<DrawingToolbarButton {...props} />
-            <ShareChartModal {...props} />
+            			<ShareChartModal {...props} />
 					</div>
 				</nav>
 					:

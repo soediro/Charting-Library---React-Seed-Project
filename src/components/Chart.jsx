@@ -2,6 +2,7 @@ import UI from "./UI";
 import RangeSelector from "./RangeSelector";
 import ShareButton from "./ShareButton";
 import Legend from './Legend';
+import StudyContainer from '../containers/studyContainer'
 import DrawingContainer from '../containers/drawingContainer'
 
 class Chart extends React.Component {
@@ -12,6 +13,7 @@ class Chart extends React.Component {
 		this.props.setChartContainer($$$('#chartContainer'))
 	}
 	render() {
+		console.log('this.props: ', this.props);
 		return (
 			<div>
 				<UI {...this.props} />
@@ -20,6 +22,7 @@ class Chart extends React.Component {
 					<div id='chartContainer' className='chartContainer'>
 						<div className={this.props.isLoadingPeriodicity ? 'loader' : ''}></div>
 						<Legend {...this.props} />
+						<StudyContainer uiType='legend_chart' {...this.props} />
 					</div>
 				</div>
 				<div className="ciq-footer">

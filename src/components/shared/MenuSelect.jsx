@@ -71,7 +71,7 @@ class MenuSelect extends React.Component{
             <menu-select id={this.props.menuId} onMouseLeave={this.toggleMenu.bind(this, false)} onClick={this.toggleMenu.bind(this, !this.state.menuOpen)}>
                 <span className='title'>{this.props.title}</span>
                 <menu-select-options className='ps-container' style={menuDisplay}>
-                    {this.props.hasLegend ? <StudyLegend {...this.props} legendItems={this.props.legendItems} /> : null}
+                    {this.props.legend ? this.props.legend : null}
                     <div className='cq-scroll'>
                         {options}
                     </div>
@@ -84,9 +84,7 @@ class MenuSelect extends React.Component{
 MenuSelect.defaultProps = {
     hasButtons: false,
     options: [],
-    hasLegend: false,
     noButtons: [],
-    legendItems: {},
     needsCiq: false,
     labelNeedsTransform: false,
     keyName: 'option'
@@ -99,14 +97,13 @@ MenuSelect.PropTypes = {
     deleteItem: PropTypes.func.isRequired,
     editItem: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    hasLegend: PropTypes.bool.isRequired,
     hasButtons: PropTypes.bool.isRequired,
+    legend: PropTypes.object,
     labelNeedsTransform: PropTypes.bool,
     labelTransform: PropTypes.func,
     needsCiq: PropTypes.bool,
     ciq: PropTypes.object,
-    noButtons: PropTypes.array,
-    legendItems: PropTypes.object
+    noButtons: PropTypes.array
 };
 
 export default MenuSelect

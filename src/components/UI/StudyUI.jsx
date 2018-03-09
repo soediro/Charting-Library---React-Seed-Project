@@ -1,7 +1,8 @@
 //components
 import OverlayMenu from './OverlayMenu';
 import StudyModal from '../Modals/StudyModal/StudyModal';
-import MenuSelect from '../shared/MenuSelect'
+import MenuSelect from '../shared/MenuSelect';
+import StudyLegend from '../UI/StudyLegend';
 
 const StudyUI = (props) => {
 	let tempStudies = [];
@@ -21,13 +22,17 @@ const StudyUI = (props) => {
 	props.ciq.callbacks.studyOverlayEdit = props.toggleOverlay;
 	props.ciq.callbacks.studyPanelEdit = props.openStudyModal;
 	props.ciq.append('panelClose', props.syncStudies);
+
+	let studyLegend = (Object.keys(props.studies).length !== 0 ? 
+	<StudyLegend {...props} legendItems={props.studies} /> : <div></div>);
 	
 	return (
 		<span>
 			<OverlayMenu {...props} />
 			<StudyModal {...props} />
 
-			<MenuSelect hasButtons={false}
+			<MenuSelect legend={studyLegend}
+						hasButtons={false}
 						options={tempStudies} 
 						keyName='study' 
 						name='name' 
@@ -35,12 +40,7 @@ const StudyUI = (props) => {
 						needsCiq={true} 
 						ciq={props.ciq} 
 						menuId='studySelect' 
-						title='Studies'
-						hasLegend={Object.keys(props.studies).length !== 0 ? true : false}
-						legendItems={props.studies}
-						legendButtonAction={props.removeAllStudies}
-						removeLegendItem={props.removeStudy}
-						editLegendItem={props.openStudyModal} />
+						title='Studies' />
 		</span>
 	);
 }

@@ -12,10 +12,12 @@ import { toggleOverlay,
          syncStudies } from '../actions/studyActions'
 
 //components
-import StudyUI from '../components/UI/StudyUI'
+// import StudyUI from '../components/UI/StudyUI'
+import UIStudyContainer from '../components/UI/UIStudyContainer';
 
 const mapStateToProps = (state, props) => {
     return {
+        uiType: props.uiType,
         studyOverlay: state.study.studyOverlay,
         showStudyModal: state.study.showStudyModal,
         studyHelper: state.study.studyHelper,
@@ -56,6 +58,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const StudyContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(StudyUI)
+)(UIStudyContainer)
 
 export default StudyContainer
