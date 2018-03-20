@@ -42,6 +42,24 @@ export function addStudy(ciq, study){
     return { type: 'ADD_STUDY', ciq: ciq, study: study }
 }
 
+export function addStudyAndSync(ciq, study){
+    return (dispatch) => {
+        return Promise.all([
+            dispatch(addStudy(ciq, study)),
+            dispatch(syncStudies())
+        ]);
+    }
+}
+
+export function removeStudyAndSync(study){
+    return (dispatch) => {
+        return Promise.all([
+            dispatch(removeStudy(study)),
+            dispatch(syncStudies())
+        ]);
+    }
+}
+
 export function updateStudy(inputs, outputs, parameters){
     return { type: 'UPDATE_STUDY', inputs: inputs, outputs: outputs, parameters: parameters }
 }

@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 
 //actions
 import { toggleOverlay,
-         addStudy,
          updateStudy,
-         removeStudy, 
          openStudyModal,
          closeStudyModal,
          removeAllStudies,
-         syncStudies } from '../actions/studyActions'
+         syncStudies,
+         addStudyAndSync,
+         removeStudyAndSync } from '../actions/studyActions'
 
 //components
 // import StudyUI from '../components/UI/StudyUI'
@@ -37,20 +37,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         toggleOverlay: (params) => {
             dispatch(toggleOverlay(params))
         },
-        addStudy: (ciq, study) => {
-            dispatch(addStudy(ciq, study))
-        },
         updateStudy: (inputs, outputs, parameters) => {
             dispatch(updateStudy(inputs, outputs, parameters))
         },
         removeStudy: (params) => {
-            dispatch(removeStudy(params))
+            dispatch(removeStudyAndSync(params))
         },
         removeAllStudies: () => {
             dispatch(removeAllStudies())
         },
         syncStudies: (params) => {
             dispatch(syncStudies(params))
+        },
+        addStudy: (ciq, study) => {
+            dispatch(addStudyAndSync(ciq, study))
         }
     }
 }

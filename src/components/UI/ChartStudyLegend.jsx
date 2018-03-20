@@ -13,9 +13,17 @@ class ChartStudyLegend extends React.Component{
         this.editStudy = this.editStudy.bind(this);
         this.toggleDisplay = this.toggleDisplay.bind(this);
     }
+    componentDidMount(){
+        if (this.props.ciq !== null){
+            this.props.ciq.append('panelClose', this.props.syncStudies);
+        }
+    }
     componentWillReceiveProps(nextProps){
         if (nextProps.ciq !== null){
-            nextProps.ciq.append('panelClose', this.props.syncStudies);
+            
+            this.setState({
+                open: false
+            });
         }
     }
     editStudy(study){
@@ -48,7 +56,6 @@ class ChartStudyLegend extends React.Component{
 
         let display = { display: 'none' };
         if (this.state.open) { display.display = 'inline-block'; }
-        else { display.display = 'none'; }
         
         return (
             <div className='cq-study-legend cq-overlays'>

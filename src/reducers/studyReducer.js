@@ -12,7 +12,8 @@ const initialState = {
         top: 0,
         left: 0
     },
-    studies: {}
+    studies: {},
+    studyLegendOpen: false
 }
 
 const study = (state = initialState, action) => {
@@ -54,9 +55,7 @@ const study = (state = initialState, action) => {
                 studyLookup[state.studyList[libraryEntry].name] = libraryEntry
             }
             CIQ.Studies.addStudy(action.ciq, studyLookup[action.study.name]);
-            return Object.assign({}, state, {
-                studies: action.ciq.layout.studies
-            });
+            return state;
         case Types.UPDATE_STUDY:
             state.studyHelper.updateStudy({ inputs: action.inputs, outputs: action.outputs, parameters: action.parameters });
             return Object.assign({}, state, {
@@ -82,8 +81,7 @@ const study = (state = initialState, action) => {
                     show: false,
                     top: 0,
                     left: 0
-                },
-                studies: hasStx ? _.cloneDeep(action.study.stx.layout.studies) : _.cloneDeep(state.studyHelper.stx.layout.studies)
+                }
             })
         case Types.CLEAR_STUDIES:
             return Object.assign({}, state, {

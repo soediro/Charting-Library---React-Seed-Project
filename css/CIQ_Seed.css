@@ -682,6 +682,23 @@ div.loader{
 	margin-top:35px;
 }
 
+.cq-study-legend.cq-overlays .cq-legend-close.cq-overlays:after{
+	background-position: -250px -50px !important;
+	color: white;
+}
+
+.cq-study-legend.cq-overlays .ciq-edit{
+	background-position: -300px -50px;
+	background-image: url(img/stx-sprite-panels.svg);
+    opacity: .5;
+	transition: opacity 0.2s;
+	color: white;
+}
+
+.cq-study-legend.cq-overlays .cq-item{
+	padding: 0 !important;
+}
+
 
 .cq-study-legend.cq-overlays .legend-content{
     position: relative;
@@ -689,12 +706,6 @@ div.loader{
     cursor: default;
     text-transform: uppercase;
 	font-weight: 700;
-}
-
-.cq-study-legend.cq-overlays .study-overlays-legend{
-	height: 15px;
-	margin: 5px 0 0 10px;
-    z-index: 2;
 }
 
 .cq-study-legend.cq-overlays .study-overlays-legend.cq-night{
@@ -707,6 +718,31 @@ div.loader{
     white-space: nowrap;
     width: 140px;
     float: left;
+}
+
+@keyframes reverse-hovershow-toggle-animation {
+	0% {
+	  transform: rotate(450deg); }
+	100% {
+	  transform: rotate(0deg); } }
+
+.cq-study-legend .study-overlays-legend{
+	content: "";
+    height: 12px;
+	width: 12px;
+	float: left;
+    margin-left: 10px;
+    margin-right: 4px;
+    background-image: url(img/stx-sprite-ui.svg);
+	background-position: -731px -31px;
+	z-index: 2;
+	padding: 0 15px 15px 15px;
+}
+
+.cq-study-legend .study-overlays-legend:hover {
+	animation-name: reverse-hovershow-toggle-animation;
+	animation-duration: .5s;
+	animation-timing-function: ease-in-out;
 }
 
 .cq-heading{
