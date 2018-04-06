@@ -1,3 +1,5 @@
+import React from 'react'
+
 const AxisLabel  = (props) => {
     let cName = props.showAxisLabels  ? 'ciq-checkbox ciq-active' : 'ciq-checkbox';
 

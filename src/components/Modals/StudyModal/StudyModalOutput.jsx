@@ -1,5 +1,5 @@
+import React from 'react'
 import PropTypes from 'prop-types'
-
 import ColorSwatch from '../../Drawing/ColorSwatch'
 
 const StudyModalOutput = (props) => {
@@ -18,7 +18,7 @@ StudyModalOutput.defaultProps = {
     isModal: false
 };
 
-StudyModalOutput.PropTypes = {
+StudyModalOutput.propTypes = {
     output: PropTypes.object.isRequired,
     setColor: PropTypes.func.isRequired,
     isPickingStudyColor: PropTypes.bool.isRequired,

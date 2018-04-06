@@ -1,4 +1,4 @@
-//components
+import React from 'react'
 import TimeZone from '../Modals/TimezoneModal';
 
 const TimeZoneButton = (props) => {

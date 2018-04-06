@@ -1,8 +1,8 @@
 export default class ChartService {
 
-	quotefeedSimulator = {}; // the quotefeed object
-
 	constructor() {
+
+		this.quotefeedSimulator = {};
 
     // -------------------------------------------------------------------------------------------
 // Copyright 2012-2017 by ChartIQ, Inc
@@ -24,6 +24,9 @@ export default class ChartService {
  * @private
  */
 this.quotefeedSimulator.generateGUID=function(){
+
+	 // the quotefeed object
+
 	var d = new Date().getTime();
 	if(window.performance && typeof window.performance.now === "function"){
 		d += window.performance.now(); //use high-precision timer if available

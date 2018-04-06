@@ -1,3 +1,5 @@
+import React from 'react'
+
 const FontStyle = (props) => {
     let boldCName = props.fontStyle.bold ? 'boldBtn ciq-active' : 'boldBtn',
     italicCName = props.fontStyle.italic ? 'italicBtn ciq-active' : 'italicBtn';
