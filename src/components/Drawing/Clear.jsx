@@ -4,7 +4,7 @@ const Clear = (props) => {
 	let cName = props.canClear ? 'ciq-btn active' : 'ciq-btn';
 
 	return (
-		<button className={cName} onClick={props.clear}>Clear</button>
+		<button disabled={!props.canClear} className={cName} onClick={props.clear}>Clear</button>
 	);
 };
 

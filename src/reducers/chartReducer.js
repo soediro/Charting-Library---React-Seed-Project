@@ -34,10 +34,11 @@ const initialState = {
   },
   initialTool:undefined,
   drawings: [],
-  undoStamps: [],
   canUndo: false,
   canRedo: false,
-  canClear: false
+  canClear: false,
+  undoStack: [],
+  redoStack: []
 }
 
 const chart = (state = initialState, action) => {
@@ -50,9 +51,17 @@ const chart = (state = initialState, action) => {
       ciq.setMarketFactory(CIQ.Market.Symbology.factory);
       let layout = CIQ.localStorage.getItem('myChartLayout');
       if (layout !== null){
-        ciq.importLayout(JSON.parse(layout), { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
+        layout = JSON.parse(layout);
+        ciq.importLayout(layout, { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
       } else {
-        ciq.newChart(state.symbol)    
+        ciq.newChart(state.symbol)
+      }
+      let preferences = CIQ.localStorage.getItem('myChartPreferences');
+      if (preferences !== null){
+        preferences = JSON.parse(preferences);
+        if (preferences.timeZone) {
+          ciq.setTimeZone(null, preferences.timeZone);
+        }
       }
       return Object.assign({}, state, {
         ciq: ciq,
@@ -63,22 +72,16 @@ const chart = (state = initialState, action) => {
         },
         chartType: layout ? layout.chartType : state.chartType,
         showCrosshairs: layout ? layout.crosshair : state.showCrosshairs,
-        symbol: layout && layout.symbols ? layout.symbols[0].symbol : state.symbol
+        symbol: layout && layout.symbols ? layout.symbols[0].symbol.toUpperCase() : state.symbol
       })
     case Types.SET_CHART_TYPE:
-      if (action.chartType.aggregationEdit && state.ciq.layout.aggregationType != action.chartType.type) {
-        state.ciq.setChartType('none');
-        state.ciq.setAggregationType(action.chartType.type);
-      } else {
-        state.ciq.setAggregationType(action.chartType.type)
-        state.ciq.setChartType(action.chartType.type)
-      }
-      state.ciq.draw()
       return Object.assign({}, state, {
         chartType: action.chartType.type
       })
-    case Types.ADD_COMPARISON:
-      let newComparisons = state.comparisons.concat([action.series]);
+		case Types.ADD_COMPARISON:
+			if(!action.series) return state;
+			var seriesArray = Array.isArray(action.series) ? action.series : [action.series]
+      let newComparisons = state.comparisons.concat(seriesArray);
       return Object.assign({}, state, {
         comparisons: newComparisons
       })
@@ -156,8 +159,12 @@ const chart = (state = initialState, action) => {
           shareStatusMsg: action.msg
         })
     case Types.DRAW:
-      state.ciq.draw()
-      return state
+      state.ciq.draw();
+      return Object.assign({}, state, {
+        canUndo: state.undoStack.length > 0,
+        canRedo: state.redoStack.length > 0,
+        canClear: state.ciq.drawingObjects.length > 0
+      });
     case Types.TOGGLE_AXIS_LABELS:
       let flipAxisLabels = !state.showAxisLabels;
       state.ciq.currentVectorParameters.axisLabel=flipAxisLabels;
@@ -167,32 +174,28 @@ const chart = (state = initialState, action) => {
     case Types.DRAWINGS_CHANGED:
         let drawings = state.ciq.drawingObjects.slice();
         return Object.assign({}, state, {
-          drawings: drawings,
-          canUndo: true,
-          canClear: drawings.length > 0
+          drawings: drawings
         });
     case Types.UNDO:
+        let newRedoStack = state.redoStack.slice();
+        newRedoStack.push(action.item);
         return Object.assign({}, state, {
           canRedo: true,
-          canUndo: false,
-          canClear: state.ciq.drawingObjects.length > 0
+          redoStack: newRedoStack
         });
     case Types.REDO:
+        let newUndoStack = state.undoStack.slice();
+        newUndoStack.push(action.item);
         return Object.assign({}, state, {
-          canRedo: false,
-          canUndo: true,
-          canClear: state.ciq.drawingObjects.length > 0
-        });
-    case Types.CLEAR:
-        return Object.assign({}, state, {
-          drawings: [],
-          canClear: false
+          undoStack: newUndoStack
         });
     case Types.UPDATE_UNDO_STAMPS:
-        let undoStamps = state.ciq.undoStamps.slice();
+        let newStack = state.undoStack.slice();
+        newStack.push(action.params.before);
         return Object.assign({}, state, {
-          undoStamps: undoStamps,
-          canUndo: undoStamps.length > 0,
+          undoStack: newStack,
+          canUndo: newStack.length > 0,
+          canRedo: state.redoStack.length  > 0,
           canClear: state.ciq.drawingObjects.length > 0
         });
     case Types.IMPORT_DRAWINGS:

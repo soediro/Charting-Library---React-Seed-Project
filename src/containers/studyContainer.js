@@ -9,10 +9,12 @@ import { toggleOverlay,
          openStudyModal,
          closeStudyModal} from '../actions/studyActions'
 
+import { saveLayout } from '../actions/chartActions'
+
 //components
 import StudyUI from '../components/UI/StudyUI'
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
     return {
         studyOverlay: state.study.studyOverlay,
         showStudyModal: state.study.showStudyModal,
@@ -21,7 +23,7 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         openStudyModal: (params) => {
             dispatch(openStudyModal(params))
@@ -40,6 +42,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         removeStudy: (params) => {
             dispatch(removeStudy(params))
+        },
+        saveLayout: () => {
+            dispatch(saveLayout())
         }
     }
 }

@@ -7,21 +7,23 @@ import { setThemeHelper,
          updateTheme,
          saveTheme,
          toggleThemeEditor,
-         deleteTheme } from '../actions/themeActions'
+         deleteTheme,
+         restoreThemes } from '../actions/themeActions'
 
 //components
 import ThemeUI from '../components/UI/ThemeUI'
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
     return {
         themeHelper: state.theme.themeHelper,
         themeList: state.theme.themeList,
         showEditModal: state.theme.showEditModal,
-        currentThemeSettings: state.theme.currentThemeSettings
+				currentThemeSettings: state.theme.currentThemeSettings,
+				currentThemeName: state.theme.currentThemeName
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         setThemeHelper: (ciq) => {
             dispatch(setThemeHelper(ciq))
@@ -35,11 +37,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveTheme: (name, theme) => {
             dispatch(saveTheme(name, theme))
         },
-        toggleThemeEditor: () => {
-            dispatch(toggleThemeEditor())
+        toggleThemeEditor: (theme) => {
+            dispatch(toggleThemeEditor(theme))
         },
         deleteTheme: (theme) => {
             dispatch(deleteTheme(theme))
+        },
+        restoreThemes: () => {
+            dispatch(restoreThemes())
         }
     }
 }

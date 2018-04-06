@@ -15,7 +15,8 @@ class DrawingToolbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentToolHasLabels: false
+			currentToolHasLabels: false,
+			toolTitle: 'Select Tool'
 		};
 	}
 	componentDidMount(){
@@ -30,7 +31,6 @@ class DrawingToolbar extends React.Component {
 		this.changePickerState = this.changePickerState.bind(this)
 		this.openMenu = this.openMenu.bind(this)
 		this.closeMenu = this.closeMenu.bind(this)
-		this.drawingsChanged = this.drawingsChanged.bind(this)
 	}
 	componentWillReceiveProps(nextProps){
 		if(nextProps.showDrawingToolbar && !this.props.showDrawingToolbar) {
@@ -39,12 +39,9 @@ class DrawingToolbar extends React.Component {
 
 		if(this.props.ciq === null && nextProps.ciq !== null){
 			if (nextProps.ciq.callbacks.drawing === null){
-				nextProps.ciq.callbacks.drawing = this.drawingsChanged;
+				nextProps.ciq.addEventListener('undoStamp', this.props.undoStamps);
 			}
 		}
-	}
-	drawingsChanged(args){
-		this.props.drawingsChanged(args);
 	}
 	toTitleCase(str) {
 		return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -63,15 +60,10 @@ class DrawingToolbar extends React.Component {
 			let toolParams = CIQ.Drawing.getDrawingParameters(ciq, tool)
 			this.props.changeTool(tool, toolParams)
 			this.props.changeVectorParams(tool)
-			if (toolParams.hasOwnProperty('axisLabel')){
-				this.setState({
-					currentToolHasLabels: true
-				})
-			}else{
-				this.setState({
-					currentToolHasLabels: false
-				})
-			}
+			this.setState({
+				currentToolHasLabels: toolParams.hasOwnProperty('axisLabel'),
+				toolTitle: this.toTitleCase(tool)
+			});
 		}
 	}
 	changeFontStyle(type){
@@ -131,11 +123,12 @@ class DrawingToolbar extends React.Component {
 								keyName='tool'
 								handleOptionSelect={this.setTool.bind(this)}
 								menuId='toolSelect'
-								title='Select Tool'
+								title={this.state.toolTitle}
 								needsCiq={true}
 								ciq={this.props.ciq}
 								labelNeedsTransform={true}
-								labelTransform={this.toTitleCase} />
+								labelTransform={this.toTitleCase}
+								handlesOwnContent={true} />
 					<span>
 						<div className="drawingParameters">
 							<ColorSwatch name="Line" type="line" setColor={this.setColor} color={this.props.line} isPickingColor={this.state.isPickingDrawColor} changeState={this.changePickerState} />
