@@ -31,14 +31,14 @@ class StudyUI extends React.Component{
 			<span>
 				<OverlayMenu {...this.props} />
 				<StudyModal {...this.props} />
-	
+
 				<MenuSelect hasButtons={false}
 						options={tempStudies}
 						keyName='study'
 						name='name'
-						handleOptionSelect={props.addStudy}
+						handleOptionSelect={this.props.addStudy}
 						needsCiq={true}
-						ciq={props.ciq}
+						ciq={this.props.ciq}
 						menuId='studySelect'
 						title='Studies' />
 			</span>
