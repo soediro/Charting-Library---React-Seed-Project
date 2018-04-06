@@ -1,3 +1,4 @@
+import React from 'react'
 import StudyModalInput from './StudyModalInput'
 import StudyModalOutput from './StudyModalOutput'
 import StudyModalParameter from './StudyModalParameter'

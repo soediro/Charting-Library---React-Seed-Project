@@ -1,3 +1,5 @@
+import React from 'react'
+
 const Measure = (props) => {
 	let selectedTool=props.selectedTool;
 	let rejectList=['Callout','Annotation','Arrow','Average','Check','Crossline',

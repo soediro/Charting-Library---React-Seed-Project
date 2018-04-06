@@ -1,3 +1,5 @@
+import React from 'react'
+
 const DrawingToolbarButton = (props) => {
 
 	function toggleDrawingToolbar() {

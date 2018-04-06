@@ -1,4 +1,6 @@
+import React from 'react'
 import PropTypes from 'prop-types'
+
 
 class MenuSelect extends React.Component{
     constructor(props){
@@ -96,14 +98,14 @@ MenuSelect.defaultProps = {
     keyName: 'option'
 };
 
-MenuSelect.PropTypes = {
+MenuSelect.propTypes = {
     options: PropTypes.array.isRequired,
     keyName: PropTypes.string.isRequired,
     menuId: PropTypes.string.isRequired,
-    deleteItem: PropTypes.func.isRequired,
-    editItem: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     hasButtons: PropTypes.bool.isRequired,
+    deleteItem: PropTypes.func,
+    editItem: PropTypes.func,
     labelNeedsTransform: PropTypes.bool,
     labelTransform: PropTypes.func,
     needsCiq: PropTypes.bool,

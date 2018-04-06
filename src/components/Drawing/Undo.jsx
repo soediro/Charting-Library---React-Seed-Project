@@ -1,3 +1,5 @@
+import React from 'react'
+
 const Undo = (props) => {
 	let cName = props.canUndo ? 'ciq-btn active' : 'ciq-btn';
 	return (

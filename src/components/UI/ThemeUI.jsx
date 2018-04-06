@@ -1,4 +1,4 @@
-//components
+import React from 'react'
 import ThemeModal from '../Modals/ThemeModal';
 import MenuSelect from '../shared/MenuSelect';
 

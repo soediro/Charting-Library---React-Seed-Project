@@ -1,3 +1,5 @@
+import React from 'react'
+
 const Clear = (props) => {
 	let cName = props.canClear ? 'ciq-btn active' : 'ciq-btn';
 

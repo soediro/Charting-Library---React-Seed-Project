@@ -1,3 +1,4 @@
+import React from 'react'
 import ChartSymbol from './UI/ChartSymbol'
 import Comparison from './UI/Comparison'
 import Periodicity from './UI/Periodicity'
@@ -6,8 +7,6 @@ import Crosshairs from './UI/Crosshairs'
 import TimeZoneButton from './UI/TimeZoneButton'
 import DrawingToolbarButton from './UI/DrawingToolbarButton'
 import ShareChartModal from './Modals/ShareChartModal';
-
-//redux components
 import ThemeUIContainer from '../containers/themeUIContainer'
 import StudyUIContainer from '../containers/studyContainer'
 

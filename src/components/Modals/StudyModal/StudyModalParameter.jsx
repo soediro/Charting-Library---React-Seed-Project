@@ -1,3 +1,4 @@
+import React from 'react'
 import ColorSwatch from '../../Drawing/ColorSwatch'
 
 const StudyModalParameter = (props) => {

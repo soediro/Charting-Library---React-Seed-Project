@@ -1,3 +1,4 @@
+import React from 'react'
 import UI from "./UI";
 import RangeSelector from "./RangeSelector";
 import ShareButton from "./ShareButton";

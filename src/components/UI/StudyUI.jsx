@@ -1,4 +1,4 @@
-//components
+import React from 'react'
 import OverlayMenu from './OverlayMenu';
 import StudyModal from '../Modals/StudyModal/StudyModal';
 import MenuSelect from '../shared/MenuSelect'
@@ -31,16 +31,16 @@ class StudyUI extends React.Component{
 			<span>
 				<OverlayMenu {...this.props} />
 				<StudyModal {...this.props} />
-	
+
 				<MenuSelect hasButtons={false}
-							options={tempStudies} 
-							keyName='study' 
-							name='name' 
-							handleOptionSelect={this.props.addStudy} 
-							needsCiq={true}
-							ciq={this.props.ciq}
-							menuId='studySelect' 
-							title='Studies' />
+						options={tempStudies}
+						keyName='study'
+						name='name'
+						handleOptionSelect={this.props.addStudy}
+						needsCiq={true}
+						ciq={this.props.ciq}
+						menuId='studySelect'
+						title='Studies' />
 			</span>
 		);
 	}

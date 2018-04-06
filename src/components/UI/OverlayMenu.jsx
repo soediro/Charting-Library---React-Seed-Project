@@ -1,3 +1,5 @@
+import React from 'react'
+
 const OverlayMenu = (props) => {
     if (props.studyOverlay.show){
         return (

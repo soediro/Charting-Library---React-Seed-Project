@@ -1,3 +1,5 @@
+import React from 'react'
+
 const Redo = (props) => {
 	let cName = props.canRedo ? 'ciq-btn active' : 'ciq-btn';
 
