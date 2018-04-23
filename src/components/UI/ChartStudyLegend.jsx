@@ -11,6 +11,8 @@ class ChartStudyLegend extends React.Component{
     bindCorrectContext(){
         this.removeStudy = this.removeStudy.bind(this);
         this.editStudy = this.editStudy.bind(this);
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
         this.toggleDisplay = this.toggleDisplay.bind(this);
     }
     componentDidMount(){
@@ -41,6 +43,34 @@ class ChartStudyLegend extends React.Component{
             open: !this.state.open
         });
     }
+    open(delay) {
+        console.log('with delay? :', delay);
+        if (delay) {
+            setTimeout(() => {
+                this.setState({
+                    open: true
+                });
+            }, 500);
+        } else {
+            this.setState({
+                open: true
+            });
+        }
+    }
+    close(delay) {
+        console.log('with delay? :', delay);
+        if (delay) {
+            setTimeout(() => {
+                this.setState({
+                    open: false
+                });
+            }, 500);
+        } else {
+            this.setState({
+                open: false
+            });
+        }
+    }
     render(){
         if (this.props.ciq === null || (this.props.ciq.hasOwnProperty('overlays') && Object.keys(this.props.ciq.overlays).length === 0)) { return (<div></div>); }
         let studies = Object.keys(this.props.ciq.overlays).map((key, i) => {
@@ -59,8 +89,8 @@ class ChartStudyLegend extends React.Component{
         
         return (
             <div className='cq-study-legend cq-overlays'>
-                <span className='study-overlays-legend cq-night' onClick={this.toggleDisplay}>Overlays</span>
-                <div className='legend-content' style={display}>
+                <span className='study-overlays-legend cq-night' onMouseOver={this.open.bind(this, true)}>Overlays<span className={this.state.open ? 'cq-overlay-icon open' : 'cq-overlay-icon'}></span></span>
+                <div className='legend-content' onMouseOver={this.open} onMouseOut={this.close} style={display}>
                     {studies}                    
                 </div>
             </div>

@@ -697,6 +697,8 @@ div.loader{
 
 .cq-study-legend.cq-overlays .cq-item{
 	padding: 0 !important;
+	border-radius: 1px;
+  	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -726,23 +728,54 @@ div.loader{
 	100% {
 	  transform: rotate(0deg); } }
 
-.cq-study-legend .study-overlays-legend{
-	content: "";
-    height: 12px;
+@keyframes hovershow-toggle-animation {
+	0% {
+		transform: rotate(0deg); }
+	100% {
+		transform: rotate(450deg); } }
+
+.cq-study-legend .study-overlays-legend {
+	z-index: 2;
+	padding: 15px 15px 0 15px;
+	cursor: pointer;
+}
+
+.cq-study-legend .study-overlays-legend .cq-overlay-icon {
+	height: 12px;
 	width: 12px;
+	margin-left: 2px;
+	margin-right: 5px;
 	float: left;
-    margin-left: 10px;
-    margin-right: 4px;
     background-image: url(img/stx-sprite-ui.svg);
 	background-position: -731px -31px;
-	z-index: 2;
-	padding: 0 15px 15px 15px;
+}
+
+.cq-study-legend .study-overlays-legend .cq-overlay-icon.open {
+	height: 12px;
+	width: 12px;
+	margin-left: 2px;
+	margin-right: 5px;
+	float: left;
+    background-image: url(img/stx-sprite-ui.svg);
+	background-position: -731px -31px;
+	transform: rotate(90) !important; 
 }
 
 .cq-study-legend .study-overlays-legend:hover {
+	color: white;
+}
+
+.cq-study-legend .study-overlays-legend > span.cq-overlay-icon {
 	animation-name: reverse-hovershow-toggle-animation;
 	animation-duration: .5s;
 	animation-timing-function: ease-in-out;
+}
+
+.cq-study-legend .study-overlays-legend:hover > span.cq-overlay-icon {
+	animation: hovershow-toggle-animation ease-in-out .5s;
+	animation-iteration-count: 1;
+	transform-origin: 50% 50%;
+	animation-fill-mode: forwards;
 }
 
 .cq-heading{
