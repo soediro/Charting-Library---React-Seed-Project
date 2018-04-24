@@ -117,6 +117,7 @@ export function setTimeZone(zone){
     return (dispatch, getState) => {
         let state = getState();
         return Promise.all([
+						state.chart.ciq.displayZone=null,
             state.chart.ciq.setTimeZone(null, zone),
             dispatch(changingChartData(true)),
             setTimeout(() => {
