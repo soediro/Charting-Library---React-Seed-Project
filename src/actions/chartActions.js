@@ -37,30 +37,30 @@ export default Types;
  * action creators
  */
 
-export function setChartContainer(container){
+export function setChartContainer(container, callbacks){
     return (dispatch, getState) => {
 
-			let getCurrentComparisons = (ciq)=> {
-				return Object.keys(ciq.chart.series).
-				filter((s)=>ciq.chart.series[s].parameters.isComparison).
-				map((s)=>ciq.chart.series[s])
-			}
+        let getCurrentComparisons = (ciq)=> {
+            return Object.keys(ciq.chart.series).
+            filter((s)=>ciq.chart.series[s].parameters.isComparison).
+            map((s)=>ciq.chart.series[s])
+        }
 
         return Promise.all([
-            dispatch(setContainer(container)),
+            dispatch(setContainer(container, callbacks)),
             dispatch(changingChartData(true)),
             setTimeout(() => {
-								let ciq = getState().chart.ciq
-								dispatch(importDrawings())
-								dispatch(addComparison(getCurrentComparisons(ciq)))
-								dispatch(changingChartData(false))
+                let ciq = getState().chart.ciq
+                dispatch(importDrawings())
+                dispatch(addComparison(getCurrentComparisons(ciq)))
+                dispatch(changingChartData(false))
             }, 1500)
         ]);
     }
 }
 
-export function setContainer(container){
-    return { type: 'SET_CONTAINER', container: container };
+export function setContainer(container, callbacks){
+    return { type: 'SET_CONTAINER', container: container, callbacks: callbacks };
 }
 
 export function importDrawings(){
@@ -156,8 +156,7 @@ export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
                         interval: state.chart.ciq.layout.interval,
                         timeUnit: state.chart.ciq.layout.timeUnit
                     }
-								))
-								dispatch(saveLayout())
+				))
             })
         ])
     }
@@ -201,7 +200,6 @@ export function setPeriodicityWithLoader(periodicity){
 					timeUnit: state.chart.ciq.layout.timeUnit
 				}
 			))
-			dispatch(saveLayout())
 		})
 	])
 }
@@ -224,8 +222,7 @@ export function setChartType(type){
 		}
 		ciq.draw()
 		return Promise.all([
-			dispatch({ type: 'SET_CHART_TYPE', chartType: type }),
-			dispatch(saveLayout())
+			dispatch({ type: 'SET_CHART_TYPE', chartType: type })
 		])
 	}
 }
@@ -323,7 +320,7 @@ export function changeDrawings(params){
             CIQ.localStorage.removeItem(state.chart.symbol);
         }else{
             CIQ.localStorageSetItem(state.chart.symbol, JSON.stringify(tmp));
-				}
+		}
         return dispatch(drawingsChanged());
     }
 }
