@@ -94,6 +94,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     toggleTimezoneModal: () => {
       dispatch(toggleTimezoneModal())
+		},
+		setShareStatus: (status, msg) => {
+			dispatch(setShareStatus(status, msg))
     },
     setTimeZone: (zone) => {
       dispatch(setTimeZone(zone))
