@@ -156,7 +156,8 @@ export function setSpanWithLoader(multiplier, base, interval, period, timeUnit){
                         interval: state.chart.ciq.layout.interval,
                         timeUnit: state.chart.ciq.layout.timeUnit
                     }
-                ))
+								))
+								dispatch(saveLayout())
             })
         ])
     }
@@ -200,6 +201,7 @@ export function setPeriodicityWithLoader(periodicity){
 					timeUnit: state.chart.ciq.layout.timeUnit
 				}
 			))
+			dispatch(saveLayout())
 		})
 	])
 }

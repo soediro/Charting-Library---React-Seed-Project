@@ -49,12 +49,12 @@ const chart = (state = initialState, action) => {
       })
       ciq.attachQuoteFeed(state.service, { refreshInterval: state.refreshInterval })
       ciq.setMarketFactory(CIQ.Market.Symbology.factory);
-      let layout = CIQ.localStorage.getItem('myChartLayout');
+			let layout = CIQ.localStorage.getItem('myChartLayout');
       if (layout !== null){
         layout = JSON.parse(layout);
         ciq.importLayout(layout, { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });
       } else {
-        ciq.newChart(state.symbol)
+				ciq.newChart(state.symbol, null, null, restoreDrawings.bind(this, ciq))
       }
       let preferences = CIQ.localStorage.getItem('myChartPreferences');
       if (preferences !== null){
@@ -213,7 +213,7 @@ const chart = (state = initialState, action) => {
 * private functions
 */
 function restoreDrawings(stx){
-  var memory=CIQ.localStorage.getItem(stx.chart.symbol);
+	var memory=CIQ.localStorage.getItem(stx.chart.symbol);
 	if(memory!==null){
     var parsed=JSON.parse(memory);
 		if(parsed){
