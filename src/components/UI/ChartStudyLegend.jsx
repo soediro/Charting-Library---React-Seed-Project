@@ -13,7 +13,6 @@ class ChartStudyLegend extends React.Component{
         this.editStudy = this.editStudy.bind(this);
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
-        this.toggleDisplay = this.toggleDisplay.bind(this);
     }
     componentDidMount(){
         if (this.props.ciq !== null){
@@ -38,13 +37,7 @@ class ChartStudyLegend extends React.Component{
         this.props.ciq.remove('panelClose');
         this.props.removeStudy({ stx: this.props.ciq, sd: study, inputs: study.inputs, outputs: study.outputs, parameters: study.parameters });
     }
-    toggleDisplay(){
-        this.setState({
-            open: !this.state.open
-        });
-    }
     open(delay) {
-        console.log('with delay? :', delay);
         if (delay) {
             setTimeout(() => {
                 this.setState({
@@ -58,7 +51,6 @@ class ChartStudyLegend extends React.Component{
         }
     }
     close(delay) {
-        console.log('with delay? :', delay);
         if (delay) {
             setTimeout(() => {
                 this.setState({

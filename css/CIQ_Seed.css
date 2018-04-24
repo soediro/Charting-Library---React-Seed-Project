@@ -758,7 +758,7 @@ div.loader{
 	float: left;
     background-image: url(img/stx-sprite-ui.svg);
 	background-position: -731px -31px;
-	transform: rotate(90) !important; 
+	transform: rotate(90deg) !important; 
 }
 
 .cq-study-legend .study-overlays-legend:hover {
