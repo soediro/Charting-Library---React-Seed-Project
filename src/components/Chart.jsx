@@ -10,7 +10,15 @@ class Chart extends React.Component {
 		super(props);
 	}
 	componentDidMount() {
-		this.props.setChartContainer($$$('#chartContainer'))
+		this.props.setChartContainer($$$('#chartContainer'), {
+			studyOverlayEdit: this.props.toggleStudyOverlay,
+			studyPanelEdit: this.props.openStudyModal
+		})
+	}
+	componentWillReceiveProps(nextProps) {
+		if (this.props.ciq !== nextProps.ciq) {
+			nextProps.ciq.callbacks.layout = this.props.saveLayout;
+		}
 	}
 	render() {
 		return (
@@ -18,7 +26,7 @@ class Chart extends React.Component {
 				<UI {...this.props} />
 				<div className="ciq-chart-area">
 					<DrawingContainer {...this.props} />
-					<div id='chartContainer' className='chartContainer'>
+					<div id='chartContainer' className='chartContainer chartContainerMain'>
 						<div className={this.props.isLoadingPeriodicity ? 'loader' : ''}></div>
 						<Legend {...this.props} />
 					</div>
@@ -33,5 +41,3 @@ class Chart extends React.Component {
 }
 
 export default Chart
-
-

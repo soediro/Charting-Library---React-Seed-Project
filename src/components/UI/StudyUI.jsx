@@ -7,11 +7,6 @@ class StudyUI extends React.Component{
 	constructor(props){
 		super(props);
 	}
-	componentDidMount(){
-		this.props.ciq.callbacks.studyOverlayEdit = this.props.toggleOverlay;
-		this.props.ciq.callbacks.studyPanelEdit = this.props.openStudyModal;
-		this.props.ciq.callbacks.layout = this.props.saveLayout;
-	}
 	render(){
 		let tempStudies = [];
 

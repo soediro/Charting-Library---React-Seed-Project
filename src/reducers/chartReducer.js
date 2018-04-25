@@ -49,7 +49,9 @@ const chart = (state = initialState, action) => {
       })
       ciq.attachQuoteFeed(state.service, { refreshInterval: state.refreshInterval })
       ciq.setMarketFactory(CIQ.Market.Symbology.factory);
-			let layout = CIQ.localStorage.getItem('myChartLayout');
+      let layout = CIQ.localStorage.getItem('myChartLayout');
+      ciq.callbacks.studyOverlayEdit = action.callbacks.studyOverlayEdit;
+      ciq.callbacks.studyPanelEdit = action.callbacks.studyPanelEdit;
       if (layout !== null){
         layout = JSON.parse(layout);
         ciq.importLayout(layout, { managePeriodicity: true, cb: restoreDrawings.bind(this, ciq) });

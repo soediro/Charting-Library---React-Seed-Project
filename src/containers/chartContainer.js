@@ -7,16 +7,13 @@ import { setChartContainer,
         removeComparisonAndSave,
         toggleCrosshairsAndSave,
         setSpanWithLoader,
-        shareChart,
         setShareStatus,
         changeVectorParams,
         changeVectorLineParams,
         changeVectorStyle,
         setPeriodicity,
         setChartType,
-        toggleLoader,
         setSymbolAndSave,
-        changingChartData,
         setPeriodicityWithLoader,
         toggleTimezoneModal,
         setTimeZone,
@@ -30,6 +27,8 @@ import { setChartContainer,
         undoStamps } from '../actions/chartActions'
 
 import { toggleDrawing } from '../actions/drawActions'
+
+import { toggleOverlay, openStudyModal } from '../actions/studyActions'
 
 //components
 import Chart from '../components/Chart'
@@ -62,8 +61,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setChartContainer: (container) => {
-      dispatch(setChartContainer(container))
+    setChartContainer: (container, callbacks) => {
+      dispatch(setChartContainer(container, callbacks))
     },
     importDrawings: () => {
       dispatch(importDrawings())
@@ -80,14 +79,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     addComparisonAndSave: (symbol, params) => {
       dispatch(addComparisonAndSave(symbol, params))
     },
-    addStudy: (study) => {
-      dispatch(addStudy(study))
-    },
     removeComparisonAndSave: (comparison) => {
       dispatch(removeComparisonAndSave(comparison))
-    },
-    removeStudy: (params) => {
-      dispatch(removeStudy(params))
     },
     toggleCrosshairsAndSave: () => {
       dispatch(toggleCrosshairsAndSave())
@@ -142,6 +135,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     undoStamps: (params) => {
       dispatch(undoStamps(params))
+    },
+    toggleStudyOverlay: (params) => {
+      dispatch(toggleOverlay(params))
+    },
+    openStudyModal: (params) => {
+      dispatch(openStudyModal(params))
     }
   }
 }

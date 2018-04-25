@@ -10,10 +10,6 @@ class Legend extends React.Component{
 		this.removeSeries = this.removeSeries.bind(this);
 	}
 	componentWillReceiveProps(nextProps){
-		if (nextProps.ciq !== null){
-			nextProps.ciq.callbacks.layout = this.moveLegend;
-		}
-
 		if (this.props.comparisons.length !== nextProps.comparisons.length){
 			this.setState({
 				style: {
