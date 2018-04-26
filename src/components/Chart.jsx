@@ -27,10 +27,10 @@ class Chart extends React.Component {
 		window.removeEventListener("resize", this.resizeScreenFn);
 	}
 	resizeScreen(){
-		if(window.innerWidth > 700){
+		if(window.innerWidth > 800){
 			this.parentDiv.className="break-lg"
 		}
-		else if(window.innerWidth <= 700 && window.innerWidth > 584){
+		else if(window.innerWidth > 584){
 			this.parentDiv.className="break-md"
 		}
 		else {

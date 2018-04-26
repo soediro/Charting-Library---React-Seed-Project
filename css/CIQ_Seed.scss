@@ -159,39 +159,44 @@ nav {
 	opacity: 1;
 }
 
-.break-sm .ciq-menu.collapse > span, .break-md .ciq-menu.collapse > span{
-	display:block;
-	width:27px;
-	height:27px;
-	margin:auto;
-	border:solid 1px transparent;
-	font: 0/0 a; /* hide text */
-	text-shadow: none;
-	color: transparent;
+// .break-sm, .break-md {
+// 	& .ciq-menu.collapse:hover > span, .ciq-menu.collapse:active > span {
+// 		border:solid 1px darken( $DEFAULT-bg, 8% );
+// 	}
+// }
+
+.break-sm, .break-md {
+	& .ciq-nav menu-select span.title {
+		display:none;
+	}
+	& .ciq-nav menu-select::before {
+		content:"";
+		display:inline-block;
+		width:27px;
+		height:27px;
+		position: static;
+		background-image: url(img/stx-sprite-ui.svg);
+		border-right:none;
+		border-bottom:none;
+		opacity: .85;
+		transition: opacity .20s 0s;
+		// @include rotate(0deg);
+	}
+	& .ciq-nav menu-select#periodicitySelect::before {
+		content:"1D";
+		border: solid 1px red;
+	}
+	& .ciq-nav menu-select#chartTypeSelect::before {
+		background-position: -350px -50px;
+		border: solid 1px red;
+	}
 }
 
-/* .break-sm .ciq-menu span, .break-md .ciq-menu.collapse:hover > span {
-	border:solid 1px darken( $DEFAULT-bg, 8% );
-} */
-
-.break-sm .ciq-menu.collapse > span:after, .break-md .ciq-menu.collapse > span:after{
-	content:"";
-	display:block;
-	width:27px;
-	height:27px;
-	position: static;
-	border-right:none;
-	border-bottom:none;
-	background-image:url(img/stx-sprite-ui.svg);
-	opacity: .85;
-	transition: opacity .20s 0s;
-}
-
-.break-sm .ciq-menu.collapse:hover > span:after,
-.break-sm .ciq-menu.collapse.stxMenuActive > span:after,
-.break-sm .ciq-menu.collapse:active > span:after {
-	opacity: 1;
-}
+// .break-sm .ciq-nav.collapse:hover > span:after,
+// .break-sm .ciq-nav.collapse.stxMenuActive > span:after,
+// .break-sm .ciq-nav.collapse:active > span:after {
+// 	opacity: 1;
+// }
 
 .symbol-frame {
 	position:relative;
@@ -312,7 +317,8 @@ menu-select span.title:hover{
 	color: #ffffff;
 }
 
-menu-select:after {
+
+.break-lg menu-select:after {
 	content:"";
 	position: relative;
 	top: -2px;
