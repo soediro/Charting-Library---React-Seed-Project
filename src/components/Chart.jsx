@@ -14,15 +14,32 @@ class Chart extends React.Component {
 			studyOverlayEdit: this.props.toggleStudyOverlay,
 			studyPanelEdit: this.props.openStudyModal
 		})
+		this.resizeScreenFn = this.resizeScreen.bind(this)
+		window.addEventListener("resize", this.resizeScreenFn);
+		this.resizeScreenFn();
 	}
 	componentWillReceiveProps(nextProps) {
 		if (this.props.ciq !== nextProps.ciq) {
 			nextProps.ciq.callbacks.layout = this.props.saveLayout;
 		}
 	}
+	componentWillUnmount() {
+		window.removeEventListener("resize", this.resizeScreenFn);
+	}
+	resizeScreen(){
+		if(window.innerWidth > 700){
+			this.parentDiv.className="break-lg"
+		}
+		else if(window.innerWidth <= 700 && window.innerWidth > 584){
+			this.parentDiv.className="break-md"
+		}
+		else {
+			this.parentDiv.className="break-sm"
+		}
+	}
 	render() {
 		return (
-			<div>
+			<div ref={el => this.parentDiv = el}>
 				<UI {...this.props} />
 				<div className="ciq-chart-area">
 					<DrawingContainer {...this.props} />
