@@ -1,10 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-const extractSass = new ExtractTextPlugin({
-		filename: "[name].[contenthash].css",
-		disable: process.env.NODE_ENV === "development"
-});
 
 module.exports = {
 		devtool: 'source-map',
@@ -24,20 +19,6 @@ module.exports = {
 										/node_modules/, /ChartIQ/
 								],
 								use: ['babel-loader']
-						}, {
-								test: /\.(s*)css$/,
-								use: extractSass.extract({
-										use: [
-												{
-														loader: "css-loader"
-												},
-												{
-														loader: "sass-loader"
-												}
-										],
-										// use style-loader in development
-										fallback: "style-loader"
-								})
 						}
 				]
 		},
@@ -50,8 +31,7 @@ module.exports = {
 						"process.env": {
 								NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production')
 						}
-				}),
-				new ExtractTextPlugin({filename: 'app.bundle.css'})
+				})
 		],
 		devServer: {
 				port: 3000,

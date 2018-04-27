@@ -178,17 +178,28 @@ nav {
 		background-image: url(img/stx-sprite-ui.svg);
 		border-right:none;
 		border-bottom:none;
+		// border: solid 1px red;
 		opacity: .85;
 		transition: opacity .20s 0s;
+		vertical-align: top;
 		// @include rotate(0deg);
 	}
-	& .ciq-nav menu-select#periodicitySelect::before {
-		content:"1D";
-		border: solid 1px red;
+	
+	& .ciq-nav menu-select#periodicitySelect span.title {
+		display: inline;
 	}
 	& .ciq-nav menu-select#chartTypeSelect::before {
 		background-position: -350px -50px;
-		border: solid 1px red;
+	}
+	& .ciq-nav menu-select#studySelect::before {
+		background-position: -300px -50px;
+		height:35px;
+		margin-top:-5px;
+	}
+	& .ciq-nav menu-select#themeSelect::before {
+		background-position: -480px -50px;
+		height:35px;
+		margin-top:-5px;
 	}
 }
 
