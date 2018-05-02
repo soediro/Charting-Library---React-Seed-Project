@@ -19,12 +19,12 @@ class Chart extends React.Component {
 		if (this.props.ciq !== nextProps.ciq) {
 			nextProps.ciq.callbacks.layout = this.props.saveLayout;
 
-			let actions = [];
+			let actions = {};
 			Object.keys(nextProps).map((key) => {
 				let prop = nextProps[key];
 
-				if (typeof prop === 'function'){
-					actions.push(prop);
+				if (typeof prop === 'function' && !actions.hasOwnProperty(key)){
+					actions[key] = prop;
 				}
 			});
 
