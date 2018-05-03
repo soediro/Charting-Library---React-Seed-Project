@@ -184,8 +184,3 @@ window.changeSymbol = function (data) {
 	window.actions.setSymbol(data.symbol.toUpperCase());
 };
 
-fin.desktop.InterApplicationBus.subscribe("*", "fts.entity.active", (message) => {
-	console.log('it does subscribe');
-	let symbol = message.symbol;
-	window.actions.setSymbol(symbol);
-}, (e => (console.log(e))));
