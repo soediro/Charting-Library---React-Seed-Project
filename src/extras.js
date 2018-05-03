@@ -1,5 +1,5 @@
 require.config({
-	baseUrl: 'chartiq/js/'
+	baseUrl: 'chartiq/node_modules/chartiq-library-test-license'
 });
 
 // Define the AMD module for the library
