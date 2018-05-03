@@ -329,6 +329,10 @@ export function drawingsChanged(){
     return { type: 'DRAWINGS_CHANGED' }
 }
 
+export function importLayout(layout, cb) {
+    return { type: 'IMPORT_LAYOUT', layout: layout, cb: cb }
+}
+
 export function saveLayout(){
     return (dispatch, getState) => {
         let state = getState(),

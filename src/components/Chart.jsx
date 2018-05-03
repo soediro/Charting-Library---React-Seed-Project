@@ -19,6 +19,7 @@ class Chart extends React.Component {
 		if (this.props.ciq !== nextProps.ciq) {
 			nextProps.ciq.callbacks.layout = this.props.saveLayout;
 
+			//Finsemble hacks
 			let actions = {};
 			Object.keys(nextProps).map((key) => {
 				let prop = nextProps[key];
@@ -30,6 +31,7 @@ class Chart extends React.Component {
 
 			window.actions = actions;
 			window.stxx = nextProps.ciq;
+			if (window.onAfterChartCreated) window.onAfterChartCreated();
 		}
 	}
 	render() {
